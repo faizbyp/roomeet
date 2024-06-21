@@ -2,7 +2,7 @@
 
 import DatePickerComp from "@/common/DatePicker";
 import { useForm } from "react-hook-form";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import TimePickerComp from "@/common/TimePicker";
 import { CardRoom, CardRooms } from "./CardRoom";
 import { TextFieldComp } from "@/common/TextField";
@@ -17,12 +17,12 @@ import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
 import axios, { AxiosError } from "axios";
+import moment from "moment";
 
 interface DefaultVal {
   dateBook: Date;
   startTime: Date | null | undefined;
   endTime: Date | null | undefined;
-  durationHour: number;
   capacity: number;
   ruangan: string;
   agenda: string;
@@ -44,7 +44,6 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
       dateBook: new Date(),
       startTime: null,
       endTime: null,
-      durationHour: 0,
       capacity: 0,
       ruangan: "",
       agenda: "",
@@ -57,7 +56,7 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
       id_user: data?.user.id_user,
       book_date: format(values.dateBook, "Y-L-d"),
       time_start: format(values.startTime as Date, "HH:mm"),
-      duration: values.durationHour,
+      time_end: format(values.endTime as Date, "HH:mm"),
       agenda: values.agenda,
       participant: values.capacity,
       remark: values.remark,
@@ -85,7 +84,10 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
   const [roomId, setRoomid] = useState<string>("");
   const [endTime, setEndTime] = useState<Date | undefined>();
   const [startTime, setStartTime] = useState<Date | undefined>();
-  const [dur, setDur] = useState<number | undefined>(0);
+  const [hour, setHour] = useState<number | undefined>(0);
+  const [minute, setMinute] = useState<number | undefined>(0);
+  const [available, setAvailable] = useState(false);
+
   const settings = {
     speed: 500,
     slidesToShow: 1,
@@ -101,7 +103,7 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
   };
 
   const onChangeDur = (value: any) => {
-    setDur(value);
+    setHour(value);
     const timeTemp = new Date(startTime?.toISOString() as string);
     const endTime = (startTime: any) => {
       const end = addHours(startTime, value);
@@ -110,6 +112,9 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
     setEndTime(endTime(timeTemp));
     form.setValue("endTime", endTime(timeTemp));
   };
+
+  // const handleAvail = (): boolean => {};
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col container gap-4 pt-6 px-10">
@@ -126,40 +131,37 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
             control={form.control}
             rules={{ required: "This field is required" }}
             onChangeOvr={(value) => {
-              const timeTemp = new Date(value?.toISOString() as string);
-              const endTime = (startTime: any) => {
-                const end = addHours(startTime, dur as number);
-                return end;
-              };
-              setEndTime(endTime(timeTemp));
-              form.setValue("endTime", endTime(timeTemp));
-              setStartTime(value);
+              const tempStartTime = value;
+              const tempHour = moment(endTime).diff(moment(value), "hours");
+              const tempMinute = moment(endTime).diff(moment(value), "minutes") % 60;
+
+              setStartTime(tempStartTime);
+              setHour(tempHour);
+              setMinute(tempMinute);
             }}
           />
           <TimePickerComp
             name="endTime"
             label="End Time"
             control={form.control}
-            disabled={true}
-            valueOvr={endTime}
+            rules={{ required: "This field is required" }}
+            onChangeOvr={(value) => {
+              const tempEndTime = value;
+              const tempHour = moment(value).diff(moment(startTime), "hours");
+              const tempMinute = moment(value).diff(moment(startTime), "minutes") % 60;
+
+              setEndTime(tempEndTime);
+              setHour(tempHour);
+              setMinute(tempMinute);
+            }}
           />
           <input {...register("ruangan")} hidden={true} />
         </div>
         <div className="flex gap-1">
-          <NumericFieldComp
-            control={form.control}
-            name="durationHour"
-            label="Hour Duration"
-            onChangeOvr={onChangeDur}
-            rules={{
-              required: "Insert duration",
-              min: { value: 1, message: "Minimum value 1" },
-              max: { value: 24, message: "Maximum value 24" },
-            }}
-            type="number"
-            min={0}
-            max={24}
-          />
+          <div className="flex gap-1">
+            <TextField value={hour} label="Hour" variant="outlined" />
+            <TextField value={minute} label="Minute" variant="outlined" />
+          </div>
           <NumericFieldComp
             control={form.control}
             name="capacity"
@@ -172,12 +174,11 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
               min: { value: 1, message: "Minimum value 1" },
             }}
           />
-          <input
-            {...register("ruangan", { required: "Please input" })}
-            hidden={true}
-          />
+          <input {...register("ruangan", { required: "Please input" })} hidden={true} />
         </div>
-        <p className="my-0">Room :</p>
+        <Button variant="outlined">Check Available Room</Button>
+        {available ? <p>available</p> : <p>not avail</p>}
+        <p className="my-0">Room:</p>
         <Suspense fallback={<CardsBookSkeleton />}>
           <CardRooms
             selectedId={roomId}
@@ -185,18 +186,6 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
             errorData={!!formState.errors?.ruangan}
           />
         </Suspense>
-        {/* <Slider {...settings}>
-          {room.map((item) => (
-            <div className="py-4 pt-6" key={item.id}>
-              <CardRoom
-                roomInfo={item}
-                selectedId={roomId}
-                clickCard={selectRoom}
-                error={!!formState.errors?.ruangan}
-              />
-            </div>
-          ))}
-        </Slider> */}
         <TextFieldComp
           control={form.control}
           name="agenda"

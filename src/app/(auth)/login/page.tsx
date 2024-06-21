@@ -2,12 +2,13 @@
 import { PasswordWithEyes } from "@/common/PasswordWithEyes";
 import { TextFieldComp } from "@/common/TextField";
 import { useForm } from "react-hook-form";
-import { Button } from "@mui/material";
-import { BaseSyntheticEvent } from "react";
+import { Button, CircularProgress } from "@mui/material";
+import { BaseSyntheticEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 // import { ToastContainer, toast, Zoom } from "react-toastify";
 import toast, { Toaster } from "react-hot-toast";
 import { useSWReg } from "@/lib/provider/SWRegProvider";
+import { useRouter } from "next/navigation";
 
 interface LoginInput {
   username: string;
@@ -30,6 +31,9 @@ const base64ToUint8Array = (base64: any) => {
 };
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
   const SW = useSWReg();
   const SWReg = SW?.SWReg;
   const { control, handleSubmit } = useForm({
@@ -40,11 +44,10 @@ export default function LoginPage() {
   });
 
   const loginUser = async (values: LoginInput) => {
+    setLoading(true);
     const sub = await SWReg?.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: base64ToUint8Array(
-        process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY
-      ),
+      applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY),
     });
     console.log(sub);
     const res = await signIn("credentials", {
@@ -55,12 +58,13 @@ export default function LoginPage() {
       redirect: false,
     });
     if (res?.status === 200) {
-      toast.success("✅ Login Success");
+      router.replace("/dashboard");
     } else if (res?.status === 401) {
       toast.error("❌ Credentials not match");
     } else {
       toast.error("❌ Failed to login");
     }
+    setLoading(false);
   };
 
   return (
@@ -86,9 +90,13 @@ export default function LoginPage() {
           />
         </div>
         <div className="flex justify-end">
-          <Button type="submit" className="btn-primary">
-            Login
-          </Button>
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <Button type="submit" className="btn-primary">
+              Login
+            </Button>
+          )}
         </div>
       </form>
       <Toaster />
