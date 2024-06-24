@@ -120,18 +120,18 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
       try {
         const res = await axiosAuth.post("/room/search-avail", { data: payload });
         if (res.data.data.length === 0) {
-          console.log("Ruangan tidak tersedia");
           toast.error("Ruangan tidak tersedia");
         } else {
           toast.success(res.data.message);
-          console.log(res.data.message);
+          // console.log(res.data.message);
           setAvailable(true);
           // form.setValue("dateBook", values.dateBook);
           // form.setValue("startTime", values.startTime);
           // form.setValue("endTime", values.endTime);
           // form.setValue("capacity", values.capacity);
-          // const tempRooms = setRooms(res.data.data);
-          // console.log(tempRooms);
+          const tempRooms = res.data.data;
+          setRooms(tempRooms);
+          console.log(tempRooms);
         }
       } catch (error) {
         const errors = error as AxiosError;
@@ -215,6 +215,7 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
                 selectedId={roomId}
                 clickCard={selectRoom}
                 errorData={!!formState.errors?.ruangan}
+                filterId={rooms}
               />
             </Suspense>
             <TextFieldComp
