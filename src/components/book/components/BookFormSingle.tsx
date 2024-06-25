@@ -18,6 +18,7 @@ import { useSession } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
 import axios, { AxiosError } from "axios";
 import moment from "moment";
+import { useRouter } from "next/navigation";
 
 interface DefaultVal {
   dateBook: Date;
@@ -39,6 +40,7 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
   } else if (bookpar !== undefined) {
     idRoom = bookpar[0];
   }
+  const router = useRouter();
   const { data } = useSession();
   const axiosAuth = useAxiosAuth();
   const form = useForm({
@@ -68,6 +70,7 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
   const [minute, setMinute] = useState<number>(0);
   const [available, setAvailable] = useState(false);
   const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const settings = {
     speed: 500,
@@ -84,6 +87,7 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
   };
 
   const onSubmit = async (values: DefaultVal) => {
+    setLoading(true);
     const payload = {
       id_ruangan: values.ruangan,
       id_user: data?.user.id_user,
@@ -97,7 +101,8 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
     console.log(payload);
     try {
       const res = await axiosAuth.post("/book", { data: payload });
-      toast.success(res.data.message);
+      // toast.success(res.data.message);
+      router.replace("/dashboard/book/success");
     } catch (error) {
       const errors = error as AxiosError;
       if (axios.isAxiosError(error)) {
@@ -295,9 +300,15 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
               name="remark"
               label="Remark"
             />
-            <Button type="submit" variant="contained">
-              Submit
-            </Button>
+            {loading ? (
+              <Button type="submit" variant="contained" disabled>
+                Loading...
+              </Button>
+            ) : (
+              <Button type="submit" variant="contained">
+                Submit
+              </Button>
+            )}
           </>
         ) : (
           <Button variant="outlined" onClick={() => checkAvail(form.getValues())}>
