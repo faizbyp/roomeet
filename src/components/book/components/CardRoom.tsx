@@ -42,12 +42,7 @@ const settings = {
   variableWidth: true,
 };
 
-export const CardRoom = ({
-  roomInfo,
-  selectedId,
-  clickCard,
-  error,
-}: CardProp) => {
+export const CardRoom = ({ roomInfo, selectedId, clickCard, error }: CardProp) => {
   const btnRef = createRef();
   function onClickCard(id: string) {
     clickCard(id);
@@ -100,10 +95,12 @@ export const CardRoom = ({
 export const CardRooms = ({
   selectedId,
   clickCard,
+  filterId,
   errorData,
 }: {
   selectedId: string;
   clickCard: (id: string) => void;
+  filterId?: any;
   errorData: boolean;
 }) => {
   const {
@@ -111,16 +108,22 @@ export const CardRooms = ({
     error,
     isLoading,
   } = useSWR("/room/fas", { suspense: true, fallback: { "/room/fas": [] } });
-  const roomData: Array<RoomInfo> = rooms?.data?.map((item: RoomData) => {
-    return {
-      id: item.id_ruangan,
-      name: item.nama,
-      capacity: item.kapasitas,
-      location: item.lokasi,
-      facility: item.fasilitas,
-      image: item.image,
-    };
-  });
+  console.log(filterId);
+
+  const roomData: Array<RoomInfo> = rooms?.data
+    ?.filter((item: RoomData) =>
+      filterId ? filterId.some((fid: any) => fid.id_ruangan === item.id_ruangan) : true
+    )
+    .map((item: RoomData) => {
+      return {
+        id: item.id_ruangan,
+        name: item.nama,
+        capacity: item.kapasitas,
+        location: item.lokasi,
+        facility: item.fasilitas,
+        image: item.image,
+      };
+    });
 
   return (
     <>
