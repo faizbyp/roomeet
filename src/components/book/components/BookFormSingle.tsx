@@ -27,6 +27,8 @@ interface DefaultVal {
   ruangan: string;
   agenda: string;
   remark: string;
+  hour: number | undefined;
+  minute: number | undefined;
 }
 
 export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
@@ -48,8 +50,38 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
       ruangan: "",
       agenda: "",
       remark: "",
+      hour: 0,
+      minute: 0,
     } as DefaultVal,
   });
+
+  const handleSubmit = form.handleSubmit;
+  const register = form.register;
+  const setValue = form.setValue;
+  const values = form.getValues();
+  const formState = form.formState;
+
+  const [roomId, setRoomid] = useState<string>("");
+  const [endTime, setEndTime] = useState<Date | undefined>();
+  const [startTime, setStartTime] = useState<Date | undefined>();
+  const [hour, setHour] = useState<number>(0);
+  const [minute, setMinute] = useState<number>(0);
+  const [available, setAvailable] = useState(false);
+  const [rooms, setRooms] = useState([]);
+
+  const settings = {
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    variableWidth: true,
+  };
+
+  const selectRoom = (idRoom: string) => {
+    setRoomid(idRoom);
+    setValue("ruangan", idRoom);
+    form.clearErrors("ruangan");
+  };
 
   const onSubmit = async (values: DefaultVal) => {
     const payload = {
@@ -77,37 +109,22 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
       console.error(error);
     }
   };
-  const handleSubmit = form.handleSubmit;
-  const register = form.register;
-  const setValue = form.setValue;
-  const values = form.getValues();
-  const formState = form.formState;
-  // console.log(form.control);
-
-  const [roomId, setRoomid] = useState<string>("");
-  const [endTime, setEndTime] = useState<Date | undefined>();
-  const [startTime, setStartTime] = useState<Date | undefined>();
-  const [hour, setHour] = useState<number | undefined>(0);
-  const [minute, setMinute] = useState<number | undefined>(0);
-  const [available, setAvailable] = useState(false);
-  const [rooms, setRooms] = useState([]);
-
-  const settings = {
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
-    variableWidth: true,
-  };
-
-  const selectRoom = (idRoom: string) => {
-    setRoomid(idRoom);
-    setValue("ruangan", idRoom);
-    form.clearErrors("ruangan");
-  };
 
   const checkAvail = async (values: DefaultVal) => {
-    const valid = await form.trigger(["dateBook", "startTime", "endTime", "capacity"]);
+    form.setValue("hour", hour);
+    form.setValue("minute", minute);
+    const valid = await form.trigger([
+      "dateBook",
+      "startTime",
+      "endTime",
+      "capacity",
+      "hour",
+      "minute",
+    ]);
+    console.log(hour, minute);
+
+    console.log(form.getValues());
+
     if (valid) {
       const payload = {
         book_date: format(values.dateBook, "Y-L-d"),
@@ -123,12 +140,7 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
           toast.error("Ruangan tidak tersedia");
         } else {
           toast.success(res.data.message);
-          // console.log(res.data.message);
           setAvailable(true);
-          // form.setValue("dateBook", values.dateBook);
-          // form.setValue("startTime", values.startTime);
-          // form.setValue("endTime", values.endTime);
-          // form.setValue("capacity", values.capacity);
           const tempRooms = res.data.data;
           setRooms(tempRooms);
           console.log(tempRooms);
@@ -153,14 +165,27 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
           name="dateBook"
           label="Booking Date"
           control={form.control}
-          rules={{ required: "This field is required" }}
+          rules={{
+            required: "This field is required",
+            validate: {
+              minDate: (value: any) =>
+                new Date(value).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) ||
+                "Booking date can't be in the past",
+            },
+          }}
         />
         <div className="flex gap-1">
           <TimePickerComp
             name="startTime"
             label="Start Time"
             control={form.control}
-            rules={{ required: "This field is required" }}
+            rules={{
+              required: "This field is required",
+              validate: {
+                minDate: (value: any) =>
+                  new Date(value) >= new Date() || "Start time can't be in the past",
+              },
+            }}
             onChangeOvr={(value) => {
               const tempStartTime = value;
               const tempHour = moment(endTime).diff(moment(value), "hours");
@@ -175,7 +200,9 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
             name="endTime"
             label="End Time"
             control={form.control}
-            rules={{ required: "This field is required" }}
+            rules={{
+              required: "This field is required",
+            }}
             onChangeOvr={(value) => {
               const tempEndTime = value;
               const tempHour = moment(value).diff(moment(startTime), "hours");
@@ -190,8 +217,39 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
         </div>
         <div className="flex gap-1">
           <div className="flex gap-1">
-            <TextField value={hour} label="Hour" variant="outlined" />
-            <TextField value={minute} label="Minute" variant="outlined" />
+            <TextField
+              type="number"
+              value={hour}
+              label="Hour"
+              variant="outlined"
+              error={!!formState.errors.hour}
+              helperText={formState.errors.hour ? formState.errors.hour.message : ""}
+              {...register("hour", {
+                min: {
+                  value: 0,
+                  message: "Duration error",
+                },
+              })}
+            />
+            <TextField
+              type="number"
+              value={minute}
+              label="Minute"
+              variant="outlined"
+              error={!!formState.errors.minute}
+              helperText={formState.errors.minute ? formState.errors.minute.message : ""}
+              {...register("minute", {
+                validate: {
+                  minimum: (value: any) => {
+                    if (form.getValues("hour") === 0) {
+                      return value > 0 || "Duration error";
+                    } else {
+                      return value >= 0 || "Duration error";
+                    }
+                  },
+                },
+              })}
+            />
           </div>
           <NumericFieldComp
             control={form.control}
