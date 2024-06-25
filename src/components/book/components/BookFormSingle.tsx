@@ -181,10 +181,10 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
             control={form.control}
             rules={{
               required: "This field is required",
-              validate: {
-                minDate: (value: any) =>
-                  new Date(value) >= new Date() || "Start time can't be in the past",
-              },
+              // validate: {
+              //   minDate: (value: any) =>
+              //     new Date(value) >= new Date() || "Start time can't be in the past",
+              // },
             }}
             onChangeOvr={(value) => {
               const tempStartTime = value;
