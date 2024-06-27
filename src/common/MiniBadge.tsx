@@ -1,15 +1,13 @@
-import clsx from "clsx";
+import { Typography } from "@mui/material";
 
-export default function MiniBadge({
-  color,
-  text,
-}: {
-  color: string;
-  text: string;
-}) {
+export default function MiniBadge({ color, text }: { color: string; text: string }) {
   return (
-    <div className={clsx("p-2 rounded-full", color)}>
-      <p className="my-0 py-0 text-xs text-neutral-50">{text}</p>
-    </div>
+    <Typography
+      paragraph
+      sx={{ fontSize: "0.5rem" }}
+      className={`text-neutral-50 p-2 m-0 rounded-full ${color}`}
+    >
+      {text}
+    </Typography>
   );
 }

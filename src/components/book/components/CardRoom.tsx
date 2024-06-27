@@ -7,6 +7,7 @@ import { useEffect, useRef, createRef, useLayoutEffect } from "react";
 import useSWR from "swr";
 import Slider from "react-slick";
 import { CardsBookSkeleton } from "@/common/skeletons/CardSkeleton";
+import Image from "next/image";
 
 interface RoomInfo {
   id: string;
@@ -65,27 +66,42 @@ export const CardRoom = ({ roomInfo, selectedId, clickCard, error }: CardProp) =
       }}
     >
       <Button
-        sx={{ alignItems: "start", justifyContent: "start" }}
+        sx={{ alignItems: "start", justifyContent: "start", padding: 0 }}
         onClick={() => onClickCard(roomInfo.id)}
         className={clsx(
-          "h-52 w-44 mr-4 rounded-xl hover:bg-slate-300 focus:bg-slate-500 flex flex-col p-3 text-neutral-800 text-left",
+          "h-52 w-44 mr-4 rounded-xl hover:bg-slate-300 focus:bg-slate-500 flex flex-col text-neutral-800 text-left",
           roomInfo.id === selectedId ? "bg-slate-500" : "bg-slate-400",
           error && "border-red-500 border-2 border-solid"
         )}
       >
-        <p className="text-xl my-0 font-semibold">{roomInfo.name}</p>
-        <div className="flex text-xs items-center gap-1">
-          <UserIcon className="h-5 w-5 " />
-          <p className="my-0">Capacity : {roomInfo.capacity}</p>
-        </div>
-        <div className="flex text-xs items-center gap-1 ">
-          <MapPinIcon className="h-5 w-5" />
-          <p className="my-0">Location : {roomInfo.location} </p>
-        </div>
-        <div className="flex flex-wrap gap-2 pt-4">
-          {roomInfo.facility.map((item, idx) => (
-            <MiniBadge color="bg-neutral-800" text={item} key={idx + item} />
-          ))}
+        <Image
+          src="https://i.pinimg.com/564x/69/87/6a/69876a2c445a4d4c95775610b9ad8bf8.jpg"
+          alt="Image"
+          sizes="100vw"
+          style={{
+            width: "100%",
+            height: "40%",
+            objectFit: "cover",
+            borderRadius: "0.75rem 0.75rem 0 0",
+          }}
+          width={100}
+          height={50}
+        />
+        <div className="px-3 pb-3 pt-2">
+          <p className="text-lg my-0 font-semibold">{roomInfo.name}</p>
+          <div className="flex text-xs items-center gap-1">
+            <UserIcon className="h-5 w-5 " />
+            <p className="my-0">Capacity: {roomInfo.capacity}</p>
+          </div>
+          <div className="flex text-xs items-center gap-1 ">
+            <MapPinIcon className="h-5 w-5" />
+            <p className="my-0">Location: {roomInfo.location} </p>
+          </div>
+          <div className="flex flex-wrap gap-2 pt-2">
+            {roomInfo.facility.map((item, idx) => (
+              <MiniBadge color="bg-neutral-800" text={item} key={idx + item} />
+            ))}
+          </div>
         </div>
       </Button>
     </Badge>
