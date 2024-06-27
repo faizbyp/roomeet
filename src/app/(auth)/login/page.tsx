@@ -61,10 +61,11 @@ export default function LoginPage() {
       router.replace("/dashboard");
     } else if (res?.status === 401) {
       toast.error("❌ Credentials not match");
+      setLoading(false);
     } else {
       toast.error("❌ Failed to login");
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
