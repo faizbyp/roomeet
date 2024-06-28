@@ -28,6 +28,7 @@ interface RoomsData {
   kapasitas: number;
   lokasi: string;
   nama: string;
+  image: string;
 }
 
 interface CardProp {
@@ -50,7 +51,7 @@ const CardRoom = ({ roomInfo }: CardProp) => {
           src={roomInfo.image}
           width={100}
           height={100}
-          className="h-[8rem] w-full rounded-3xl"
+          className="h-[8rem] w-full rounded-3xl object-cover"
           alt="Image of room"
         />
       </div>
@@ -115,8 +116,7 @@ export const CardRooms = ({ hours }: { hours?: string }) => {
       name: item.nama,
       capacity: item.kapasitas,
       location: item.lokasi,
-      image:
-        "https://images.unsplash.com/photo-1576073460027-794a4ab09b12?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8bWVldGluZyUyMHJvb218ZW58MHx8MHx8fDA%3D",
+      image: item.image,
     }));
   }
   return (

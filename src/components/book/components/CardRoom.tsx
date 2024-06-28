@@ -75,7 +75,7 @@ export const CardRoom = ({ roomInfo, selectedId, clickCard, error }: CardProp) =
         )}
       >
         <Image
-          src="https://i.pinimg.com/564x/69/87/6a/69876a2c445a4d4c95775610b9ad8bf8.jpg"
+          src={roomInfo.image}
           alt="Image"
           sizes="100vw"
           style={{
