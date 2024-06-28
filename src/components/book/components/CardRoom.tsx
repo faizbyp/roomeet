@@ -69,7 +69,7 @@ export const CardRoom = ({ roomInfo, selectedId, clickCard, error }: CardProp) =
         sx={{ alignItems: "start", justifyContent: "start", padding: 0 }}
         onClick={() => onClickCard(roomInfo.id)}
         className={clsx(
-          "h-52 w-44 mr-4 rounded-xl hover:bg-slate-300 focus:bg-slate-500 flex flex-col text-neutral-800 text-left",
+          "h-52 mr-4 rounded-xl hover:bg-slate-300 focus:bg-slate-500 flex flex-col text-neutral-800 text-left",
           roomInfo.id === selectedId ? "bg-slate-500" : "bg-slate-400",
           error && "border-red-500 border-2 border-solid"
         )}
@@ -127,9 +127,11 @@ export const CardRooms = ({
   console.log(filterId);
 
   const roomData: Array<RoomInfo> = rooms?.data
-    ?.filter((item: RoomData) =>
+    ?.sort((a: any, b: any) => a.kapasitas - b.kapasitas)
+    .filter((item: RoomData) =>
       filterId ? filterId.some((fid: any) => fid.id_ruangan === item.id_ruangan) : true
     )
+    .slice(0, 2)
     .map((item: RoomData) => {
       return {
         id: item.id_ruangan,
