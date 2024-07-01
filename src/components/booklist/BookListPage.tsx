@@ -4,15 +4,23 @@ import { useState, Suspense } from "react";
 import { CardsListBook } from "@/components/booklist/CardListBook";
 import { Select, MenuItem, useMediaQuery } from "@mui/material";
 import { CardsListBookSkeleton } from "@/common/skeletons/CardSkeleton";
+import { TextFieldComp } from "@/common/TextField";
+import { useForm } from "react-hook-form";
 
 export default function BookListPage() {
   const [eventStatus, setStatus] = useState("all");
+
+  const { control } = useForm({
+    defaultValues: {
+      search: "",
+    },
+  });
+
   return (
     <>
       <div className="flex justify-evenly items-center m-5 ">
-        <div className="w-full h-12 bg-neutral-400 text-center mr-4">
-          Search Bar
-        </div>
+        <TextFieldComp control={control} label="Search" name="search" />
+
         <Select
           value={eventStatus}
           onChange={(e) => {

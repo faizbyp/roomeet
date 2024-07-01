@@ -7,7 +7,7 @@ import TimePickerComp from "@/common/TimePicker";
 import { CardRoom, CardRooms } from "./CardRoom";
 import { TextFieldComp } from "@/common/TextField";
 import { room } from "@/mock/room";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import { Suspense } from "react";
 import { CardsBookSkeleton } from "@/common/skeletons/CardSkeleton";
@@ -32,14 +32,7 @@ interface DefaultVal {
   minute: number | undefined;
 }
 
-export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
-  let idRoom, bookId;
-  if (bookpar?.length == 2) {
-    idRoom = bookpar[0];
-    bookId = bookpar[1];
-  } else if (bookpar !== undefined) {
-    idRoom = bookpar[0];
-  }
+export default function BookFormSingle({ editData }: { editData: any }) {
   const router = useRouter();
   const { data } = useSession();
   const axiosAuth = useAxiosAuth();
@@ -71,6 +64,31 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
   const [available, setAvailable] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isEdit, setIsEdit] = useState(!!editData);
+
+  useEffect(() => {
+    if (isEdit) {
+      form.reset({
+        dateBook: editData.book_date,
+        startTime: moment(editData.time_start, "hh:mm:ss").toDate(),
+        endTime: moment(editData.time_end, "hh:mm:ss").toDate(),
+        capacity: editData.prtcpt_ctr,
+        ruangan: editData.id_ruangan,
+        agenda: editData.agenda,
+        remark: editData.remark,
+      });
+    }
+  }, [editData, form, isEdit]);
+
+  // let idRoom: any, bookId: any;
+  // if (bookpar?.length == 2) {
+  //   idRoom = bookpar[0];
+  //   bookId = bookpar[1];
+  //   console.log("bookId", bookId);
+  // } else if (bookpar !== undefined) {
+  //   idRoom = bookpar[0];
+  // }
+  console.log(editData);
 
   const settings = {
     speed: 500,
@@ -112,6 +130,7 @@ export default function BookFormSingle({ bookpar }: { bookpar: string[] }) {
         toast.error("error");
       }
       console.error(error);
+      setLoading(false);
     }
   };
 
