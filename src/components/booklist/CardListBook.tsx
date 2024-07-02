@@ -4,7 +4,7 @@ import { IconButton } from "@mui/material";
 import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
-import useSWR, { unstable_serialize } from "swr";
+import useSWR from "swr";
 import { CardsListBookSkeleton } from "@/common/skeletons/CardSkeleton";
 import Link from "next/link";
 import { axiosAuth } from "@/lib/axios";
@@ -20,6 +20,7 @@ interface CardListBookProp {
   status: string;
   id_book: string;
   id_room: string;
+  mutate: any;
 }
 
 interface AgendaDatas {
@@ -44,10 +45,13 @@ export function CardListBook({
   room,
   id_book,
   id_room,
+  mutate,
 }: CardListBookProp) {
   const handleDelete = async (id_book: string) => {
     try {
       await axiosAuth.delete(`/book/${id_book}`);
+      mutate();
+      toast.success(`Success canceling ${id_book}`);
     } catch (error) {
       const errors = error as AxiosError;
       if (axios.isAxiosError(error)) {
@@ -101,7 +105,7 @@ export function CardListBook({
                     <PencilSquareIcon />
                   </IconButton>
                 </Link>
-                <IconButton className="btn-primary h-10 w-10" onClick={() => toast.error("test")}>
+                <IconButton className="btn-primary h-10 w-10" onClick={() => handleDelete(id_book)}>
                   <XCircleIcon />
                 </IconButton>
               </>
@@ -120,11 +124,13 @@ export function CardsListBook() {
     data: agendas,
     error,
     isLoading,
+    mutate,
   } = useSWR(data && `/book/show?id_user=${data?.user?.id_user}`, {
     suspense: true,
     fallback: {
       [url]: [],
     },
+    revalidateIfStale: true,
   });
   const agendasData: Array<CardListBookProp> = agendas
     ? agendas?.data?.map((item: AgendaDatas) => ({
@@ -145,7 +151,9 @@ export function CardsListBook() {
     <>
       {!isLoading &&
         agendasData &&
-        agendasData.map((item) => <CardListBook {...item} key={item.id_book + item.id_room} />)}
+        agendasData.map((item) => (
+          <CardListBook {...item} mutate={mutate} key={item.id_book + item.id_room} />
+        ))}
       {isLoading && !agendasData && <CardsListBookSkeleton />}
     </>
   );
