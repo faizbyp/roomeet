@@ -53,7 +53,6 @@ export default function BookFormSingle({ editData }: { editData: any }) {
   const handleSubmit = form.handleSubmit;
   const register = form.register;
   const setValue = form.setValue;
-  // const values = form.getValues();
   const formState = form.formState;
 
   const [roomId, setRoomid] = useState<string>("");
@@ -78,9 +77,6 @@ export default function BookFormSingle({ editData }: { editData: any }) {
         remark: editData.remark,
       });
 
-      // const tempHour = moment(editData.time_end).diff(moment(editData.time_start), "hours");
-      // const tempMinute =
-      //   moment(editData.time_end).diff(moment(editData.time_start), "minutes") % 60;
       const tempHour =
         moment(form.getValues("endTime")).hour() - moment(form.getValues("startTime")).hour();
       const tempMinute =
@@ -93,14 +89,6 @@ export default function BookFormSingle({ editData }: { editData: any }) {
     }
   }, [editData, form, isEdit]);
 
-  // let idRoom: any, bookId: any;
-  // if (bookpar?.length == 2) {
-  //   idRoom = bookpar[0];
-  //   bookId = bookpar[1];
-  //   console.log("bookId", bookId);
-  // } else if (bookpar !== undefined) {
-  //   idRoom = bookpar[0];
-  // }
   console.log(editData);
 
   const settings = {
@@ -136,7 +124,6 @@ export default function BookFormSingle({ editData }: { editData: any }) {
       } else {
         const res = await axiosAuth.post(`/book/${editData.id_book}`, { data: payload });
       }
-      // toast.success(res.data.message);
       router.replace("/dashboard/book/success");
     } catch (error) {
       const errors = error as AxiosError;
@@ -223,10 +210,6 @@ export default function BookFormSingle({ editData }: { editData: any }) {
             control={form.control}
             rules={{
               required: "This field is required",
-              // validate: {
-              //   minDate: (value: any) =>
-              //     new Date(value) >= new Date() || "Start time can't be in the past",
-              // },
             }}
             onChangeOvr={(value) => {
               const tempStartTime = value;
