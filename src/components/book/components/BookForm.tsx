@@ -15,7 +15,7 @@ import NumericFieldComp from "@/common/NumericField";
 import { addHours, format } from "date-fns";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useSession } from "next-auth/react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import axios, { AxiosError } from "axios";
 import moment from "moment";
 
@@ -253,7 +253,6 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
           Submit
         </Button>
       </div>
-      <Toaster />
     </form>
   ) : (
     <form onSubmit={handleCheck(checkAvail)}>
@@ -320,7 +319,6 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
           Check Available Room
         </Button>
       </div>
-      <Toaster />
     </form>
   );
 }

@@ -7,6 +7,9 @@ import { useSession } from "next-auth/react";
 import useSWR, { unstable_serialize } from "swr";
 import { CardsListBookSkeleton } from "@/common/skeletons/CardSkeleton";
 import Link from "next/link";
+import { axiosAuth } from "@/lib/axios";
+import axios, { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 interface CardListBookProp {
   agendaTitle: string;
@@ -42,6 +45,21 @@ export function CardListBook({
   id_book,
   id_room,
 }: CardListBookProp) {
+  const handleDelete = async (id_book: string) => {
+    try {
+      await axiosAuth.delete(`/book/${id_book}`);
+    } catch (error) {
+      const errors = error as AxiosError;
+      if (axios.isAxiosError(error)) {
+        const data = errors.response?.data as { message: string };
+        toast.error(data.message);
+      } else {
+        toast.error("error");
+      }
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <div className="h-36 rounded-xl bg-neutral-500 px-4 py-4 mx-6 my-2 flex">
@@ -83,7 +101,7 @@ export function CardListBook({
                     <PencilSquareIcon />
                   </IconButton>
                 </Link>
-                <IconButton className="btn-primary h-10 w-10">
+                <IconButton className="btn-primary h-10 w-10" onClick={() => toast.error("test")}>
                   <XCircleIcon />
                 </IconButton>
               </>

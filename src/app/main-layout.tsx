@@ -7,6 +7,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import AuthProvider from "@/components/auth/AuthProvider";
 import SWRegProvider from "@/lib/provider/SWRegProvider";
+import { Toaster } from "react-hot-toast";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -20,6 +21,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 <div className="max-w-[480px] mx-auto bg-neutral-800 md:shadow-md min-h-screen relative">
                   <AppRouterCacheProvider options={{ enableCssLayer: true }}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <Toaster />
                       {children}
                     </LocalizationProvider>
                   </AppRouterCacheProvider>

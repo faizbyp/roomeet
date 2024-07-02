@@ -5,7 +5,7 @@ import { TextFieldComp } from "@/common/TextField";
 import { useForm } from "react-hook-form";
 import { Button, CircularProgress } from "@mui/material";
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
 
@@ -186,7 +186,6 @@ export default function RegisterPage() {
           </div>
         </form>
       )}
-      <Toaster />
     </div>
   );
 }

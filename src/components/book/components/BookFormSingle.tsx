@@ -15,7 +15,7 @@ import NumericFieldComp from "@/common/NumericField";
 import { addHours, format } from "date-fns";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useSession } from "next-auth/react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import axios, { AxiosError } from "axios";
 import moment from "moment";
 import { useRouter } from "next/navigation";
@@ -343,7 +343,6 @@ export default function BookFormSingle({ editData }: { editData: any }) {
           </>
         )}
       </div>
-      <Toaster />
     </form>
   );
 }

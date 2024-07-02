@@ -6,7 +6,7 @@ import { Button, CircularProgress } from "@mui/material";
 import { BaseSyntheticEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 // import { ToastContainer, toast, Zoom } from "react-toastify";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useSWReg } from "@/lib/provider/SWRegProvider";
 import { useRouter } from "next/navigation";
 
@@ -100,7 +100,6 @@ export default function LoginPage() {
           )}
         </div>
       </form>
-      <Toaster />
     </div>
   );
 }
