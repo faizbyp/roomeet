@@ -8,15 +8,16 @@ interface DatePickerProps {
   label: string;
   control: Control<any> | undefined;
   rules: object;
+  onChange?: any;
 }
 
-export default function DatePickerComp({ name, label, control, rules }: DatePickerProps) {
+export default function DatePickerComp({ name, label, control, rules, onChange }: DatePickerProps) {
   return (
     <Controller
       control={control}
       name={name}
       rules={rules}
-      render={({ field: { onChange, value }, fieldState: { error } }) => (
+      render={({ field: { value }, fieldState: { error } }) => (
         <DatePicker
           onChange={onChange}
           sx={{ width: "100%" }}

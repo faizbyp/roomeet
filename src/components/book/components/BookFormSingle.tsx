@@ -64,6 +64,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(!!editData);
+  const [changed, setChanged] = useState(true);
 
   useEffect(() => {
     if (isEdit) {
@@ -139,6 +140,9 @@ export default function BookFormSingle({ editData }: { editData: any }) {
   };
 
   const checkAvail = async (values: DefaultVal) => {
+    setChanged(false);
+    setRoomid("");
+    form.setValue("ruangan", "");
     form.setValue("hour", hour);
     form.setValue("minute", minute);
     const valid = await form.trigger([
@@ -202,6 +206,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
                 "Booking date can't be in the past",
             },
           }}
+          onChange={() => setChanged(true)}
         />
         <div className="flex gap-1">
           <TimePickerComp
@@ -219,6 +224,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
               setStartTime(tempStartTime);
               setHour(tempHour);
               setMinute(tempMinute);
+              setChanged(true);
             }}
           />
           <TimePickerComp
@@ -236,6 +242,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
               setEndTime(tempEndTime);
               setHour(tempHour);
               setMinute(tempMinute);
+              setChanged(true);
             }}
           />
           <input {...register("ruangan")} hidden={true} />
@@ -287,6 +294,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
               required: "Insert capacity",
               min: { value: 1, message: "Minimum value 1" },
             }}
+            onChangeOvr={() => setChanged(true)}
           />
           <input {...register("ruangan", { required: "Please input" })} hidden={true} />
         </div>
@@ -328,8 +336,8 @@ export default function BookFormSingle({ editData }: { editData: any }) {
                 Loading...
               </Button>
             ) : (
-              <Button type="submit" variant="contained">
-                Submit
+              <Button type="submit" variant="contained" disabled={changed}>
+                {changed ? "Please check room" : "Submit"}
               </Button>
             )}
           </>
