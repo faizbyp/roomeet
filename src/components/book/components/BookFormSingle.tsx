@@ -53,7 +53,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
   const handleSubmit = form.handleSubmit;
   const register = form.register;
   const setValue = form.setValue;
-  const values = form.getValues();
+  // const values = form.getValues();
   const formState = form.formState;
 
   const [roomId, setRoomid] = useState<string>("");
@@ -69,14 +69,27 @@ export default function BookFormSingle({ editData }: { editData: any }) {
   useEffect(() => {
     if (isEdit) {
       form.reset({
-        dateBook: editData.book_date,
-        startTime: moment(editData.time_start, "hh:mm:ss").toDate(),
-        endTime: moment(editData.time_end, "hh:mm:ss").toDate(),
+        dateBook: moment(editData.book_date).toDate(),
+        startTime: moment(editData.time_start, "hh:mm").toDate(),
+        endTime: moment(editData.time_end, "hh:mm").toDate(),
         capacity: editData.prtcpt_ctr,
         ruangan: editData.id_ruangan,
         agenda: editData.agenda,
         remark: editData.remark,
       });
+
+      // const tempHour = moment(editData.time_end).diff(moment(editData.time_start), "hours");
+      // const tempMinute =
+      //   moment(editData.time_end).diff(moment(editData.time_start), "minutes") % 60;
+      const tempHour =
+        moment(form.getValues("endTime")).hour() - moment(form.getValues("startTime")).hour();
+      const tempMinute =
+        (moment(form.getValues("endTime")).minute() -
+          moment(form.getValues("startTime")).minute()) %
+        60;
+
+      setHour(tempHour);
+      setMinute(tempMinute);
     }
   }, [editData, form, isEdit]);
 
@@ -118,7 +131,11 @@ export default function BookFormSingle({ editData }: { editData: any }) {
     };
     console.log(payload);
     try {
-      const res = await axiosAuth.post("/book", { data: payload });
+      if (!isEdit) {
+        const res = await axiosAuth.post("/book", { data: payload });
+      } else {
+        const res = await axiosAuth.post(`/book/${editData.id_book}`, { data: payload });
+      }
       // toast.success(res.data.message);
       router.replace("/dashboard/book/success");
     } catch (error) {
@@ -151,10 +168,11 @@ export default function BookFormSingle({ editData }: { editData: any }) {
 
     if (valid) {
       const payload = {
-        book_date: format(values.dateBook, "Y-L-d"),
+        book_date: format(values.dateBook as Date, "Y-L-d"),
         time_start: format(values.startTime as Date, "HH:mm"),
         time_end: format(values.endTime as Date, "HH:mm"),
         participant: values.capacity,
+        id_book: editData?.id_book,
       };
       console.log(payload);
 
@@ -289,7 +307,10 @@ export default function BookFormSingle({ editData }: { editData: any }) {
           />
           <input {...register("ruangan", { required: "Please input" })} hidden={true} />
         </div>
-        {available ? (
+        <Button variant="outlined" onClick={() => checkAvail(form.getValues())}>
+          Check Available Room
+        </Button>
+        {available && (
           <>
             <p className="my-0">Room:</p>
             <Suspense fallback={<CardsBookSkeleton />}>
@@ -329,10 +350,6 @@ export default function BookFormSingle({ editData }: { editData: any }) {
               </Button>
             )}
           </>
-        ) : (
-          <Button variant="outlined" onClick={() => checkAvail(form.getValues())}>
-            Check Available Room
-          </Button>
         )}
       </div>
       <Toaster />
