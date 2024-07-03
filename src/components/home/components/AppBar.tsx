@@ -1,19 +1,21 @@
 import { useMediaQuery } from "@mui/material";
-import {
-  Bars3Icon,
-  HomeIcon,
-  BookmarkIcon,
-  PlusIcon,
-} from "@heroicons/react/24/outline";
+import { Bars3Icon, HomeIcon, BookmarkIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { Button, Popover, Box, Avatar, IconButton } from "@mui/material";
 import ButtonCard from "@/common/ButtonCard";
-import { BaseSyntheticEvent, useState } from "react";
+import { BaseSyntheticEvent, useEffect, useState } from "react";
 import UserMenu from "@/common/UserMenu";
+import { usePathname } from "next/navigation";
 
 const AppBar = () => {
   const mobile = useMediaQuery("(max-width:480px)");
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [anchorMenu, setAnchorMenu] = useState<HTMLButtonElement | null>(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    handleClose();
+  }, [pathname]);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -29,18 +31,16 @@ const AppBar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const open = Boolean(anchorEl);
+
   return (
     <div className="fixed w-full max-w-[480px] z-50">
       <div className="h-10 bg-neutral-200 rounded-b-xl">
         <div className="flex justify-between items-center px-3 h-full">
           {!mobile && (
             <>
-              <Button
-                className="rounded-full p-0 "
-                disableRipple={true}
-                onClick={handleClick}
-              >
+              <Button className="rounded-full p-0 " disableRipple={true} onClick={handleClick}>
                 <Bars3Icon className="h-8 w-8 text-neutral-950" />
               </Button>
               <Popover
@@ -76,9 +76,7 @@ const AppBar = () => {
               </Popover>
             </>
           )}
-          <p className="font-semibold grow md:text-center text-neutral-900">
-            ROOMEET
-          </p>
+          <p className="font-semibold grow md:text-center text-neutral-900">ROOMEET</p>
           <IconButton className="p-0" onClick={handleUserMenu}>
             <Avatar className="h-8 w-8 bg-neutral-600 rounded-full" />
           </IconButton>
