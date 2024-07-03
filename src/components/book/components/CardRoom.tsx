@@ -41,6 +41,7 @@ const settings = {
   slidesToScroll: 1,
   arrows: false,
   variableWidth: true,
+  infinite: false,
 };
 
 export const CardRoom = ({ roomInfo, selectedId, clickCard, error }: CardProp) => {

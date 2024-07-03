@@ -41,6 +41,7 @@ const settings = {
   slidesToScroll: 1,
   arrows: false,
   variableWidth: true,
+  infinite: false,
 };
 
 const CardRoom = ({ roomInfo }: CardProp) => {
