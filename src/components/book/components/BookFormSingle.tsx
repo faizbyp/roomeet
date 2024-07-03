@@ -120,12 +120,10 @@ export default function BookFormSingle({ editData }: { editData: any }) {
     };
     console.log(payload);
     try {
-      if (!isEdit) {
-        const res = await axiosAuth.post("/book", { data: payload });
-      } else {
-        const res = await axiosAuth.post(`/book/${editData.id_book}`, { data: payload });
-      }
-      router.replace("/dashboard/book/success");
+      const res = !isEdit
+        ? await axiosAuth.post("/book", { data: payload })
+        : await axiosAuth.post(`/book/${editData.id_book}`, { data: payload });
+      router.replace(`/dashboard/book/success/${res.data.id_book}`);
     } catch (error) {
       const errors = error as AxiosError;
       if (axios.isAxiosError(error)) {
