@@ -19,6 +19,8 @@ const handler = NextAuth({
         });
         if (auth.status === 200) {
           const user = auth.data.data;
+          console.log("USER", user);
+
           return user;
         } else {
           return {

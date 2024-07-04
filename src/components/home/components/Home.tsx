@@ -42,6 +42,8 @@ interface RoomInfo {
 const Home = () => {
   const [hours, setHours] = useState<string>("1");
   const { data } = useSession();
+  console.log("data session", data);
+
   return (
     <div className="flex flex-col px-4">
       <h3>Welcome {data?.user.name}</h3>

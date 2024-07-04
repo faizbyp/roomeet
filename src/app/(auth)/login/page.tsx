@@ -57,6 +57,8 @@ export default function LoginPage() {
       callbackUrl: "/",
       redirect: false,
     });
+    console.log("RESPON", res);
+
     if (res?.status === 200) {
       router.replace("/dashboard");
     } else if (res?.status === 401) {
