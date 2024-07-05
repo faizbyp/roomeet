@@ -61,17 +61,11 @@ export default function LoginPage() {
 
     if (res?.status === 200) {
       const session = await getSession();
-      console.log("ROLE_ID", session?.user.role_id);
-      console.log("env ROLE_ID", process.env.NEXT_PUBLIC_USER_ID, process.env.NEXT_PUBLIC_ADMIN_ID);
 
       if (session?.user.role_id === process.env.NEXT_PUBLIC_USER_ID) {
-        console.log("user");
-
         router.replace("/dashboard");
       }
       if (session?.user.role_id === process.env.NEXT_PUBLIC_ADMIN_ID) {
-        console.log("admin");
-
         router.replace("/admin");
       }
     } else if (res?.status === 401) {
