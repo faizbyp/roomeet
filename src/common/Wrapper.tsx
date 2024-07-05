@@ -14,7 +14,7 @@ const Wrapper = ({ children }: WrapperChild) => {
   return (
     <>
       <AppBar />
-      <div className="pt-10">{children}</div>
+      <div className="pt-10 px-4">{children}</div>
       {mobile && <NavButton />}
     </>
   );
