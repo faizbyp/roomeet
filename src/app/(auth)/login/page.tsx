@@ -4,7 +4,7 @@ import { TextFieldComp } from "@/common/TextField";
 import { useForm } from "react-hook-form";
 import { Button, CircularProgress } from "@mui/material";
 import { BaseSyntheticEvent, useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 // import { ToastContainer, toast, Zoom } from "react-toastify";
 import toast from "react-hot-toast";
 import { useSWReg } from "@/lib/provider/SWRegProvider";
@@ -60,7 +60,20 @@ export default function LoginPage() {
     console.log("RESPON", res);
 
     if (res?.status === 200) {
-      router.replace("/dashboard");
+      const session = await getSession();
+      console.log("ROLE_ID", session?.user.role_id);
+      console.log("env ROLE_ID", process.env.NEXT_PUBLIC_USER_ID, process.env.NEXT_PUBLIC_ADMIN_ID);
+
+      if (session?.user.role_id === process.env.NEXT_PUBLIC_USER_ID) {
+        console.log("user");
+
+        router.replace("/dashboard");
+      }
+      if (session?.user.role_id === process.env.NEXT_PUBLIC_ADMIN_ID) {
+        console.log("admin");
+
+        router.replace("/admin");
+      }
     } else if (res?.status === 401) {
       toast.error("❌ Credentials not match");
       setLoading(false);
