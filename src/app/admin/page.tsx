@@ -3,7 +3,7 @@ import { Box, Paper } from "@mui/material";
 import Link from "next/link";
 import { Suspense } from "react";
 
-const AdminPage = async () => {
+export const AdminPage = async () => {
   const get = await axiosAuth.get("/book");
   const books = get.data.data;
   console.log(books);

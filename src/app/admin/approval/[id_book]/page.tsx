@@ -3,7 +3,7 @@ import { TextField } from "@mui/material";
 import moment from "moment";
 import { Suspense } from "react";
 
-const Approval = async ({ params }: { params: { id_book: string } }) => {
+export const Approval = async ({ params }: { params: { id_book: string } }) => {
   const get = await axiosAuth.get(`/book/${params.id_book}`);
   const book = get.data;
   console.log(book);
