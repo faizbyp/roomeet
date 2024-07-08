@@ -9,6 +9,7 @@ import { signIn, getSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { useSWReg } from "@/lib/provider/SWRegProvider";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface LoginInput {
   username: string;
@@ -109,6 +110,7 @@ export default function LoginPage() {
           )}
         </div>
       </form>
+      <Link href="/register">Create Account</Link>
     </div>
   );
 }
