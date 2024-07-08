@@ -98,7 +98,7 @@ export function CardListBook({
             <p className="my-0 text-[10pt]">{status}</p>
           </div>
           <div className="flex gap-1 justify-center items-center grow">
-            {(status === "Prospective" || status === "Oncoming") && (
+            {(status === "Prospective" || status === "Oncoming" || status === "Pending") && (
               <>
                 <Link href={`/dashboard/book/${id_room}/${id_book}`}>
                   <IconButton className="btn-primary h-10 w-10">
