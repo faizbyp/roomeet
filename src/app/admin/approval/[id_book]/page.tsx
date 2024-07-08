@@ -1,12 +1,13 @@
+import ApprovalAction from "@/components/admin/ApprovalAction";
 import { axiosAuth } from "@/lib/axios";
-import { TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import moment from "moment";
 import { Suspense } from "react";
 
 export const Approval = async ({ params }: { params: { id_book: string } }) => {
   const get = await axiosAuth.get(`/book/${params.id_book}`);
   const book = get.data;
-  console.log(book);
+  console.log(params.id_book);
 
   return (
     <>
@@ -37,6 +38,8 @@ export const Approval = async ({ params }: { params: { id_book: string } }) => {
         <p>Time</p>
         <TextField label="Start Time" variant="filled" value={book.time_start} disabled />
         <TextField label="End Time" variant="filled" value={book.time_end} disabled />
+
+        <ApprovalAction id_book={params.id_book} />
       </Suspense>
     </>
   );
