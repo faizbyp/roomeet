@@ -122,7 +122,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
     try {
       const res = !isEdit
         ? await axiosAuth.post("/book", { data: payload })
-        : await axiosAuth.post(`/book/${editData.id_book}`, { data: payload });
+        : await axiosAuth.put(`/book/${editData.id_book}`, { data: payload });
       router.replace(`/dashboard/book/success/${res.data.id_book}`);
     } catch (error) {
       const errors = error as AxiosError;
