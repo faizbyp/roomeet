@@ -12,27 +12,37 @@ import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 
 interface DefaultVal {
+  book_date: Date;
+  time_start: Date;
+  time_end: Date;
+  capacity: number;
+  ruangan: string;
+  agenda: string;
+  remark: string;
   approval: string;
   reject_note: string;
-  book_date: Date;
-  agenda: string;
   id_user: string;
-  time_start: Date;
 }
 
-export default function ApprovalAction({ id_book, book_date, agenda, id_user, time_start }: any) {
+export default function ApprovalAction({ id_book, props }: any) {
+  console.log("BOOK", props);
+
   const axiosAuth = useAxiosAuth();
   const router = useRouter();
   const [reject, setReject] = useState<any>();
   const [approve, setApprove] = useState<any>();
   const form = useForm({
     defaultValues: {
+      book_date: props.book_date,
+      time_start: props.time_start,
+      time_end: props.time_end,
+      capacity: props.prtcpt_ctr,
+      ruangan: props.id_ruangan,
+      agenda: props.agenda,
+      remark: props.remark,
       approval: "",
       reject_note: "",
-      book_date: book_date,
-      agenda: agenda,
-      id_user: id_user,
-      time_start: time_start,
+      id_user: props.id_user,
     } as DefaultVal,
   });
 
@@ -45,14 +55,19 @@ export default function ApprovalAction({ id_book, book_date, agenda, id_user, ti
 
     const bookDate = new Date(values.book_date);
     const timeStart = new Date(`${format(bookDate, "yyyy-MM-dd")} ${values.time_start}`);
+    const timeEnd = new Date(`${format(bookDate, "yyyy-MM-dd")} ${values.time_end}`);
 
     const payload = {
+      book_date: format(bookDate, "Y-L-d"),
+      time_start: format(timeStart as Date, "HH:mm"),
+      time_end: format(timeEnd as Date, "HH:mm"),
+      capacity: values.capacity,
+      ruangan: values.ruangan,
+      agenda: values.agenda,
+      remark: values.remark,
       approval: values.approval,
       reject_note: values.reject_note,
-      book_date: format(bookDate, "Y-L-d"),
-      agenda: values.agenda,
       id_user: values.id_user,
-      time_start: format(timeStart as Date, "HH:mm"),
     };
     console.log(payload);
     try {
