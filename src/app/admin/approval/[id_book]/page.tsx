@@ -39,7 +39,13 @@ export const Approval = async ({ params }: { params: { id_book: string } }) => {
         <TextField label="Start Time" variant="filled" value={book.time_start} disabled />
         <TextField label="End Time" variant="filled" value={book.time_end} disabled />
 
-        <ApprovalAction id_book={params.id_book} />
+        <ApprovalAction
+          id_book={params.id_book}
+          book_date={book.book_date}
+          agenda={book.agenda}
+          id_user={book.id_user}
+          time_start={book.time_start}
+        />
       </Suspense>
     </>
   );
