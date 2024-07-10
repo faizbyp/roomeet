@@ -22,6 +22,8 @@ interface DefaultVal {
   approval: string;
   reject_note: string;
   id_user: string;
+  username: string;
+  email: string;
 }
 
 export default function ApprovalAction({ id_book, props }: any) {
@@ -44,6 +46,8 @@ export default function ApprovalAction({ id_book, props }: any) {
       approval: "",
       reject_note: "",
       id_user: props.id_user,
+      username: props.username,
+      email: props.email,
     } as DefaultVal,
   });
 
@@ -65,6 +69,8 @@ export default function ApprovalAction({ id_book, props }: any) {
       approval: values.approval,
       reject_note: values.reject_note,
       id_user: values.id_user,
+      username: values.username,
+      email: values.email,
     };
     console.log(payload);
     try {
