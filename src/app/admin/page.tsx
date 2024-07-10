@@ -7,7 +7,7 @@ import { Suspense } from "react";
 export const AdminPage = async () => {
   const get = await axiosAuth.get("/book");
   const books = get.data.data;
-  // console.log(books);
+  console.log(books[0]);
 
   return (
     <>
@@ -28,7 +28,7 @@ export const AdminPage = async () => {
                 {book.reject_note && `${book.reject_note}`}
               </p>
               <h3>{book.agenda}</h3>
-              <p>User: {book.id_user}</p>
+              <p>User: {book.username}</p>
               <p>{book.id_ruangan}</p>
               <Link href={`/admin/approval/${book.id_book}`}>Details</Link>
             </Paper>

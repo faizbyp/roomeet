@@ -18,7 +18,7 @@ export const Approval = async ({ params }: { params: { id_book: string } }) => {
         <p>
           Created by:
           <br />
-          {book.id_user}
+          {book.username}
         </p>
         <TextField
           fullWidth
