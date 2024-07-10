@@ -10,7 +10,7 @@ export const Approval = async ({ params }: { params: { id_book: string } }) => {
 
   return (
     <>
-      <p>Approval</p>
+      <p>{`Approval - ${book.approval}`}</p>
       <Suspense fallback={<p>Loading...</p>}>
         <h1>{book.agenda}</h1>
         <h2>{book.id_ruangan}</h2>
@@ -38,7 +38,9 @@ export const Approval = async ({ params }: { params: { id_book: string } }) => {
         <TextField label="Start Time" variant="filled" value={book.time_start} disabled />
         <TextField label="End Time" variant="filled" value={book.time_end} disabled />
 
-        <ApprovalAction id_book={params.id_book} props={book} />
+        {book.approval === "approved" || book.approval === "rejected" ? null : (
+          <ApprovalAction id_book={params.id_book} props={book} />
+        )}
       </Suspense>
     </>
   );
