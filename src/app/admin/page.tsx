@@ -7,7 +7,7 @@ import { Suspense } from "react";
 export const AdminPage = async () => {
   const get = await axiosAuth.get("/book");
   const books = get.data.data;
-  console.log(books);
+  // console.log(books);
 
   return (
     <>

@@ -31,6 +31,7 @@ export default function ApprovalAction({ id_book, props }: any) {
   const router = useRouter();
   const [reject, setReject] = useState<any>();
   const [approve, setApprove] = useState<any>();
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     defaultValues: {
       book_date: props.book_date,
@@ -47,11 +48,7 @@ export default function ApprovalAction({ id_book, props }: any) {
   });
 
   const submitApproval = async (values: DefaultVal) => {
-    console.log(values);
-    console.log(typeof values.time_start);
-    console.log(values.time_start);
-    console.log(typeof new Date(values.time_start));
-    console.log(new Date(values.time_start));
+    setLoading(true);
 
     const bookDate = new Date(values.book_date);
     const timeStart = new Date(`${format(bookDate, "yyyy-MM-dd")} ${values.time_start}`);
@@ -84,6 +81,7 @@ export default function ApprovalAction({ id_book, props }: any) {
         toast.error("error");
       }
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -120,7 +118,7 @@ export default function ApprovalAction({ id_book, props }: any) {
           )}
         />
         {approve && (
-          <Button type="submit" variant="contained">
+          <Button type="submit" variant="contained" disabled={loading}>
             Approve
           </Button>
         )}
@@ -136,7 +134,7 @@ export default function ApprovalAction({ id_book, props }: any) {
                 required: "This field is required",
               }}
             />
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" disabled={loading}>
               Reject
             </Button>
           </>
