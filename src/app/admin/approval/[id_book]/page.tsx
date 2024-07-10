@@ -5,8 +5,13 @@ import moment from "moment";
 import { Suspense } from "react";
 
 export const Approval = async ({ params }: { params: { id_book: string } }) => {
-  const get = await axiosAuth.get(`/book/${params.id_book}`);
-  const book = get.data;
+  let book;
+  try {
+    const get = await axiosAuth.get(`/book/${params.id_book}`);
+    book = get.data;
+  } catch (error) {
+    console.error(error);
+  }
 
   return (
     <>

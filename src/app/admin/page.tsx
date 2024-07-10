@@ -5,16 +5,20 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 export const AdminPage = async () => {
-  const get = await axiosAuth.get("/book");
-  const books = get.data.data;
-  console.log(books[0]);
+  let books;
+  try {
+    const get = await axiosAuth.get("/book");
+    books = get.data.data;
+  } catch (error) {
+    console.error(error);
+  }
 
   return (
     <>
       <h1>Admin Page</h1>
       <Box sx={{ display: "flex", gap: 8, flexDirection: "column", px: 16 }}>
         <Suspense fallback={<div>Loading...</div>}>
-          {books.map((book: any) => (
+          {books?.map((book: any) => (
             <Paper square={false} key={book.id} sx={{ px: 8, py: 6 }}>
               <p
                 className={clsx(
