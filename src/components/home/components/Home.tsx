@@ -46,20 +46,28 @@ interface RoomInfo {
 const Home = () => {
   const { data } = useSession();
 
-  const url = `/book/checkin/${data?.user.id_user}`;
-  console.log(url);
+  const ciUrl = `/book/checkin/${data?.user.id_user}`;
+  const coUrl = `/book/checkout/${data?.user.id_user}`;
   const {
     data: checkin,
-    error,
-    isLoading,
-    mutate,
-  } = useSWR(data && url, {
-    fallback: { url: [] },
+    error: ciError,
+    isLoading: ciLoading,
+    mutate: ciMutate,
+  } = useSWR(data && ciUrl, {
+    fallback: { ciUrl: [] },
+  });
+  const {
+    data: checkout,
+    error: coError,
+    isLoading: coLoading,
+    mutate: coMutate,
+  } = useSWR(data && coUrl, {
+    fallback: { coUrl: [] },
   });
 
   console.log("DATA SWR", checkin);
-  console.log(error);
-  console.log(isLoading);
+  console.log(ciError);
+  console.log(ciLoading);
 
   const handleCheckIn = async (id_user: any, id_book: any) => {
     try {
@@ -69,7 +77,22 @@ const Home = () => {
           id_book: id_book,
         },
       });
-      mutate();
+      ciMutate();
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error("Error");
+    }
+  };
+
+  const handleCheckOut = async (id_user: any, id_book: any) => {
+    try {
+      const res = await axiosAuth.patch("/book/checkout", {
+        data: {
+          id_user: id_user,
+          id_book: id_book,
+        },
+      });
+      coMutate();
       toast.success(res.data.message);
     } catch (error) {
       toast.error("Error");
@@ -100,6 +123,32 @@ const Home = () => {
                   onClick={() => handleCheckIn(data?.user.id_user, ci.id_book)}
                 >
                   Check In
+                </Button>
+              </Paper>
+            </>
+          ))}
+        </>
+      )}
+
+      {checkout?.data.length !== 0 && (
+        <>
+          <Typography sx={{ fontWeight: "bold" }}>Check Out</Typography>
+          {checkout?.data.map((co: any) => (
+            <>
+              <Paper sx={{ color: "white", px: 24, py: 16, backgroundColor: "#737373" }}>
+                <Typography variant="h2">{co.agenda}</Typography>
+                <Typography variant="h3">{co.id_ruangan}</Typography>
+                <Typography variant="h3" sx={{ fontWeight: "regular" }}>
+                  {`${co.time_start} - ${co.time_end} | ${moment(co.book_date).format(
+                    "MM/DD/YYYY"
+                  )}`}
+                </Typography>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  onClick={() => handleCheckOut(data?.user.id_user, co.id_book)}
+                >
+                  Check Out
                 </Button>
               </Paper>
             </>
