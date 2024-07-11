@@ -89,7 +89,7 @@ const palette = {
     disabled: GREY[500],
   },
   background: {
-    paper: "#fff",
+    paper: "#737373",
     default: GREY[100],
     neutral: GREY[200],
   },
@@ -114,6 +114,26 @@ const poppins = Poppins({
 const theme = createTheme({
   typography: {
     fontFamily: poppins.style.fontFamily,
+    h1: {
+      fontSize: "2rem",
+      fontWeight: "bold",
+      marginBottom: "0.5rem",
+    },
+    h2: {
+      fontSize: "1.5rem",
+      fontWeight: "bold",
+      marginBottom: "0.5rem",
+    },
+    h3: {
+      fontSize: "1.25rem",
+      fontWeight: "bold",
+      marginBottom: "0.5rem",
+    },
+    h4: {
+      fontSize: "1rem",
+      fontWeight: "bold",
+      marginBottom: "0.5rem",
+    },
   },
   palette: palette,
   spacing: 1,

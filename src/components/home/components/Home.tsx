@@ -1,7 +1,7 @@
 "use client";
 
 import DigitalClock from "./DigitalClock";
-import { Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import { Select, MenuItem, SelectChangeEvent, Paper, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { CardRooms } from "./HomeCardRoom";
 import { CardsSkeleton } from "@/common/skeletons/CardSkeleton";
@@ -48,7 +48,20 @@ const Home = () => {
     <div className="flex flex-col px-4">
       <h3>Welcome {data?.user.name}</h3>
       <DigitalClock />
-      <h4 className="mb-0">Available Room : </h4>
+
+      <h4>Check In</h4>
+      <Paper sx={{ color: "white", px: 24, py: 16 }}>
+        <Typography variant="h2">Meeting Agenda</Typography>
+        <Typography variant="h3">ROOM004</Typography>
+        <Typography variant="h3" sx={{ fontWeight: "regular" }}>
+          13.00 - 14.00 | 2024-07-12
+        </Typography>
+        <Button variant="contained" fullWidth>
+          Check In
+        </Button>
+      </Paper>
+
+      {/* <h4 className="mb-0">Available Room: </h4>
       <div className="flex items-center gap-2 mb-2">
         <Select
           value={hours}
@@ -66,7 +79,7 @@ const Home = () => {
       </div>
       <Suspense fallback={<CardsSkeleton />}>
         <CardRooms hours={hours} />
-      </Suspense>
+      </Suspense> */}
     </div>
   );
 };
