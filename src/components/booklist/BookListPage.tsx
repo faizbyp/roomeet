@@ -2,13 +2,16 @@
 
 import { useState, Suspense } from "react";
 import { CardsListBook } from "@/components/booklist/CardListBook";
-import { Select, MenuItem, useMediaQuery } from "@mui/material";
+import { Select, MenuItem } from "@mui/material";
 import { CardsListBookSkeleton } from "@/common/skeletons/CardSkeleton";
-import { TextFieldComp } from "@/common/TextField";
 import { useForm } from "react-hook-form";
+import { DatePicker } from "@mui/x-date-pickers";
+import moment from "moment";
 
 export default function BookListPage() {
   const [eventStatus, setStatus] = useState("all");
+  const [date, setDate] = useState<any>();
+  const [filter, setFilter] = useState();
 
   const { control } = useForm({
     defaultValues: {
@@ -16,10 +19,15 @@ export default function BookListPage() {
     },
   });
 
+  const handleDate = (value: any) => {
+    const d = moment(value).format("YYYY-MM-DD");
+    setDate(d);
+  };
+
   return (
     <>
       <div className="flex justify-evenly items-center m-5 ">
-        <TextFieldComp control={control} label="Search" name="search" />
+        <DatePicker label="Search Date" onChange={handleDate} />
 
         <Select
           value={eventStatus}
@@ -36,7 +44,7 @@ export default function BookListPage() {
       </div>
       <div className="h-[82vh] overflow-y-scroll rounded-xl">
         <Suspense fallback={<CardsListBookSkeleton />}>
-          <CardsListBook />
+          <CardsListBook date={date} />
         </Suspense>
       </div>
     </>

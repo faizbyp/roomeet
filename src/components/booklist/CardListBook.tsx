@@ -117,20 +117,20 @@ export function CardListBook({
   );
 }
 
-export function CardsListBook() {
+export function CardsListBook({ date }: any) {
   const { data } = useSession();
-  const url = `/book/show?id_user=${data?.user?.id_user}`;
+  const url = `/book/show?id_user=${data?.user?.id_user}&book_date=${date}`;
   const {
     data: agendas,
     error,
     isLoading,
     mutate,
-  } = useSWR(data && `/book/show?id_user=${data?.user?.id_user}`, {
+    isValidating,
+  } = useSWR(data && url, {
     suspense: true,
     fallback: {
       [url]: [],
     },
-    revalidateIfStale: true,
   });
   const agendasData: Array<CardListBookProp> = agendas
     ? agendas?.data?.map((item: AgendaDatas) => ({
@@ -144,9 +144,10 @@ export function CardsListBook() {
         id_room: item.id_room,
       }))
     : [];
-  console.log(data);
   console.log(agendas);
-  console.log(agendasData);
+  console.log(isValidating);
+  console.log("TANGGAL", date);
+
   return (
     <>
       {!isLoading &&
