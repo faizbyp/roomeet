@@ -104,7 +104,7 @@ const Home = () => {
       <h3>Welcome {data?.user.name}</h3>
       <DigitalClock />
 
-      {checkin?.data.length !== 0 && (
+      {checkin && checkin?.data.length !== 0 && (
         <>
           <Typography sx={{ fontWeight: "bold" }}>Check In</Typography>
           {checkin?.data.map((ci: any) => (
@@ -130,7 +130,7 @@ const Home = () => {
         </>
       )}
 
-      {checkout?.data.length !== 0 && (
+      {checkout && checkout?.data.length !== 0 && (
         <>
           <Typography sx={{ fontWeight: "bold" }}>Check Out</Typography>
           {checkout?.data.map((co: any) => (
