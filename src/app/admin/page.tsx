@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Paper,
@@ -108,13 +109,21 @@ const AdminPage = () => {
                   <Typography>Status: {book.approval}</Typography>
                   <Typography>{book.reject_note && `${book.reject_note}`}</Typography>
                 </Box>
-                <Typography variant="h3">{book.agenda}</Typography>
-                <Typography>{moment(book.book_date).format("YYYY-MM-DD")}</Typography>
-                <Typography>User: {book.username}</Typography>
-                <Typography sx={{ mb: 16 }}>{book.id_ruangan}</Typography>
-                <Link href={`/admin/approval/${book.id_book}`}>
-                  <Button variant="contained">Details</Button>
-                </Link>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <Typography>{book.id_ticket}</Typography>
+                    <Typography variant="h3">{book.agenda}</Typography>
+                    <Typography sx={{ mb: 16 }}>User: {book.username}</Typography>
+                    <Link href={`/admin/approval/${book.id_book}`}>
+                      <Button variant="contained">Details</Button>
+                    </Link>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography>{book.id_ruangan}</Typography>
+                    <Typography>{moment(book.book_date).format("YYYY-MM-DD")}</Typography>
+                    <Typography>{`${book.time_start} - ${book.time_end}`}</Typography>
+                  </Grid>
+                </Grid>
               </Paper>
             ))}
           </>
