@@ -57,8 +57,8 @@ export default function BookFormSingle({ editData }: { editData: any }) {
   const formState = form.formState;
 
   const [roomId, setRoomid] = useState<string>("");
-  const [endTime, setEndTime] = useState<Date | undefined>();
-  const [startTime, setStartTime] = useState<Date | undefined>();
+  const [endTime, setEndTime] = useState<Date | null | undefined>();
+  const [startTime, setStartTime] = useState<Date | null | undefined>();
   const [hour, setHour] = useState<number>(0);
   const [minute, setMinute] = useState<number>(0);
   const [available, setAvailable] = useState(false);
@@ -79,6 +79,9 @@ export default function BookFormSingle({ editData }: { editData: any }) {
         remark: editData.remark,
       });
 
+      setStartTime(form.getValues("startTime"));
+      setEndTime(form.getValues("endTime"));
+
       const tempHour =
         moment(form.getValues("endTime")).hour() - moment(form.getValues("startTime")).hour();
       const tempMinute =
@@ -89,9 +92,11 @@ export default function BookFormSingle({ editData }: { editData: any }) {
       setHour(tempHour);
       setMinute(tempMinute);
     }
+    console.log(form.getValues());
   }, [editData, form, isEdit]);
 
-  console.log(editData);
+  console.log("edit data", editData);
+  console.log("formatted edit", form.getValues());
 
   const settings = {
     speed: 500,
@@ -206,7 +211,10 @@ export default function BookFormSingle({ editData }: { editData: any }) {
                   "Booking date can't be in the past",
               },
             }}
-            onChange={() => setChanged(true)}
+            onChange={(value: any) => {
+              setChanged(true);
+              form.setValue("dateBook", value);
+            }}
           />
           <div className="flex gap-1">
             <TimePickerComp
@@ -215,6 +223,19 @@ export default function BookFormSingle({ editData }: { editData: any }) {
               control={form.control}
               rules={{
                 required: "This field is required",
+                validate: {
+                  minDate: (value: any) => {
+                    if (
+                      form.getValues("dateBook").setHours(0, 0, 0, 0) ===
+                      new Date().setHours(0, 0, 0, 0)
+                    ) {
+                      return (
+                        new Date(value).getHours() >= new Date().getHours() ||
+                        "Start time can't be in the past"
+                      );
+                    }
+                  },
+                },
               }}
               onChangeOvr={(value) => {
                 const tempStartTime = value;
@@ -345,9 +366,9 @@ export default function BookFormSingle({ editData }: { editData: any }) {
                   >
                     {(showDialog: any) => (
                       <Button
-                        onClick={() => {
-                          form.trigger();
-                          if (formState.isValid) {
+                        onClick={async () => {
+                          const valid = await form.trigger();
+                          if (valid) {
                             showDialog();
                           }
                         }}
