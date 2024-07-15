@@ -2,7 +2,7 @@
 
 import { TextFieldComp } from "@/common/TextField";
 import axios from "axios";
-import { Button, FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { Box, Button, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -124,25 +124,31 @@ export default function ApprovalAction({ id_book, props }: any) {
           )}
         />
         {approve && (
-          <Button type="submit" variant="contained" disabled={loading}>
-            Approve
-          </Button>
+          <Box sx={{ textAlign: "right" }}>
+            <Button type="submit" variant="contained" disabled={loading} sx={{ my: 8 }}>
+              Approve
+            </Button>
+          </Box>
         )}
         {reject && (
           <>
-            <TextFieldComp
-              multiline={true}
-              rows={5}
-              control={form.control}
-              name="reject_note"
-              label="Note"
-              rules={{
-                required: "This field is required",
-              }}
-            />
-            <Button type="submit" variant="contained" disabled={loading}>
-              Reject
-            </Button>
+            <Box sx={{ my: 8 }}>
+              <TextFieldComp
+                multiline={true}
+                rows={5}
+                control={form.control}
+                name="reject_note"
+                label="Note"
+                rules={{
+                  required: "This field is required",
+                }}
+              />
+              <Box sx={{ textAlign: "right" }}>
+                <Button type="submit" variant="contained" disabled={loading} sx={{ mt: 8 }}>
+                  Reject
+                </Button>
+              </Box>
+            </Box>
           </>
         )}
       </form>

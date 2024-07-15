@@ -78,6 +78,7 @@ const Home = () => {
         },
       });
       ciMutate();
+      coMutate();
       toast.success(res.data.message);
     } catch (error) {
       toast.error("Error");
@@ -118,6 +119,7 @@ const Home = () => {
                   )}`}
                 </Typography>
                 <Button
+                  color="success"
                   variant="contained"
                   fullWidth
                   onClick={() => handleCheckIn(data?.user.id_user, ci.id_book)}
@@ -144,6 +146,7 @@ const Home = () => {
                   )}`}
                 </Typography>
                 <Button
+                  color="error"
                   variant="contained"
                   fullWidth
                   onClick={() => handleCheckOut(data?.user.id_user, co.id_book)}

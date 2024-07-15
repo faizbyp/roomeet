@@ -20,6 +20,7 @@ interface CardListBookProp {
   status: string;
   id_book: string;
   id_room: string;
+  approval: string;
   mutate: any;
 }
 
@@ -33,6 +34,7 @@ interface AgendaDatas {
   time_start: string;
   time_end: string;
   book_date: string;
+  approval: string;
   status: string;
 }
 
@@ -45,6 +47,7 @@ export function CardListBook({
   room,
   id_book,
   id_room,
+  approval,
   mutate,
 }: CardListBookProp) {
   const handleDelete = async (id_book: string) => {
@@ -71,6 +74,7 @@ export function CardListBook({
           <div className="w-full grow flex items-center">
             <p className="my-0 text-ellipsis">{agendaTitle}</p>
           </div>
+          <p>{approval}</p>
           <div className="my-2">
             <div className="text-xs">
               <div className="flex">
@@ -142,6 +146,7 @@ export function CardsListBook({ date }: any) {
         status: item.status,
         id_book: item.id_book,
         id_room: item.id_room,
+        approval: item.approval,
       }))
     : [];
   console.log(agendas);

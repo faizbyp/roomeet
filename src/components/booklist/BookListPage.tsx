@@ -10,14 +10,8 @@ import moment from "moment";
 
 export default function BookListPage() {
   const [eventStatus, setStatus] = useState("all");
-  const [date, setDate] = useState<any>();
+  const [date, setDate] = useState<any>("");
   const [filter, setFilter] = useState();
-
-  const { control } = useForm({
-    defaultValues: {
-      search: "",
-    },
-  });
 
   const handleDate = (value: any) => {
     const d = moment(value).format("YYYY-MM-DD");
