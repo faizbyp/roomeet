@@ -19,7 +19,7 @@ const SuccessPage = ({ params }: { params: { id_book: string } }) => {
         <Box sx={{ marginBottom: 4 }}>
           <h1>Success!</h1>
           <p>
-            ID Booking:
+            ID Ticket:
             <br />
             {params.id_book}
           </p>
