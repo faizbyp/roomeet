@@ -9,6 +9,7 @@ import {
   MenuItem,
   Paper,
   Select,
+  Stack,
   Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -22,6 +23,7 @@ const AdminPage = () => {
   const { data } = useSession();
   const [date, setDate] = useState<any>("");
   const [status, setStatus] = useState<any>("");
+  const [dateVal, setDateVal] = useState<any>();
   const url = `/book?book_date=${date}&approval=${status}`;
   const {
     data: books,
@@ -58,12 +60,18 @@ const AdminPage = () => {
       >
         <Typography variant="h1">Admin Page</Typography>
         <Box sx={{ display: "flex", gap: 8 }}>
-          <DatePicker
-            label="Search Date"
-            onChange={handleDate}
-            // slotProps={{ field: { clearable: true } }}
-            sx={{ mb: 16 }}
-          />
+          <Stack direction="column">
+            <DatePicker value={dateVal} label="Search Date" onChange={handleDate} sx={{ mb: 16 }} />
+            <Button
+              size="small"
+              onClick={() => {
+                setDate("");
+                setDateVal(null);
+              }}
+            >
+              Reset Date
+            </Button>
+          </Stack>
           <FormControl fullWidth>
             <InputLabel>Approval Status</InputLabel>
             <Select defaultValue="" value={status} label="Approval" onChange={handleStatus}>
@@ -76,7 +84,7 @@ const AdminPage = () => {
         </Box>
       </Box>
 
-      <Box sx={{ height: "180px" }} />
+      <Box sx={{ height: "190px" }} />
 
       <Box sx={{ display: "flex", gap: 8, flexDirection: "column", px: 16 }}>
         {isLoading ? (
