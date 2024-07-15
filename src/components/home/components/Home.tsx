@@ -1,7 +1,15 @@
 "use client";
 
 import DigitalClock from "./DigitalClock";
-import { Select, MenuItem, SelectChangeEvent, Paper, Button, Typography } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+  Paper,
+  Button,
+  Typography,
+  Grid,
+} from "@mui/material";
 import { useState } from "react";
 import { CardRooms } from "./HomeCardRoom";
 import { CardsSkeleton } from "@/common/skeletons/CardSkeleton";
@@ -48,26 +56,23 @@ const Home = () => {
 
   const ciUrl = `/book/checkin/${data?.user.id_user}`;
   const coUrl = `/book/checkout/${data?.user.id_user}`;
-  const {
-    data: checkin,
-    error: ciError,
-    isLoading: ciLoading,
-    mutate: ciMutate,
-  } = useSWR(data && ciUrl, {
+  const bookUrl = `/book/show?id_user=${data?.user.id_user}&limit=2`;
+
+  const { data: checkin, mutate: ciMutate } = useSWR(data && ciUrl, {
     fallback: { ciUrl: [] },
   });
-  const {
-    data: checkout,
-    error: coError,
-    isLoading: coLoading,
-    mutate: coMutate,
-  } = useSWR(data && coUrl, {
+
+  const { data: checkout, mutate: coMutate } = useSWR(data && coUrl, {
     fallback: { coUrl: [] },
   });
 
-  console.log("DATA SWR", checkin);
-  console.log(ciError);
-  console.log(ciLoading);
+  const { data: books, mutate: bookMutate } = useSWR(data && bookUrl, {
+    fallback: { coUrl: [] },
+  });
+
+  // console.log("DATA SWR", checkin);
+  // console.log(ciError);
+  // console.log(ciLoading);
 
   const handleCheckIn = async (id_user: any, id_book: any) => {
     try {
@@ -128,6 +133,53 @@ const Home = () => {
                 </Button>
               </Paper>
             </>
+          ))}
+        </>
+      )}
+
+      {books && books?.data.length !== 0 && (
+        <>
+          <Typography sx={{ fontWeight: "bold" }}>Nearest Meeting</Typography>
+          {books?.data.map((book: any) => (
+            <Paper
+              sx={{ color: "white", px: 24, py: 16, backgroundColor: "#737373" }}
+              key={book.id_book}
+            >
+              <Grid container>
+                <Grid item xs={8}>
+                  <Typography variant="h2">{book.agenda}</Typography>
+                  <Typography variant="h3">{book.id_room}</Typography>
+                  <Typography variant="h4" sx={{ fontWeight: "regular" }}>
+                    {`${book.time_start} - ${book.time_end} | ${moment(book.book_date).format(
+                      "MM/DD/YYYY"
+                    )}`}
+                  </Typography>
+                </Grid>
+                <Grid item xs={4}>
+                  <Typography
+                    align="center"
+                    sx={[
+                      {
+                        color: "black",
+                        p: 4,
+                        borderRadius: 1,
+                      },
+                      book.approval === "pending" && {
+                        backgroundColor: "warning.main",
+                      },
+                      book.approval === "rejected" && {
+                        backgroundColor: "error.main",
+                      },
+                      book.approval === "approved" && {
+                        backgroundColor: "success.main",
+                      },
+                    ]}
+                  >
+                    {book.approval}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Paper>
           ))}
         </>
       )}

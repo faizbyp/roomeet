@@ -74,7 +74,7 @@ export function CardListBook({
           <div className="w-full grow flex items-center">
             <p className="my-0 text-ellipsis">{agendaTitle}</p>
           </div>
-          <p>{approval}</p>
+          {/* <p>{approval}</p> */}
           <div className="my-2">
             <div className="text-xs">
               <div className="flex">
@@ -90,7 +90,7 @@ export function CardListBook({
           </div>
         </div>
         <div className="flex flex-col justify-between">
-          <div
+          {/* <div
             className={clsx(
               "px-3 py-1 mb-2 mt-2 rounded-full flex items-center",
               status === "Oncoming" && "bg-green-600",
@@ -100,6 +100,16 @@ export function CardListBook({
             )}
           >
             <p className="my-0 text-[10pt]">{status}</p>
+          </div> */}
+          <div
+            className={clsx(
+              "px-3 py-1 mb-2 mt-2 rounded-full flex items-center",
+              approval === "approved" && "bg-green-600",
+              approval === "pending" && "bg-yellow-600",
+              approval === "rejected" && "bg-red-800"
+            )}
+          >
+            <p className="my-0 text-[10pt]">{approval}</p>
           </div>
           <div className="flex gap-1 justify-center items-center grow">
             {(status === "Prospective" || status === "Oncoming" || status === "Pending") && (

@@ -23,7 +23,7 @@ export default function BookListPage() {
       <div className="flex justify-evenly items-center m-5 ">
         <DatePicker label="Search Date" onChange={handleDate} />
 
-        <Select
+        {/* <Select
           value={eventStatus}
           onChange={(e) => {
             setStatus(e.target.value);
@@ -34,7 +34,7 @@ export default function BookListPage() {
           <MenuItem value="upcoming">Upcoming</MenuItem>
           <MenuItem value="prospective">Prospective</MenuItem>
           <MenuItem value="inactive">Inactive</MenuItem>
-        </Select>
+        </Select> */}
       </div>
       <div className="h-[82vh] overflow-y-scroll rounded-xl">
         <Suspense fallback={<CardsListBookSkeleton />}>
