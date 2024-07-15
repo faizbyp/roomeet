@@ -1,6 +1,6 @@
 "use client";
 
-import Wrapper from "@/common/Wrapper";
+import WrapperAdmin from "@/common/WrapperAdmin";
 import { SWRConfig } from "swr";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 
@@ -12,7 +12,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <SWRConfig value={swrConfig}>
-      <Wrapper>{children}</Wrapper>
+      <WrapperAdmin>{children}</WrapperAdmin>
     </SWRConfig>
   );
 }

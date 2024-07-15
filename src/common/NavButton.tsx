@@ -6,7 +6,7 @@ import { Box, Button, Popover } from "@mui/material";
 import { useState } from "react";
 import ButtonCard from "./ButtonCard";
 
-const NavButton = () => {
+const NavButton = ({ admin }: any) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -40,21 +40,31 @@ const NavButton = () => {
         }}
       >
         <Box className="p-3">
-          <ButtonCard
-            name="Home"
-            icon={<HomeIcon className="text-neutral-100" />}
-            link="/dashboard"
-          />
-          <ButtonCard
-            name="List Book"
-            icon={<BookmarkIcon className="text-neutral-100" />}
-            link="/dashboard/booklist"
-          />
-          <ButtonCard
-            name="New Book"
-            icon={<PlusIcon className="text-neutral-100" />}
-            link="/dashboard/book"
-          />
+          {admin ? (
+            <ButtonCard
+              name="Home"
+              icon={<HomeIcon className="text-neutral-100" />}
+              link="/admin"
+            />
+          ) : (
+            <>
+              <ButtonCard
+                name="Home"
+                icon={<HomeIcon className="text-neutral-100" />}
+                link="/dashboard"
+              />
+              <ButtonCard
+                name="List Book"
+                icon={<BookmarkIcon className="text-neutral-100" />}
+                link="/dashboard/booklist"
+              />
+              <ButtonCard
+                name="New Book"
+                icon={<PlusIcon className="text-neutral-100" />}
+                link="/dashboard/book"
+              />
+            </>
+          )}
         </Box>
       </Popover>
     </div>

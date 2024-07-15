@@ -6,7 +6,7 @@ import { BaseSyntheticEvent, useEffect, useState } from "react";
 import UserMenu from "@/common/UserMenu";
 import { usePathname } from "next/navigation";
 
-const AppBar = () => {
+const AppBar = ({ admin }: any) => {
   const mobile = useMediaQuery("(max-width:480px)");
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [anchorMenu, setAnchorMenu] = useState<HTMLButtonElement | null>(null);
@@ -57,21 +57,31 @@ const AppBar = () => {
                 }}
               >
                 <Box className="p-3">
-                  <ButtonCard
-                    name="Home"
-                    icon={<HomeIcon className="text-neutral-100" />}
-                    link="/dashboard"
-                  />
-                  <ButtonCard
-                    name="List Book"
-                    icon={<BookmarkIcon className="text-neutral-100" />}
-                    link="/dashboard/booklist"
-                  />
-                  <ButtonCard
-                    name="New Book"
-                    icon={<PlusIcon className="text-neutral-100" />}
-                    link="/dashboard/book"
-                  />
+                  {admin ? (
+                    <ButtonCard
+                      name="Home"
+                      icon={<HomeIcon className="text-neutral-100" />}
+                      link="/admin"
+                    />
+                  ) : (
+                    <>
+                      <ButtonCard
+                        name="Home"
+                        icon={<HomeIcon className="text-neutral-100" />}
+                        link="/dashboard"
+                      />
+                      <ButtonCard
+                        name="List Book"
+                        icon={<BookmarkIcon className="text-neutral-100" />}
+                        link="/dashboard/booklist"
+                      />
+                      <ButtonCard
+                        name="New Book"
+                        icon={<PlusIcon className="text-neutral-100" />}
+                        link="/dashboard/book"
+                      />
+                    </>
+                  )}
                 </Box>
               </Popover>
             </>
