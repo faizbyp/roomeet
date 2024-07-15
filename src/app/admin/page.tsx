@@ -46,26 +46,36 @@ const AdminPage = () => {
 
   return (
     <>
-      <Box sx={{ my: 16 }}>
+      <Box
+        sx={{
+          py: 16,
+          position: "fixed",
+          backgroundColor: "#262626",
+          width: "450px",
+          zIndex: "999",
+        }}
+      >
         <Typography variant="h1">Admin Page</Typography>
+        <Box sx={{ display: "flex", gap: 8 }}>
+          <DatePicker
+            label="Search Date"
+            onChange={handleDate}
+            // slotProps={{ field: { clearable: true } }}
+            sx={{ mb: 16 }}
+          />
+          <FormControl fullWidth>
+            <InputLabel>Approval Status</InputLabel>
+            <Select defaultValue="" value={status} label="Approval" onChange={handleStatus}>
+              <MenuItem value="">---</MenuItem>
+              <MenuItem value="pending">Pending</MenuItem>
+              <MenuItem value="approved">Approved</MenuItem>
+              <MenuItem value="rejected">Rejected</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
       </Box>
-      <Box sx={{ display: "flex", gap: 8 }}>
-        <DatePicker
-          label="Search Date"
-          onChange={handleDate}
-          // slotProps={{ field: { clearable: true } }}
-          sx={{ mb: 16 }}
-        />
-        <FormControl fullWidth>
-          <InputLabel>Approval Status</InputLabel>
-          <Select defaultValue="" value={status} label="Approval" onChange={handleStatus}>
-            <MenuItem value="">---</MenuItem>
-            <MenuItem value="pending">Pending</MenuItem>
-            <MenuItem value="approved">Approved</MenuItem>
-            <MenuItem value="rejected">Rejected</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+
+      <Box sx={{ height: "180px" }} />
 
       <Box sx={{ display: "flex", gap: 8, flexDirection: "column", px: 16 }}>
         {isLoading ? (
