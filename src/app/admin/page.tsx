@@ -23,7 +23,7 @@ const AdminPage = () => {
   const { data } = useSession();
   const [date, setDate] = useState<any>("");
   const [status, setStatus] = useState<any>("");
-  const [dateVal, setDateVal] = useState<any>();
+  const [dateVal, setDateVal] = useState<any>(null);
   const url = `/book?book_date=${date}&approval=${status}`;
   const {
     data: books,
@@ -37,6 +37,7 @@ const AdminPage = () => {
 
   const handleDate = (value: any) => {
     const d = moment(value).format("YYYY-MM-DD");
+    setDateVal(value);
     setDate(d);
     console.log(d);
   };
