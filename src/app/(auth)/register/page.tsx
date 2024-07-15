@@ -55,8 +55,12 @@ export default function RegisterPage() {
         setLoading(false);
       }
     } catch (error) {
-      toast.error("Server Error");
-      console.log(error);
+      if (error?.response.data) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Server Error");
+        console.log(error);
+      }
       setLoading(false);
     }
   };
@@ -71,8 +75,7 @@ export default function RegisterPage() {
         otpInput: values.otpInput,
       });
       if (res?.status === 200) {
-        // toast.success("Success");
-        // setLoading(false);
+        toast.success("Account verified");
         router.replace("/login");
       } else {
         toast.error("❌ Failed to register");
