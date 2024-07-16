@@ -13,7 +13,7 @@ const SelectComp = ({
 }: any) => {
   const labelId = `${name}-label`;
   return (
-    <FormControl {...props}>
+    <FormControl {...props} fullWidth>
       <InputLabel id={labelId}>{label}</InputLabel>
       <Controller
         name={name}
