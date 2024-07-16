@@ -136,7 +136,6 @@ export default function RegisterPage() {
                 label="Business Unit"
                 rules={{ required: "Field required" }}
                 control={control}
-                onChangeOvr={() => console.log(getValues())}
               >
                 {bizUnit &&
                   bizUnit.data.map((b: any) => (

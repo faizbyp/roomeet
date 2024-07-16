@@ -1,8 +1,18 @@
 "use client";
 
 import DatePickerComp from "@/common/DatePicker";
-import { useForm } from "react-hook-form";
-import { Button, TextField } from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
+import {
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  FormLabel,
+  InputLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+} from "@mui/material";
 import TimePickerComp from "@/common/TimePicker";
 import { CardRoom, CardRooms } from "./CardRoom";
 import { TextFieldComp } from "@/common/TextField";
@@ -20,6 +30,7 @@ import axios, { AxiosError } from "axios";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import ConfirmationDialog from "@/common/ConfirmationDialog";
+import RadioComp from "@/common/Radio";
 
 interface DefaultVal {
   dateBook: Date;
@@ -29,6 +40,7 @@ interface DefaultVal {
   ruangan: string;
   agenda: string;
   remark: string;
+  category: string;
   hour: number | undefined;
   minute: number | undefined;
 }
@@ -46,6 +58,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
       ruangan: "",
       agenda: "",
       remark: "",
+      category: "",
       hour: 0,
       minute: 0,
     } as DefaultVal,
@@ -122,6 +135,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
       time_end: format(values.endTime as Date, "HH:mm"),
       agenda: values.agenda,
       participant: values.capacity,
+      category: values.category,
       remark: values.remark,
     };
     console.log(payload);
@@ -154,12 +168,13 @@ export default function BookFormSingle({ editData }: { editData: any }) {
       "startTime",
       "endTime",
       "capacity",
+      "category",
       "hour",
       "minute",
     ]);
-    console.log(hour, minute);
+    // console.log(hour, minute);
 
-    console.log(form.getValues());
+    // console.log(form.getValues());
 
     if (valid) {
       const payload = {
@@ -167,6 +182,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
         time_start: format(values.startTime as Date, "HH:mm"),
         time_end: format(values.endTime as Date, "HH:mm"),
         participant: values.capacity,
+        category: values.category,
         id_book: editData?.id_book,
       };
       console.log(payload);
@@ -319,6 +335,16 @@ export default function BookFormSingle({ editData }: { editData: any }) {
             />
             <input {...register("ruangan", { required: "Please input" })} hidden={true} />
           </div>
+          <RadioComp
+            name="category"
+            label="Category"
+            rules={{ required: "Select category" }}
+            control={form.control}
+            onChangeOvr={() => setChanged(true)}
+          >
+            <FormControlLabel value="INT" control={<Radio />} label="Internal" />
+            <FormControlLabel value="EXT" control={<Radio />} label="External" />
+          </RadioComp>
           <Button variant="outlined" onClick={() => checkAvail(form.getValues())}>
             Check Available Room
           </Button>
