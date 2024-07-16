@@ -25,12 +25,17 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [verify, setVerify] = useState(false);
   const [email, setEmail] = useState<any>();
+  const [bizUnit, setBizUnit] = useState<any>();
+  const [div, setDiv] = useState<any>();
 
   useEffect(() => {
-    const fetchEmail = async () => {
+    const fetchData = async () => {
       try {
-        const get = await axios.get("/user/email");
-        setEmail(get.data);
+        const getEmail = await axios.get("/user/email");
+        const getUnit = await axios.get("/user/bizunit");
+
+        setEmail(getEmail.data);
+        setBizUnit(getUnit.data);
       } catch (error: any) {
         if (error?.response) {
           toast.error(error.response.data.message);
@@ -40,7 +45,8 @@ export default function RegisterPage() {
         }
       }
     };
-    fetchEmail();
+
+    fetchData();
   }, []);
 
   const { control, handleSubmit, getValues } = useForm({
@@ -55,33 +61,33 @@ export default function RegisterPage() {
 
   const register = async (values: RegisterInput) => {
     console.log(values);
-    // setLoading(true);
+    setLoading(true);
 
-    // try {
-    //   const res = await axios.post("/user/register", {
-    //     nama: values.nama,
-    //     business_unit: values.business_unit,
-    //     email: values.email,
-    //     username: values.username,
-    //     password: values.password,
-    //   });
-    //   if (res?.status === 200) {
-    //     toast.success("Verify OTP");
-    //     setVerify(true);
-    //     setLoading(false);
-    //   } else {
-    //     toast.error("❌ Failed to register");
-    //     setLoading(false);
-    //   }
-    // } catch (error: any) {
-    //   if (error?.response.data) {
-    //     toast.error(error.response.data.message);
-    //   } else {
-    //     toast.error("Server Error");
-    //     console.log(error);
-    //   }
-    //   setLoading(false);
-    // }
+    try {
+      const res = await axios.post("/user/register", {
+        nama: values.nama,
+        business_unit: values.business_unit,
+        email: values.email,
+        username: values.username,
+        password: values.password,
+      });
+      if (res?.status === 200) {
+        toast.success("Verify OTP");
+        setVerify(true);
+        setLoading(false);
+      } else {
+        toast.error("❌ Failed to register");
+        setLoading(false);
+      }
+    } catch (error: any) {
+      if (error?.response.data) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Server Error");
+        console.log(error);
+      }
+      setLoading(false);
+    }
   };
 
   const onVerif = async (values: RegisterInput) => {
@@ -132,12 +138,12 @@ export default function RegisterPage() {
                 control={control}
                 onChangeOvr={() => console.log(getValues())}
               >
-                <MenuItem value="test1">Test</MenuItem>
-                <MenuItem value="test2">Test</MenuItem>
-                <MenuItem value="test3">Test</MenuItem>
-                <MenuItem value="test4">Test</MenuItem>
-                <MenuItem value="test5">Test</MenuItem>
-                <MenuItem value="test6">Test</MenuItem>
+                {bizUnit &&
+                  bizUnit.data.map((b: any) => (
+                    <MenuItem value={b.id_unit} key={b.id_unit}>
+                      {b.biz_unit} - {b.division}
+                    </MenuItem>
+                  ))}
               </SelectComp>
             </div>
             <div className="my-4">
