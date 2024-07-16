@@ -168,14 +168,14 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
           name="dateBook"
           label="Booking Date"
           control={form.control}
-          rules={{ required: "This field is required" }}
+          rules={{ required: "Field required" }}
         />
         <div className="flex gap-1">
           <TimePickerComp
             name="startTime"
             label="Start Time"
             control={form.control}
-            rules={{ required: "This field is required" }}
+            rules={{ required: "Field required" }}
             onChangeOvr={(value) => {
               const tempStartTime = value;
               const tempHour = moment(endTime).diff(moment(value), "hours");
@@ -190,7 +190,7 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
             name="endTime"
             label="End Time"
             control={form.control}
-            rules={{ required: "This field is required" }}
+            rules={{ required: "Field required" }}
             onChangeOvr={(value) => {
               const tempEndTime = value;
               const tempHour = moment(value).diff(moment(startTime), "hours");
@@ -235,7 +235,7 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
           name="agenda"
           label="Agenda"
           rules={{
-            required: "This field is required",
+            required: "Field required",
             maxLength: {
               value: 50,
               message: "Please input less than 50 character",
@@ -261,14 +261,14 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
           name="dateBook"
           label="Booking Date"
           control={checkAvailForm.control}
-          rules={{ required: "This field is required" }}
+          rules={{ required: "Field required" }}
         />
         <div className="flex gap-1">
           <TimePickerComp
             name="startTime"
             label="Start Time"
             control={checkAvailForm.control}
-            rules={{ required: "This field is required" }}
+            rules={{ required: "Field required" }}
             onChangeOvr={(value) => {
               const tempStartTime = value;
               const tempHour = moment(endTime).diff(moment(value), "hours");
@@ -283,7 +283,7 @@ export default function BookForm({ bookpar }: { bookpar: string[] }) {
             name="endTime"
             label="End Time"
             control={checkAvailForm.control}
-            rules={{ required: "This field is required" }}
+            rules={{ required: "Field required" }}
             onChangeOvr={(value) => {
               const tempEndTime = value;
               const tempHour = moment(value).diff(moment(startTime), "hours");

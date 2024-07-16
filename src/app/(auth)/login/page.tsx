@@ -89,7 +89,7 @@ export default function LoginPage() {
             control={control}
             label="Email / Username"
             name="username"
-            rules={{ required: "this field required" }}
+            rules={{ required: "Field required" }}
           />
         </div>
         <div className="my-4">
@@ -97,7 +97,7 @@ export default function LoginPage() {
             control={control}
             label="Password"
             name="password"
-            rules={{ required: "this field required" }}
+            rules={{ required: "Field required" }}
           />
         </div>
         <div className="flex justify-end">

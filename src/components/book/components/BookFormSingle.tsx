@@ -204,7 +204,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
             label="Booking Date"
             control={form.control}
             rules={{
-              required: "This field is required",
+              required: "Field required",
               validate: {
                 minDate: (value: any) =>
                   new Date(value).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) ||
@@ -222,7 +222,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
               label="Start Time"
               control={form.control}
               rules={{
-                required: "This field is required",
+                required: "Field required",
                 validate: {
                   minDate: (value: any) => {
                     if (
@@ -253,7 +253,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
               label="End Time"
               control={form.control}
               rules={{
-                required: "This field is required",
+                required: "Field required",
               }}
               onChangeOvr={(value) => {
                 const tempEndTime = value;
@@ -338,7 +338,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
                 name="agenda"
                 label="Agenda"
                 rules={{
-                  required: "This field is required",
+                  required: "Field required",
                   maxLength: {
                     value: 50,
                     message: "Please input less than 50 character",

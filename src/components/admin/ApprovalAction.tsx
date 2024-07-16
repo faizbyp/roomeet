@@ -140,7 +140,7 @@ export default function ApprovalAction({ id_book, props }: any) {
                 name="reject_note"
                 label="Note"
                 rules={{
-                  required: "This field is required",
+                  required: "Field required",
                 }}
               />
               <Box sx={{ textAlign: "right" }}>

@@ -2,13 +2,14 @@
 
 import { PasswordWithEyes } from "@/common/PasswordWithEyes";
 import { TextFieldComp } from "@/common/TextField";
-import { useForm } from "react-hook-form";
-import { Button, CircularProgress } from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
+import { Button, CircularProgress, MenuItem, Select } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
 import Link from "next/link";
+import SelectComp from "@/common/Select";
 
 interface RegisterInput {
   nama: string;
@@ -42,7 +43,7 @@ export default function RegisterPage() {
     fetchEmail();
   }, []);
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, getValues } = useForm({
     defaultValues: {
       nama: "",
       business_unit: "",
@@ -54,33 +55,33 @@ export default function RegisterPage() {
 
   const register = async (values: RegisterInput) => {
     console.log(values);
-    setLoading(true);
+    // setLoading(true);
 
-    try {
-      const res = await axios.post("/user/register", {
-        nama: values.nama,
-        business_unit: values.business_unit,
-        email: values.email,
-        username: values.username,
-        password: values.password,
-      });
-      if (res?.status === 200) {
-        toast.success("Verify OTP");
-        setVerify(true);
-        setLoading(false);
-      } else {
-        toast.error("❌ Failed to register");
-        setLoading(false);
-      }
-    } catch (error: any) {
-      if (error?.response.data) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error("Server Error");
-        console.log(error);
-      }
-      setLoading(false);
-    }
+    // try {
+    //   const res = await axios.post("/user/register", {
+    //     nama: values.nama,
+    //     business_unit: values.business_unit,
+    //     email: values.email,
+    //     username: values.username,
+    //     password: values.password,
+    //   });
+    //   if (res?.status === 200) {
+    //     toast.success("Verify OTP");
+    //     setVerify(true);
+    //     setLoading(false);
+    //   } else {
+    //     toast.error("❌ Failed to register");
+    //     setLoading(false);
+    //   }
+    // } catch (error: any) {
+    //   if (error?.response.data) {
+    //     toast.error(error.response.data.message);
+    //   } else {
+    //     toast.error("Server Error");
+    //     console.log(error);
+    //   }
+    //   setLoading(false);
+    // }
   };
 
   const onVerif = async (values: RegisterInput) => {
@@ -120,16 +121,24 @@ export default function RegisterPage() {
                 control={control}
                 label="Name"
                 name="nama"
-                rules={{ required: "this field required" }}
+                rules={{ required: "Field required" }}
               />
             </div>
             <div className="my-4">
-              <TextFieldComp
-                control={control}
-                label="Business Unit"
+              <SelectComp
                 name="business_unit"
-                rules={{ required: "this field required" }}
-              />
+                label="Business Unit"
+                rules={{ required: "Field required" }}
+                control={control}
+                onChangeOvr={() => console.log(getValues())}
+              >
+                <MenuItem value="test1">Test</MenuItem>
+                <MenuItem value="test2">Test</MenuItem>
+                <MenuItem value="test3">Test</MenuItem>
+                <MenuItem value="test4">Test</MenuItem>
+                <MenuItem value="test5">Test</MenuItem>
+                <MenuItem value="test6">Test</MenuItem>
+              </SelectComp>
             </div>
             <div className="my-4">
               <TextFieldComp
@@ -137,7 +146,7 @@ export default function RegisterPage() {
                 label="Email"
                 name="email"
                 rules={{
-                  required: "this field required",
+                  required: "Field required",
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                     message: "invalid email address",
@@ -155,7 +164,7 @@ export default function RegisterPage() {
                 control={control}
                 label="Username"
                 name="username"
-                rules={{ required: "this field required" }}
+                rules={{ required: "Field required" }}
               />
             </div>
             <div className="my-4">
@@ -163,7 +172,7 @@ export default function RegisterPage() {
                 control={control}
                 label="Password"
                 name="password"
-                rules={{ required: "this field required" }}
+                rules={{ required: "Field required" }}
               />
             </div>
             <div className="flex justify-end">
@@ -187,7 +196,7 @@ export default function RegisterPage() {
               label="Email"
               name="email"
               key="email"
-              rules={{ required: "this field required" }}
+              rules={{ required: "Field required" }}
               readOnly
             />
           </div>
@@ -198,7 +207,7 @@ export default function RegisterPage() {
               name="otpInput"
               key="otpInput"
               rules={{
-                required: "this field required",
+                required: "Field required",
                 validate: {
                   length: (values: any) => values.length === 6 || "OTP is 6 character length",
                 },
