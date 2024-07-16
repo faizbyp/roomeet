@@ -4,7 +4,7 @@ import { PasswordWithEyes } from "@/common/PasswordWithEyes";
 import { TextFieldComp } from "@/common/TextField";
 import { useForm } from "react-hook-form";
 import { Button, CircularProgress } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
@@ -23,6 +23,24 @@ export default function RegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [verify, setVerify] = useState(false);
+  const [email, setEmail] = useState<any>();
+
+  useEffect(() => {
+    const fetchEmail = async () => {
+      try {
+        const get = await axios.get("/user/email");
+        setEmail(get.data);
+      } catch (error: any) {
+        if (error?.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("Server Error");
+          console.log(error);
+        }
+      }
+    };
+    fetchEmail();
+  }, []);
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -54,7 +72,7 @@ export default function RegisterPage() {
         toast.error("❌ Failed to register");
         setLoading(false);
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error?.response.data) {
         toast.error(error.response.data.message);
       } else {
@@ -123,6 +141,11 @@ export default function RegisterPage() {
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                     message: "invalid email address",
+                  },
+                  validate: {
+                    domain: (value: any) =>
+                      email?.data.some((em: any) => em.domain === value.split("@")[1]) ||
+                      "Domain not allowed",
                   },
                 }}
               />
