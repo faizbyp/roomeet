@@ -1,9 +1,4 @@
-import {
-  Calendar,
-  dateFnsLocalizer,
-  Views,
-  ViewsProps,
-} from "react-big-calendar";
+import { Calendar, dateFnsLocalizer, Views, ViewsProps } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import id from "date-fns/locale/id";
 import { useCallback, useMemo, useState } from "react";
@@ -25,6 +20,7 @@ const localizer = dateFnsLocalizer({
 export default function BigCalendar({ events }: { events?: any }) {
   const [date, setDate] = useState<Date>(new Date());
   const [view, setView] = useState(Views.MONTH);
+
   const { views, defaultDate, format } = useMemo(
     () => ({
       views: {
@@ -40,10 +36,9 @@ export default function BigCalendar({ events }: { events?: any }) {
     }),
     []
   );
-  const onNavigate = useCallback(
-    (newDate: Date) => setDate(newDate),
-    [setDate]
-  );
+
+  const onNavigate = useCallback((newDate: Date) => setDate(newDate), [setDate]);
+
   const onView = useCallback((newView: any) => setView(newView), [setView]);
 
   return (
@@ -61,7 +56,7 @@ export default function BigCalendar({ events }: { events?: any }) {
         onNavigate={onNavigate}
         date={date}
         formats={format}
-        events={eventMock}
+        events={events}
       />
     </div>
   );
