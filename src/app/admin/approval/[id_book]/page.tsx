@@ -7,7 +7,7 @@ import moment from "moment";
 import { Suspense, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-export const Approval = ({ params }: { params: { id_book: string } }) => {
+const Approval = ({ params }: { params: { id_book: string } }) => {
   const [book, setBook] = useState<any>();
 
   useEffect(() => {
