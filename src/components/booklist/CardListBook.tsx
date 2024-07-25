@@ -112,18 +112,19 @@ export function CardListBook({
             <p className="my-0 text-[10pt]">{approval}</p>
           </div>
           <div className="flex gap-1 justify-center items-center grow">
-            {(status === "Prospective" || status === "Oncoming" || status === "Pending") && (
+            <Link href={`/dashboard/book/${id_room}/${id_book}`}>
+              <IconButton className="btn-primary h-10 w-10">
+                <PencilSquareIcon />
+              </IconButton>
+            </Link>
+            <IconButton className="btn-primary h-10 w-10" onClick={() => handleDelete(id_book)}>
+              <XCircleIcon />
+            </IconButton>
+            {/* {(status === "Prospective" || status === "Oncoming" || status === "Pending") && (
               <>
-                <Link href={`/dashboard/book/${id_room}/${id_book}`}>
-                  <IconButton className="btn-primary h-10 w-10">
-                    <PencilSquareIcon />
-                  </IconButton>
-                </Link>
-                <IconButton className="btn-primary h-10 w-10" onClick={() => handleDelete(id_book)}>
-                  <XCircleIcon />
-                </IconButton>
+                
               </>
-            )}
+            )} */}
           </div>
         </div>
       </div>
