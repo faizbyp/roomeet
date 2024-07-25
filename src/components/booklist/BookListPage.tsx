@@ -2,7 +2,7 @@
 
 import { useState, Suspense } from "react";
 import { CardsListBook } from "@/components/booklist/CardListBook";
-import { Select, MenuItem } from "@mui/material";
+import { Select, MenuItem, Stack, Button } from "@mui/material";
 import { CardsListBookSkeleton } from "@/common/skeletons/CardSkeleton";
 import { useForm } from "react-hook-form";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -11,17 +11,31 @@ import moment from "moment";
 export default function BookListPage() {
   const [eventStatus, setStatus] = useState("all");
   const [date, setDate] = useState<any>("");
+  const [dateVal, setDateVal] = useState<any>(null);
   const [filter, setFilter] = useState();
 
   const handleDate = (value: any) => {
     const d = moment(value).format("YYYY-MM-DD");
+    setDateVal(value);
     setDate(d);
+    console.log(d);
   };
 
   return (
     <>
       <div className="flex justify-evenly items-center m-5 ">
-        <DatePicker label="Search Date" onChange={handleDate} />
+        <Stack direction="column">
+          <DatePicker value={dateVal} label="Search Date" onChange={handleDate} />
+          <Button
+            size="small"
+            onClick={() => {
+              setDate("");
+              setDateVal(null);
+            }}
+          >
+            Reset Date
+          </Button>
+        </Stack>
 
         {/* <Select
           value={eventStatus}
