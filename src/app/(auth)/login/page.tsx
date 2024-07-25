@@ -16,6 +16,14 @@ interface LoginInput {
   password: string;
 }
 
+interface Payload {
+  username: string;
+  password: string;
+  subscription: any;
+  callbackUrl: string;
+  redirect: boolean;
+}
+
 const base64ToUint8Array = (base64: any) => {
   console.log(base64);
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);
@@ -54,6 +62,16 @@ export default function LoginPage() {
       });
     }
     console.log(sub);
+    let payload: Payload = {
+      username: values.username,
+      password: values.password,
+      subscription: null,
+      callbackUrl: "/",
+      redirect: false,
+    };
+    if (sub) {
+      payload.subscription = JSON.stringify({ sub });
+    }
     const res = await signIn("credentials", {
       username: values.username,
       password: values.password,
