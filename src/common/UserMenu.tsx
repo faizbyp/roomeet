@@ -1,11 +1,4 @@
-import {
-  Menu,
-  MenuItem,
-  Box,
-  IconButton,
-  Avatar,
-  Typography,
-} from "@mui/material";
+import { Menu, MenuItem, Box, IconButton, Avatar, Typography } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 
 interface UserMenuProps {
@@ -38,13 +31,12 @@ export default function UserMenu({ anchorEl, handleClose }: UserMenuProps) {
           }}
         >
           <IconButton>
-            <Avatar>
-              {session?.user?.username?.slice(0, 2).toUpperCase()}
-            </Avatar>
+            <Avatar>{session?.user?.username?.slice(0, 2).toUpperCase()}</Avatar>
           </IconButton>
           <Typography>{session?.user?.name?.split(" ")[0]}</Typography>
         </Box>
       </MenuItem>
+      <MenuItem onClick={() => Notification.requestPermission()}>Notif Settings</MenuItem>
       <MenuItem onClick={handleLogout} sx={{ width: "10rem" }}>
         Logout
       </MenuItem>
