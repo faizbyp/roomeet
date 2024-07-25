@@ -121,7 +121,7 @@ const Home = () => {
           <Typography sx={{ fontWeight: "bold" }}>Check In</Typography>
           {checkin?.data.map((ci: any) => (
             <>
-              <Paper sx={{ color: "white", px: 24, py: 16, backgroundColor: "#737373" }}>
+              <Paper sx={{ color: "white", px: 24, py: 16, backgroundColor: "#737373", mb: 16 }}>
                 <Typography variant="h2">{ci.agenda}</Typography>
                 <Typography variant="h3">{ci.id_ruangan}</Typography>
                 <Typography variant="h3" sx={{ fontWeight: "regular" }}>
@@ -143,12 +143,39 @@ const Home = () => {
         </>
       )}
 
+      {checkout && checkout?.data.length !== 0 && (
+        <>
+          <Typography sx={{ fontWeight: "bold" }}>Check Out</Typography>
+          {checkout?.data.map((co: any) => (
+            <>
+              <Paper sx={{ color: "white", px: 24, py: 16, backgroundColor: "#737373", mb: 16 }}>
+                <Typography variant="h2">{co.agenda}</Typography>
+                <Typography variant="h3">{co.id_ruangan}</Typography>
+                <Typography variant="h3" sx={{ fontWeight: "regular" }}>
+                  {`${co.time_start} - ${co.time_end} | ${moment(co.book_date).format(
+                    "MM/DD/YYYY"
+                  )}`}
+                </Typography>
+                <Button
+                  color="error"
+                  variant="contained"
+                  fullWidth
+                  onClick={() => handleCheckOut(data?.user.id_user, co.id_book)}
+                >
+                  Check Out
+                </Button>
+              </Paper>
+            </>
+          ))}
+        </>
+      )}
+
       {books && books?.data.length !== 0 && (
         <>
           <Typography sx={{ fontWeight: "bold" }}>Nearest Meeting</Typography>
           {books?.data.map((book: any) => (
             <Paper
-              sx={{ color: "white", px: 24, py: 16, backgroundColor: "#737373" }}
+              sx={{ color: "white", px: 24, py: 16, backgroundColor: "#737373", mb: 16 }}
               key={book.id_book}
             >
               <Grid container>
@@ -186,33 +213,6 @@ const Home = () => {
                 </Grid>
               </Grid>
             </Paper>
-          ))}
-        </>
-      )}
-
-      {checkout && checkout?.data.length !== 0 && (
-        <>
-          <Typography sx={{ fontWeight: "bold" }}>Check Out</Typography>
-          {checkout?.data.map((co: any) => (
-            <>
-              <Paper sx={{ color: "white", px: 24, py: 16, backgroundColor: "#737373" }}>
-                <Typography variant="h2">{co.agenda}</Typography>
-                <Typography variant="h3">{co.id_ruangan}</Typography>
-                <Typography variant="h3" sx={{ fontWeight: "regular" }}>
-                  {`${co.time_start} - ${co.time_end} | ${moment(co.book_date).format(
-                    "MM/DD/YYYY"
-                  )}`}
-                </Typography>
-                <Button
-                  color="error"
-                  variant="contained"
-                  fullWidth
-                  onClick={() => handleCheckOut(data?.user.id_user, co.id_book)}
-                >
-                  Check Out
-                </Button>
-              </Paper>
-            </>
           ))}
         </>
       )}
