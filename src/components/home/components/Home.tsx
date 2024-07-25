@@ -10,7 +10,7 @@ import {
   Typography,
   Grid,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CardRooms } from "./HomeCardRoom";
 import { CardsSkeleton } from "@/common/skeletons/CardSkeleton";
 import { useSession } from "next-auth/react";
@@ -53,6 +53,12 @@ interface RoomInfo {
 
 const Home = () => {
   const { data } = useSession();
+
+  useEffect(() => {
+    if (Notification.permission !== "denied") {
+      Notification.requestPermission();
+    }
+  }, []);
 
   const ciUrl = `/book/checkin/${data?.user.id_user}`;
   const coUrl = `/book/checkout/${data?.user.id_user}`;
