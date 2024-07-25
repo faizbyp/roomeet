@@ -55,7 +55,7 @@ const Home = () => {
   const { data } = useSession();
 
   useEffect(() => {
-    if (Notification.permission !== "denied") {
+    if (Notification.permission !== "denied" || "granted") {
       Notification.requestPermission();
     }
   }, []);
