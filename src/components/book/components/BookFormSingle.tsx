@@ -90,6 +90,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
         ruangan: editData.id_ruangan,
         agenda: editData.agenda,
         remark: editData.remark,
+        category: editData.category,
       });
 
       setStartTime(form.getValues("startTime"));
