@@ -46,15 +46,18 @@ export default function LoginPage() {
 
   const loginUser = async (values: LoginInput) => {
     setLoading(true);
-    const sub = await SWReg?.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY),
-    });
+    let sub;
+    if (SWReg) {
+      sub = await SWReg?.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY),
+      });
+    }
     console.log(sub);
     const res = await signIn("credentials", {
       username: values.username,
       password: values.password,
-      subscription: JSON.stringify({ sub }),
+      subscription: sub && JSON.stringify({ sub }),
       callbackUrl: "/",
       redirect: false,
     });
