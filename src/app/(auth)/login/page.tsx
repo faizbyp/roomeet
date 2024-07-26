@@ -88,7 +88,7 @@ export default function LoginPage() {
         flexDirection: "column",
         gap: 32,
         justifyContent: "center",
-        height: "100svh",
+        minHeight: "100svh",
       }}
     >
       <Box>

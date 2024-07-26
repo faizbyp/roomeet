@@ -3,7 +3,15 @@
 import { PasswordWithEyes } from "@/common/PasswordWithEyes";
 import { TextFieldComp } from "@/common/TextField";
 import { Controller, useForm } from "react-hook-form";
-import { Button, CircularProgress, MenuItem, Select, Link as MuiLink } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  MenuItem,
+  Select,
+  Link as MuiLink,
+  Box,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -114,23 +122,34 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center">
-      <div className="p-5 m-2 text-center">
-        <h2>ROOMEET</h2>
-        <h3>Register</h3>
-      </div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 32,
+        justifyContent: "center",
+        minHeight: "100svh",
+        py: 16,
+      }}
+    >
+      <Box>
+        <Typography variant="h1" sx={{ color: "primary.light" }}>
+          ROOMEET
+        </Typography>
+        <Typography variant="h2">Register</Typography>
+      </Box>
       {!verify ? (
         <>
-          <form onSubmit={handleSubmit(register)} className="w-full grow">
-            <div className="my-4">
+          <Box component="form" onSubmit={handleSubmit(register)} sx={{ width: "100%" }}>
+            <Box sx={{ mb: 12 }}>
               <TextFieldComp
                 control={control}
                 label="Name"
                 name="nama"
                 rules={{ required: "Field required" }}
               />
-            </div>
-            <div className="my-4">
+            </Box>
+            <Box sx={{ mb: 12 }}>
               <SelectComp
                 name="business_unit"
                 label="Business Unit"
@@ -144,8 +163,8 @@ export default function RegisterPage() {
                     </MenuItem>
                   ))}
               </SelectComp>
-            </div>
-            <div className="my-4">
+            </Box>
+            <Box sx={{ mb: 12 }}>
               <TextFieldComp
                 control={control}
                 label="Email"
@@ -163,37 +182,39 @@ export default function RegisterPage() {
                   },
                 }}
               />
-            </div>
-            <div className="my-4">
+            </Box>
+            <Box sx={{ mb: 12 }}>
               <TextFieldComp
                 control={control}
                 label="Username"
                 name="username"
                 rules={{ required: "Field required" }}
               />
-            </div>
-            <div className="my-4">
+            </Box>
+            <Box sx={{ mb: 12 }}>
               <PasswordWithEyes
                 control={control}
                 label="Password"
                 name="password"
                 rules={{ required: "Field required" }}
               />
-            </div>
-            <div className="flex justify-end">
-              <Button type="submit" disabled={loading}>
+            </Box>
+            <Box sx={{ display: "flex", justifyContent: "end" }}>
+              <Button variant="contained" type="submit" disabled={loading}>
                 Register
               </Button>
-            </div>
-          </form>
-          <MuiLink href="/loginr" component={Link}>
-            Login
-          </MuiLink>
+            </Box>
+          </Box>
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <MuiLink href="/login" component={Link}>
+              Login
+            </MuiLink>
+          </Box>
         </>
       ) : (
-        <form onSubmit={handleSubmit(onVerif)} className="w-full grow">
-          <p>Please check OTP on your email</p>
-          <div className="my-4">
+        <Box component="form" onSubmit={handleSubmit(onVerif)} sx={{ width: "100%" }}>
+          <Typography>Please check OTP on your email</Typography>
+          <Box sx={{ mb: 12 }}>
             <TextFieldComp
               control={control}
               label="Email"
@@ -202,8 +223,8 @@ export default function RegisterPage() {
               rules={{ required: "Field required" }}
               readOnly
             />
-          </div>
-          <div className="my-4">
+          </Box>
+          <Box sx={{ mb: 12 }}>
             <TextFieldComp
               control={control}
               label="OTP Code"
@@ -216,18 +237,19 @@ export default function RegisterPage() {
                 },
               }}
             />
-          </div>
-          <div className="flex justify-end">
+          </Box>
+
+          <Box sx={{ display: "flex", justifyContent: "end" }}>
             {loading ? (
               <CircularProgress />
             ) : (
-              <Button type="submit" className="btn-primary">
+              <Button type="submit" variant="contained">
                 Verify
               </Button>
             )}
-          </div>
-        </form>
+          </Box>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }
