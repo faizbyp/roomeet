@@ -125,7 +125,10 @@ const theme = createTheme({
   components: {
     MuiButton: {
       styleOverrides: {
-        root: { minWidth: 0 },
+        root: { borderRadius: 16, textTransform: "none" },
+      },
+      defaultProps: {
+        disableElevation: true,
       },
     },
     MuiInputBase: {

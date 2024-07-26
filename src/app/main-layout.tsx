@@ -1,6 +1,6 @@
 "use client";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
-import { CssBaseline } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import theme from "./theme";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -18,14 +18,23 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             <CssBaseline />
             <html>
               <body className="text-neutral-50 line-clamp-none bg-neutral-800">
-                <div className="max-w-[480px] mx-auto bg-neutral-800 md:shadow-md min-h-screen relative">
+                <Box
+                  sx={{
+                    maxWidth: "480px",
+                    mx: "auto",
+                    px: 16,
+                    backgroundColor: "#262626",
+                    minHeight: "100svh",
+                    position: "relative",
+                  }}
+                >
                   <AppRouterCacheProvider options={{ enableCssLayer: true }}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <Toaster />
                       {children}
                     </LocalizationProvider>
                   </AppRouterCacheProvider>
-                </div>
+                </Box>
               </body>
             </html>
           </ThemeProvider>

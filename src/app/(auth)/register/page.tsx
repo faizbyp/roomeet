@@ -3,7 +3,7 @@
 import { PasswordWithEyes } from "@/common/PasswordWithEyes";
 import { TextFieldComp } from "@/common/TextField";
 import { Controller, useForm } from "react-hook-form";
-import { Button, CircularProgress, MenuItem, Select } from "@mui/material";
+import { Button, CircularProgress, MenuItem, Select, Link as MuiLink } from "@mui/material";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -181,16 +181,14 @@ export default function RegisterPage() {
               />
             </div>
             <div className="flex justify-end">
-              {loading ? (
-                <CircularProgress />
-              ) : (
-                <Button type="submit" className="btn-primary">
-                  Register
-                </Button>
-              )}
+              <Button type="submit" disabled={loading}>
+                Register
+              </Button>
             </div>
           </form>
-          <Link href="/login">Login</Link>
+          <MuiLink href="/loginr" component={Link}>
+            Login
+          </MuiLink>
         </>
       ) : (
         <form onSubmit={handleSubmit(onVerif)} className="w-full grow">

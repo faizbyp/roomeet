@@ -2,10 +2,10 @@
 import { PasswordWithEyes } from "@/common/PasswordWithEyes";
 import { TextFieldComp } from "@/common/TextField";
 import { useForm } from "react-hook-form";
-import { Button, CircularProgress } from "@mui/material";
-import { BaseSyntheticEvent, useState } from "react";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { Link as MuiLink } from "@mui/material";
+import { useState } from "react";
 import { signIn, getSession } from "next-auth/react";
-// import { ToastContainer, toast, Zoom } from "react-toastify";
 import toast from "react-hot-toast";
 import { useSWReg } from "@/lib/provider/SWRegProvider";
 import { useRouter } from "next/navigation";
@@ -82,38 +82,49 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center">
-      <div className="p-5 m-2 ">
-        <h2>ROOMEET</h2>
-      </div>
-      <form onSubmit={handleSubmit(loginUser)} className="w-full grow ">
-        <div className="my-4">
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 32,
+        justifyContent: "center",
+        height: "100svh",
+      }}
+    >
+      <Box>
+        <Typography variant="h1" sx={{ color: "primary.light" }}>
+          ROOMEET
+        </Typography>
+        <Typography variant="h2">Login</Typography>
+      </Box>
+      <Box component="form" onSubmit={handleSubmit(loginUser)} sx={{ width: "100%" }}>
+        <Box sx={{ mb: 12 }}>
           <TextFieldComp
             control={control}
             label="Email / Username"
             name="username"
             rules={{ required: "Field required" }}
           />
-        </div>
-        <div className="my-4">
+        </Box>
+        <Box sx={{ mb: 12 }}>
           <PasswordWithEyes
             control={control}
             label="Password"
             name="password"
             rules={{ required: "Field required" }}
           />
-        </div>
-        <div className="flex justify-end">
-          {loading ? (
-            <CircularProgress />
-          ) : (
-            <Button type="submit" className="btn-primary">
-              Login
-            </Button>
-          )}
-        </div>
-      </form>
-      <Link href="/register">Create Account</Link>
-    </div>
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "end" }}>
+          <Button type="submit" variant="contained" disabled={loading}>
+            {loading ? <CircularProgress /> : "Login"}
+          </Button>
+        </Box>
+      </Box>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <MuiLink href="/register" component={Link}>
+          Create Account
+        </MuiLink>
+      </Box>
+    </Box>
   );
 }

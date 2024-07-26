@@ -10,7 +10,6 @@ import { useRouter } from "next/navigation";
 import axios from "@/lib/axios";
 import Link from "next/link";
 import SelectComp from "@/common/Select";
-import { PrimaryBtn } from "@/common/CustomButton";
 
 interface RegisterInput {
   nama: string;
@@ -117,7 +116,7 @@ export default function ForgotPass() {
               />
             </div>
             <div className="flex justify-end">
-              {loading ? <CircularProgress /> : <PrimaryBtn type="submit">Send</PrimaryBtn>}
+              {loading ? <CircularProgress /> : <Button type="submit">Send</Button>}
             </div>
           </form>
           <Link href="/login">Login</Link>
