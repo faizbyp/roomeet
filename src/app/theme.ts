@@ -20,21 +20,11 @@ const GREY = {
 };
 
 const PRIMARY = {
-  lighter: "#D1E9FC",
-  light: "#76B0F1",
-  main: "#2065D1",
-  dark: "#103996",
-  darker: "#061B64",
-  contrastText: "#fff",
+  main: "#009788",
 };
 
 const SECONDARY = {
-  lighter: "#D6E4FF",
-  light: "#314E4B",
-  main: "#1B4C48",
-  dark: "#1939B7",
-  darker: "#091A7A",
-  contrastText: "#fff",
+  main: "#818285",
 };
 
 const INFO = {
@@ -65,12 +55,7 @@ const WARNING = {
 };
 
 const ERROR = {
-  lighter: "#FFE7D9",
-  light: "#FFA48D",
-  main: "#FF4842",
-  dark: "#B72136",
-  darker: "#7A0C2E",
-  contrastText: "#fff",
+  main: "#EF3E36",
 };
 
 const palette = {
