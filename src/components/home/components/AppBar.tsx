@@ -1,7 +1,20 @@
-import { useMediaQuery } from "@mui/material";
-import { Bars3Icon, HomeIcon, BookmarkIcon, PlusIcon } from "@heroicons/react/24/outline";
+import {
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  MenuList,
+  Paper,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import { Bars3Icon, PlusIcon } from "@heroicons/react/24/outline";
 import { Button, Popover, Box, Avatar, IconButton } from "@mui/material";
 import ButtonCard from "@/common/ButtonCard";
+import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from "@mui/icons-material/Home";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import AddIcon from "@mui/icons-material/Add";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { BaseSyntheticEvent, useEffect, useState } from "react";
 import UserMenu from "@/common/UserMenu";
 import { usePathname } from "next/navigation";
@@ -35,14 +48,29 @@ const AppBar = ({ admin }: any) => {
   const open = Boolean(anchorEl);
 
   return (
-    <div className="fixed w-full max-w-[480px] z-50">
-      <div className="h-10 bg-neutral-200 rounded-b-xl">
-        <div className="flex justify-between items-center px-3 h-full">
+    <Box id="APPBARRRR" sx={{ width: "100%", zIndex: "50" }}>
+      <Box
+        sx={{
+          height: "3rem",
+          bgcolor: "#fafafa",
+          borderBottomLeftRadius: 16,
+          borderBottomRightRadius: 16,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            px: 8,
+            height: "100%",
+          }}
+        >
           {!mobile && (
             <>
-              <Button className="rounded-full p-0 " disableRipple={true} onClick={handleClick}>
-                <Bars3Icon className="h-8 w-8 text-neutral-950" />
-              </Button>
+              <IconButton onClick={handleClick}>
+                <MenuIcon />
+              </IconButton>
               <Popover
                 open={open}
                 anchorEl={anchorEl}
@@ -56,44 +84,50 @@ const AppBar = ({ admin }: any) => {
                   horizontal: "left",
                 }}
               >
-                <Box className="p-3">
-                  {admin ? (
-                    <ButtonCard
-                      name="Home"
-                      icon={<HomeIcon className="text-neutral-100" />}
-                      link="/admin"
-                    />
-                  ) : (
-                    <>
-                      <ButtonCard
-                        name="Home"
-                        icon={<HomeIcon className="text-neutral-100" />}
-                        link="/dashboard"
-                      />
-                      <ButtonCard
-                        name="List Book"
-                        icon={<BookmarkIcon className="text-neutral-100" />}
-                        link="/dashboard/booklist"
-                      />
-                      <ButtonCard
-                        name="New Book"
-                        icon={<PlusIcon className="text-neutral-100" />}
-                        link="/dashboard/book"
-                      />
-                    </>
-                  )}
-                </Box>
+                <Paper>
+                  <MenuList>
+                    {admin ? (
+                      <MenuItem href="/admin">
+                        <ListItemIcon>
+                          <HomeIcon />
+                        </ListItemIcon>
+                        <ListItemText>Home</ListItemText>
+                      </MenuItem>
+                    ) : (
+                      <>
+                        <MenuItem href="/dashboard">
+                          <ListItemIcon>
+                            <HomeIcon />
+                          </ListItemIcon>
+                          <ListItemText>Home</ListItemText>
+                        </MenuItem>
+                        <MenuItem href="/dashboard/booklist">
+                          <ListItemIcon>
+                            <BookmarkIcon />
+                          </ListItemIcon>
+                          <ListItemText>List Book</ListItemText>
+                        </MenuItem>
+                        <MenuItem href="/dashboard/book">
+                          <ListItemIcon>
+                            <AddIcon />
+                          </ListItemIcon>
+                          <ListItemText>New Book</ListItemText>
+                        </MenuItem>
+                      </>
+                    )}
+                  </MenuList>
+                </Paper>
               </Popover>
             </>
           )}
-          <p className="font-semibold grow md:text-center text-neutral-900">ROOMEET</p>
+          <Typography sx={{ color: "primary.main" }}>ROOMEET</Typography>
           <IconButton className="p-0" onClick={handleUserMenu}>
-            <Avatar className="h-8 w-8 bg-neutral-600 rounded-full" />
+            <Avatar sx={{ width: 32, height: 32 }} />
           </IconButton>
           <UserMenu anchorEl={anchorMenu} handleClose={handleMenuClose} />
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

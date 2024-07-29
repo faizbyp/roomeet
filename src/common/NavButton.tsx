@@ -1,8 +1,21 @@
 "use client";
 
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { HomeIcon, BookmarkIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { Box, Button, Popover } from "@mui/material";
+import {
+  Box,
+  Button,
+  Fab,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  MenuList,
+  Paper,
+  Popover,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+
+import HomeIcon from "@mui/icons-material/Home";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import ButtonCard from "./ButtonCard";
 
@@ -20,12 +33,9 @@ const NavButton = ({ admin }: any) => {
 
   return (
     <div className="fixed bottom-0 right-0 p-5 ">
-      <Button
-        className="h-12 w-12 bg-neutral-500 rounded-full hover:bg-neutral-400"
-        onClick={(e) => handleClick(e)}
-      >
-        <PlusCircleIcon className="text-neutral-200" />
-      </Button>
+      <Fab color="primary" aria-label="add" onClick={(e) => handleClick(e)}>
+        <MenuIcon />
+      </Fab>
       <Popover
         open={open}
         anchorEl={anchorEl}
@@ -39,33 +49,39 @@ const NavButton = ({ admin }: any) => {
           horizontal: "center",
         }}
       >
-        <Box className="p-3">
-          {admin ? (
-            <ButtonCard
-              name="Home"
-              icon={<HomeIcon className="text-neutral-100" />}
-              link="/admin"
-            />
-          ) : (
-            <>
-              <ButtonCard
-                name="Home"
-                icon={<HomeIcon className="text-neutral-100" />}
-                link="/dashboard"
-              />
-              <ButtonCard
-                name="List Book"
-                icon={<BookmarkIcon className="text-neutral-100" />}
-                link="/dashboard/booklist"
-              />
-              <ButtonCard
-                name="New Book"
-                icon={<PlusIcon className="text-neutral-100" />}
-                link="/dashboard/book"
-              />
-            </>
-          )}
-        </Box>
+        <Paper>
+          <MenuList>
+            {admin ? (
+              <MenuItem href="/admin">
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText>Home</ListItemText>
+              </MenuItem>
+            ) : (
+              <>
+                <MenuItem href="/dashboard">
+                  <ListItemIcon>
+                    <HomeIcon />
+                  </ListItemIcon>
+                  <ListItemText>Home</ListItemText>
+                </MenuItem>
+                <MenuItem href="/dashboard/booklist">
+                  <ListItemIcon>
+                    <BookmarkIcon />
+                  </ListItemIcon>
+                  <ListItemText>List Book</ListItemText>
+                </MenuItem>
+                <MenuItem href="/dashboard/book">
+                  <ListItemIcon>
+                    <AddIcon />
+                  </ListItemIcon>
+                  <ListItemText>New Book</ListItemText>
+                </MenuItem>
+              </>
+            )}
+          </MenuList>
+        </Paper>
       </Popover>
     </div>
   );
