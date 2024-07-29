@@ -18,9 +18,11 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import ButtonCard from "./ButtonCard";
+import { useRouter } from "next/navigation";
 
 const NavButton = ({ admin }: any) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const router = useRouter();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -52,7 +54,7 @@ const NavButton = ({ admin }: any) => {
         <Paper>
           <MenuList>
             {admin ? (
-              <MenuItem component="a" href="/admin">
+              <MenuItem onClick={() => router.push("/admin")}>
                 <ListItemIcon>
                   <HomeIcon />
                 </ListItemIcon>
@@ -60,19 +62,19 @@ const NavButton = ({ admin }: any) => {
               </MenuItem>
             ) : (
               <>
-                <MenuItem component="a" href="/dashboard">
+                <MenuItem onClick={() => router.push("/dashboard")}>
                   <ListItemIcon>
                     <HomeIcon />
                   </ListItemIcon>
                   <ListItemText>Home</ListItemText>
                 </MenuItem>
-                <MenuItem component="a" href="/dashboard/booklist">
+                <MenuItem onClick={() => router.push("/dashboard/booklist")}>
                   <ListItemIcon>
                     <BookmarkIcon />
                   </ListItemIcon>
                   <ListItemText>List Book</ListItemText>
                 </MenuItem>
-                <MenuItem component="a" href="/dashboard/book">
+                <MenuItem onClick={() => router.push("/dashboard/book")}>
                   <ListItemIcon>
                     <AddIcon />
                   </ListItemIcon>

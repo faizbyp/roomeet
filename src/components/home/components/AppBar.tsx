@@ -17,10 +17,11 @@ import AddIcon from "@mui/icons-material/Add";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { BaseSyntheticEvent, useEffect, useState } from "react";
 import UserMenu from "@/common/UserMenu";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const AppBar = ({ admin }: any) => {
   const mobile = useMediaQuery("(max-width:480px)");
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [anchorMenu, setAnchorMenu] = useState<HTMLButtonElement | null>(null);
   const pathname = usePathname();
@@ -87,7 +88,7 @@ const AppBar = ({ admin }: any) => {
                 <Paper>
                   <MenuList>
                     {admin ? (
-                      <MenuItem component="a" href="/admin">
+                      <MenuItem onClick={() => router.push("/admin")}>
                         <ListItemIcon>
                           <HomeIcon />
                         </ListItemIcon>
@@ -95,19 +96,19 @@ const AppBar = ({ admin }: any) => {
                       </MenuItem>
                     ) : (
                       <>
-                        <MenuItem component="a" href="/dashboard">
+                        <MenuItem onClick={() => router.push("/dashboard")}>
                           <ListItemIcon>
                             <HomeIcon />
                           </ListItemIcon>
                           <ListItemText>Home</ListItemText>
                         </MenuItem>
-                        <MenuItem component="a" href="/dashboard/booklist">
+                        <MenuItem onClick={() => router.push("/dashboard/booklist")}>
                           <ListItemIcon>
                             <BookmarkIcon />
                           </ListItemIcon>
                           <ListItemText>List Book</ListItemText>
                         </MenuItem>
-                        <MenuItem component="a" href="/dashboard/book">
+                        <MenuItem onClick={() => router.push("/dashboard/book")}>
                           <ListItemIcon>
                             <AddIcon />
                           </ListItemIcon>
