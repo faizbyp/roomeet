@@ -22,7 +22,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                   sx={{
                     maxWidth: "480px",
                     mx: "auto",
-                    px: 16,
+                    px: 8,
                     minHeight: "100svh",
                     position: "relative",
                   }}

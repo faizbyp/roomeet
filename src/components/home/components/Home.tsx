@@ -113,7 +113,7 @@ const Home = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", px: 4 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", px: 24 }}>
       <Box sx={{ my: 16 }}>
         <Typography variant="h1" sx={{ color: "primary.main" }}>
           Welcome!{" "}
