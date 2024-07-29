@@ -23,6 +23,7 @@ const SuccessPage = ({ params }: { params: { id_book: string } }) => {
             <br />
             {params.id_book}
           </p>
+          <p>Booking status set to pending</p>
         </Box>
         <Link href="/dashboard" passHref>
           <Button variant="contained">Back to dashboard</Button>
