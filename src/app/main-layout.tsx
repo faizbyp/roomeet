@@ -11,13 +11,13 @@ import { Toaster } from "react-hot-toast";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
-    <AuthProvider>
-      <SWRegProvider>
-        <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <html>
-              <body style={{ backgroundColor: "#202020", color: "#fafafa" }}>
+    <html>
+      <body style={{ backgroundColor: "#202020", color: "#fafafa" }}>
+        <AuthProvider>
+          <SWRegProvider>
+            <StyledEngineProvider injectFirst>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
                 <Box
                   sx={{
                     maxWidth: "480px",
@@ -34,11 +34,11 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                     </LocalizationProvider>
                   </AppRouterCacheProvider>
                 </Box>
-              </body>
-            </html>
-          </ThemeProvider>
-        </StyledEngineProvider>
-      </SWRegProvider>
-    </AuthProvider>
+              </ThemeProvider>
+            </StyledEngineProvider>
+          </SWRegProvider>
+        </AuthProvider>
+      </body>
+    </html>
   );
 }
