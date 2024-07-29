@@ -46,12 +46,13 @@ interface DefaultVal {
 }
 
 export default function BookFormSingle({ editData }: { editData: any }) {
+  const now = new Date();
   const router = useRouter();
   const { data } = useSession();
   const axiosAuth = useAxiosAuth();
   const form = useForm({
     defaultValues: {
-      dateBook: new Date(),
+      dateBook: now,
       startTime: null,
       endTime: null,
       capacity: 0,
@@ -224,8 +225,14 @@ export default function BookFormSingle({ editData }: { editData: any }) {
               required: "Field required",
               validate: {
                 minDate: (value: any) =>
-                  new Date(value).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) ||
+                  new Date(value).setHours(0, 0, 0, 0) >= now.setHours(0, 0, 0, 0) ||
                   "Booking date can't be in the past",
+                max30Days: (value: any) => {
+                  const diffDays = moment(value).diff(moment(), "days");
+                  if (diffDays > 30) {
+                    return "Date must be within 30 days from today";
+                  }
+                },
               },
             }}
             onChange={(value: any) => {
@@ -243,11 +250,10 @@ export default function BookFormSingle({ editData }: { editData: any }) {
                 validate: {
                   minDate: (value: any) => {
                     if (
-                      form.getValues("dateBook").setHours(0, 0, 0, 0) ===
-                      new Date().setHours(0, 0, 0, 0)
+                      form.getValues("dateBook").setHours(0, 0, 0, 0) === now.setHours(0, 0, 0, 0)
                     ) {
                       return (
-                        new Date(value).getHours() >= new Date().getHours() ||
+                        new Date(value).getHours() >= now.getHours() ||
                         "Start time can't be in the past"
                       );
                     }
