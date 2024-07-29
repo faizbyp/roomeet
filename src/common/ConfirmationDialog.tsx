@@ -8,7 +8,15 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-function ConfirmationDialog({ title, desc, action, response, children }: any) {
+function ConfirmationDialog({
+  title,
+  desc,
+  action,
+  response,
+  color = "primary",
+  type = "button",
+  children,
+}: any) {
   const [open, setOpen] = useState(false);
 
   const showDialog = () => {
@@ -39,10 +47,10 @@ function ConfirmationDialog({ title, desc, action, response, children }: any) {
             <DialogContentText id="alert-dialog-description">{desc}</DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button variant="outlined" onClick={hideDialog} color="primary">
+            <Button variant="outlined" onClick={hideDialog} color="secondary">
               Cancel
             </Button>
-            <Button type="submit" variant="contained" onClick={confirmRequest} color="primary">
+            <Button type={type} variant="contained" onClick={confirmRequest} color={color}>
               {action ? action : "Confirm"}
             </Button>
           </DialogActions>

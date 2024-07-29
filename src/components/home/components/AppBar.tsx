@@ -48,7 +48,7 @@ const AppBar = ({ admin }: any) => {
   const open = Boolean(anchorEl);
 
   return (
-    <Box id="APPBARRRR" sx={{ width: "100%", zIndex: "50" }}>
+    <Box sx={{ width: "100%", zIndex: "50" }}>
       <Box
         sx={{
           height: "3rem",
@@ -87,7 +87,7 @@ const AppBar = ({ admin }: any) => {
                 <Paper>
                   <MenuList>
                     {admin ? (
-                      <MenuItem href="/admin">
+                      <MenuItem component="a" href="/admin">
                         <ListItemIcon>
                           <HomeIcon />
                         </ListItemIcon>
@@ -95,19 +95,19 @@ const AppBar = ({ admin }: any) => {
                       </MenuItem>
                     ) : (
                       <>
-                        <MenuItem href="/dashboard">
+                        <MenuItem component="a" href="/dashboard">
                           <ListItemIcon>
                             <HomeIcon />
                           </ListItemIcon>
                           <ListItemText>Home</ListItemText>
                         </MenuItem>
-                        <MenuItem href="/dashboard/booklist">
+                        <MenuItem component="a" href="/dashboard/booklist">
                           <ListItemIcon>
                             <BookmarkIcon />
                           </ListItemIcon>
                           <ListItemText>List Book</ListItemText>
                         </MenuItem>
-                        <MenuItem href="/dashboard/book">
+                        <MenuItem component="a" href="/dashboard/book">
                           <ListItemIcon>
                             <AddIcon />
                           </ListItemIcon>

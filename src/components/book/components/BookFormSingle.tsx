@@ -390,6 +390,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
                     desc="Are you sure you want to submit?"
                     action="Submit"
                     response={handleSubmit(onSubmit)}
+                    type="submit"
                   >
                     {(showDialog: any) => (
                       <Button

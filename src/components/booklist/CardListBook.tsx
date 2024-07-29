@@ -10,6 +10,7 @@ import Link from "next/link";
 import { axiosAuth } from "@/lib/axios";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import ConfirmationDialog from "@/common/ConfirmationDialog";
 
 interface CardListBookProp {
   agendaTitle: string;
@@ -117,9 +118,20 @@ export function CardListBook({
                 <PencilSquareIcon />
               </IconButton>
             </Link>
-            <IconButton className="btn-primary h-10 w-10" onClick={() => handleDelete(id_book)}>
-              <XCircleIcon />
-            </IconButton>
+            <ConfirmationDialog
+              title="Submit Book"
+              desc="Are you sure you want to delete?"
+              action="Delete"
+              response={() => handleDelete(id_book)}
+              type="button"
+              color="error"
+            >
+              {(showDialog: any) => (
+                <IconButton className="btn-primary h-10 w-10" onClick={showDialog}>
+                  <XCircleIcon />
+                </IconButton>
+              )}
+            </ConfirmationDialog>
             {/* {(status === "Prospective" || status === "Oncoming" || status === "Pending") && (
               <>
                 

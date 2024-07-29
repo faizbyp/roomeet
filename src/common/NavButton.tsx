@@ -52,7 +52,7 @@ const NavButton = ({ admin }: any) => {
         <Paper>
           <MenuList>
             {admin ? (
-              <MenuItem href="/admin">
+              <MenuItem component="a" href="/admin">
                 <ListItemIcon>
                   <HomeIcon />
                 </ListItemIcon>
@@ -60,19 +60,19 @@ const NavButton = ({ admin }: any) => {
               </MenuItem>
             ) : (
               <>
-                <MenuItem href="/dashboard">
+                <MenuItem component="a" href="/dashboard">
                   <ListItemIcon>
                     <HomeIcon />
                   </ListItemIcon>
                   <ListItemText>Home</ListItemText>
                 </MenuItem>
-                <MenuItem href="/dashboard/booklist">
+                <MenuItem component="a" href="/dashboard/booklist">
                   <ListItemIcon>
                     <BookmarkIcon />
                   </ListItemIcon>
                   <ListItemText>List Book</ListItemText>
                 </MenuItem>
-                <MenuItem href="/dashboard/book">
+                <MenuItem component="a" href="/dashboard/book">
                   <ListItemIcon>
                     <AddIcon />
                   </ListItemIcon>
