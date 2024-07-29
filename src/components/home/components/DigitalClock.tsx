@@ -1,7 +1,8 @@
 "use client";
-import { Skeleton } from "@mui/material";
+import { Box, Skeleton, Typography } from "@mui/material";
 import * as date from "date-fns";
 import { useState, useEffect } from "react";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 export default function DigitalClock() {
   const rightNow = new Date();
@@ -11,10 +12,6 @@ export default function DigitalClock() {
   const [dateNow, setDate] = useState<any>("");
 
   useEffect(() => {
-    // setHour(date.format(rightNow, "HH"));
-    // setMinute(date.format(rightNow, "mm"));
-    // setSecond(date.format(rightNow, "ss"));
-    // setDate(date.format(rightNow, "eeee, do MMMM yyyy"));
     const dateSet = setInterval(() => {
       setHour(date.format(rightNow, "HH"));
       setMinute(date.format(rightNow, "mm"));
@@ -28,36 +25,30 @@ export default function DigitalClock() {
   }, [hour, minute, second]);
 
   return (
-    <div className="flex flex-col my-2">
-      <div className="px-4 md:px-10 flex items-center">
-        <div className="rounded-full w-4 h-4 mx-2 bg-neutral-50"></div>
+    <Box sx={{ my: 16 }}>
+      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", px: 4 }}>
         {dateNow ? (
-          <p className="">{dateNow}</p>
+          <Typography paragraph sx={{ m: 0, display: "flex", alignItems: "center" }}>
+            {/* <CalendarTodayIcon sx={{ mr: 8 }} /> */}
+            {dateNow}
+          </Typography>
         ) : (
-          <Skeleton variant="rounded" width={216} height={48} className="bg-neutral-600" />
+          <Skeleton variant="rounded" width={216} height={48} sx={{ bgcolor: "grey.700" }} />
         )}
-      </div>
-      <div className="flex gap-4 w-full justify-center">
+      </Box>
+      <Box sx={{ display: "flex", gap: 4, width: "100%", justifyContent: "center" }}>
         {hour ? (
-          <p className="text-[64pt] text-center text-neutral-50 w-32 my-0">
-            {hour}
-          </p>
+          <Typography sx={{ fontSize: "64pt", textAlign: "center" }}>{hour}</Typography>
         ) : (
-          <Skeleton variant="rounded" width={96} height={96} className="bg-neutral-600 my-8" />
+          <Skeleton variant="rounded" width={96} height={96} sx={{ bgcolor: "grey.700", my: 8 }} />
         )}
         <p className="text-[64pt] text-center text-neutral-50 my-0">:</p>
         {minute ? (
-          <p className="text-[64pt] text-center text-neutral-50 w-32 my-0">
-            {minute}
-          </p>
+          <Typography sx={{ fontSize: "64pt", textAlign: "center" }}>{minute}</Typography>
         ) : (
-          <Skeleton variant="rounded" width={96} height={96} className="bg-neutral-600 my-8" />
+          <Skeleton variant="rounded" width={96} height={96} sx={{ bgcolor: "grey.700", my: 8 }} />
         )}
-        {/* <p className="text-[64pt] text-center text-neutral-50 my-0">:</p>
-        <p className="text-[64pt] text-center text-neutral-50 w-32 my-0">
-          {second}
-        </p> */}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }

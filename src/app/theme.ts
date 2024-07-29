@@ -7,16 +7,16 @@ import { alpha } from "@mui/material/styles";
 
 // SETUP COLORS
 const GREY = {
-  0: "#FFFFFF",
-  100: "#F9FAFB",
-  200: "#F4F6F8",
-  300: "#DFE3E8",
-  400: "#C4CDD5",
-  500: "#919EAB",
-  600: "#637381",
-  700: "#454F5B",
-  800: "#212B36",
-  900: "#161C24",
+  0: "#cfcfcf",
+  100: "#b7b7b7",
+  200: "#a1a1a1",
+  300: "#8a8a8a",
+  400: "#757575",
+  500: "#606060",
+  600: "#4c4c4c",
+  700: "#383838",
+  800: "#262626",
+  900: "#202020",
 };
 
 const PRIMARY = {
@@ -77,6 +77,7 @@ const palette = {
     paper: "white",
     default: GREY[100],
     neutral: GREY[200],
+    card: GREY[700],
   },
   action: {
     active: GREY[600],

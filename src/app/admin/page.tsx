@@ -54,7 +54,7 @@ const AdminPage = () => {
         sx={{
           py: 16,
           position: "fixed",
-          backgroundColor: "#262626",
+          backgroundColor: "#202020",
           width: "450px",
           zIndex: "999",
         }}

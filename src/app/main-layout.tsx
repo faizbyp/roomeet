@@ -17,13 +17,12 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <html>
-              <body className="text-neutral-50 line-clamp-none bg-neutral-800">
+              <body style={{ backgroundColor: "#202020", color: "#fafafa" }}>
                 <Box
                   sx={{
                     maxWidth: "480px",
                     mx: "auto",
                     px: 16,
-                    backgroundColor: "#262626",
                     minHeight: "100svh",
                     position: "relative",
                   }}

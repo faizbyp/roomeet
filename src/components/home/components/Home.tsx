@@ -9,6 +9,7 @@ import {
   Button,
   Typography,
   Grid,
+  Box,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { CardRooms } from "./HomeCardRoom";
@@ -112,32 +113,39 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col px-4">
-      <h3>Welcome {data?.user.name}</h3>
+    <Box sx={{ display: "flex", flexDirection: "column", px: 4 }}>
+      <Box sx={{ my: 16 }}>
+        <Typography variant="h1" sx={{ color: "primary.main" }}>
+          Welcome!{" "}
+          <Box component="span" sx={{ color: "white" }}>
+            {data?.user.name}
+          </Box>
+        </Typography>
+      </Box>
       <DigitalClock />
 
       {checkin && checkin?.data.length !== 0 && (
         <>
-          <Typography sx={{ fontWeight: "bold" }}>Check In</Typography>
+          <Typography sx={{ fontWeight: "bold", mb: 16, color: "primary.light" }}>
+            Check In
+          </Typography>
+
           {checkin?.data.map((ci: any) => (
             <>
-              <Paper sx={{ color: "white", px: 24, py: 16, backgroundColor: "#737373", mb: 16 }}>
+              <Box
+                sx={{ px: 24, py: 16, backgroundColor: "background.card", my: 16, borderRadius: 4 }}
+              >
                 <Typography variant="h2">{ci.agenda}</Typography>
                 <Typography variant="h3">{ci.id_ruangan}</Typography>
                 <Typography variant="h3" sx={{ fontWeight: "regular" }}>
                   {`${ci.time_start} - ${ci.time_end} | ${moment(ci.book_date).format(
-                    "MM/DD/YYYY"
+                    "DD/MM/YYYY"
                   )}`}
                 </Typography>
-                <Button
-                  color="success"
-                  variant="contained"
-                  fullWidth
-                  onClick={() => handleCheckIn(data?.user.id_user, ci.id_book)}
-                >
+                <Button variant="contained" fullWidth>
                   Check In
                 </Button>
-              </Paper>
+              </Box>
             </>
           ))}
         </>
@@ -145,26 +153,25 @@ const Home = () => {
 
       {checkout && checkout?.data.length !== 0 && (
         <>
-          <Typography sx={{ fontWeight: "bold" }}>Check Out</Typography>
+          <Typography sx={{ fontWeight: "bold", my: 16, color: "primary.light" }}>
+            Check Out
+          </Typography>
           {checkout?.data.map((co: any) => (
             <>
-              <Paper sx={{ color: "white", px: 24, py: 16, backgroundColor: "#737373", mb: 16 }}>
+              <Box
+                sx={{ px: 24, py: 16, backgroundColor: "background.card", mb: 16, borderRadius: 4 }}
+              >
                 <Typography variant="h2">{co.agenda}</Typography>
                 <Typography variant="h3">{co.id_ruangan}</Typography>
                 <Typography variant="h3" sx={{ fontWeight: "regular" }}>
                   {`${co.time_start} - ${co.time_end} | ${moment(co.book_date).format(
-                    "MM/DD/YYYY"
+                    "DD/MM/YYYY"
                   )}`}
                 </Typography>
-                <Button
-                  color="error"
-                  variant="contained"
-                  fullWidth
-                  onClick={() => handleCheckOut(data?.user.id_user, co.id_book)}
-                >
+                <Button variant="contained" fullWidth>
                   Check Out
                 </Button>
-              </Paper>
+              </Box>
             </>
           ))}
         </>
@@ -172,10 +179,12 @@ const Home = () => {
 
       {books && books?.data.length !== 0 && (
         <>
-          <Typography sx={{ fontWeight: "bold" }}>Nearest Meeting</Typography>
+          <Typography sx={{ fontWeight: "bold", my: 16, color: "primary.light" }}>
+            Nearest Meeting
+          </Typography>
           {books?.data.map((book: any) => (
-            <Paper
-              sx={{ color: "white", px: 24, py: 16, backgroundColor: "#737373", mb: 16 }}
+            <Box
+              sx={{ px: 24, py: 16, backgroundColor: "background.card", mb: 16, borderRadius: 4 }}
               key={book.id_book}
             >
               <Grid container>
@@ -184,7 +193,7 @@ const Home = () => {
                   <Typography variant="h3">{book.id_room}</Typography>
                   <Typography variant="h4" sx={{ fontWeight: "regular" }}>
                     {`${book.time_start} - ${book.time_end} | ${moment(book.book_date).format(
-                      "MM/DD/YYYY"
+                      "DD/MM/YYYY"
                     )}`}
                   </Typography>
                 </Grid>
@@ -194,8 +203,7 @@ const Home = () => {
                     sx={[
                       {
                         color: "black",
-                        p: 4,
-                        borderRadius: 1,
+                        borderRadius: 2,
                       },
                       book.approval === "pending" && {
                         backgroundColor: "warning.main",
@@ -212,31 +220,11 @@ const Home = () => {
                   </Typography>
                 </Grid>
               </Grid>
-            </Paper>
+            </Box>
           ))}
         </>
       )}
-
-      {/* <h4 className="mb-0">Available Room: </h4>
-      <div className="flex items-center gap-2 mb-2">
-        <Select
-          value={hours}
-          onChange={(e: SelectChangeEvent) => {
-            setHours(e.target.value as string);
-          }}
-        >
-          {hoursOpt.map((item) => (
-            <MenuItem key={`${item.key}-${item.value}`} value={item.key}>
-              {item.value}
-            </MenuItem>
-          ))}
-        </Select>
-        <h3>Hours</h3>
-      </div>
-      <Suspense fallback={<CardsSkeleton />}>
-        <CardRooms hours={hours} />
-      </Suspense> */}
-    </div>
+    </Box>
   );
 };
 
