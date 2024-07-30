@@ -3,6 +3,7 @@
 import DatePickerComp from "@/common/DatePicker";
 import { Controller, useForm } from "react-hook-form";
 import {
+  Box,
   Button,
   FormControl,
   FormControlLabel,
@@ -12,6 +13,7 @@ import {
   Radio,
   RadioGroup,
   TextField,
+  Typography,
 } from "@mui/material";
 import TimePickerComp from "@/common/TimePicker";
 import { CardRoom, CardRooms } from "./CardRoom";
@@ -46,13 +48,12 @@ interface DefaultVal {
 }
 
 export default function BookFormSingle({ editData }: { editData: any }) {
-  const now = new Date();
   const router = useRouter();
   const { data } = useSession();
   const axiosAuth = useAxiosAuth();
   const form = useForm({
     defaultValues: {
-      dateBook: now,
+      dateBook: new Date(),
       startTime: null,
       endTime: null,
       capacity: 0,
@@ -97,12 +98,19 @@ export default function BookFormSingle({ editData }: { editData: any }) {
       setStartTime(form.getValues("startTime"));
       setEndTime(form.getValues("endTime"));
 
-      const tempHour =
-        moment(form.getValues("endTime")).hour() - moment(form.getValues("startTime")).hour();
+      // const tempHour =
+      //   moment(form.getValues("endTime")).hour() - moment(form.getValues("startTime")).hour();
+      // const tempMinute =
+      //   (moment(form.getValues("endTime")).minute() -
+      //     moment(form.getValues("startTime")).minute()) %
+      //   60;
+
+      const tempHour = moment(form.getValues("endTime")).diff(
+        moment(form.getValues("startTime")),
+        "hours"
+      );
       const tempMinute =
-        (moment(form.getValues("endTime")).minute() -
-          moment(form.getValues("startTime")).minute()) %
-        60;
+        moment(form.getValues("endTime")).diff(moment(form.getValues("startTime")), "minutes") % 60;
 
       setHour(tempHour);
       setMinute(tempMinute);
@@ -216,7 +224,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
   return (
     <>
       <form>
-        <div className="flex flex-col container gap-4 pt-6 px-10">
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 8, p: 24 }}>
           <DatePickerComp
             name="dateBook"
             label="Booking Date"
@@ -225,7 +233,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
               required: "Field required",
               validate: {
                 minDate: (value: any) =>
-                  new Date(value).setHours(0, 0, 0, 0) >= now.setHours(0, 0, 0, 0) ||
+                  new Date(value).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) ||
                   "Booking date can't be in the past",
                 max30Days: (value: any) => {
                   const diffDays = moment(value).diff(moment(), "days");
@@ -240,7 +248,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
               form.setValue("dateBook", value);
             }}
           />
-          <div className="flex gap-1">
+          <Box sx={{ display: "flex", gap: 8 }}>
             <TimePickerComp
               name="startTime"
               label="Start Time"
@@ -250,10 +258,11 @@ export default function BookFormSingle({ editData }: { editData: any }) {
                 validate: {
                   minDate: (value: any) => {
                     if (
-                      form.getValues("dateBook").setHours(0, 0, 0, 0) === now.setHours(0, 0, 0, 0)
+                      form.getValues("dateBook").setHours(0, 0, 0, 0) ===
+                      new Date().setHours(0, 0, 0, 0)
                     ) {
                       return (
-                        new Date(value).getHours() >= now.getHours() ||
+                        new Date(value).getHours() >= new Date().getHours() ||
                         "Start time can't be in the past"
                       );
                     }
@@ -290,10 +299,11 @@ export default function BookFormSingle({ editData }: { editData: any }) {
               }}
             />
             <input {...register("ruangan")} hidden={true} />
-          </div>
-          <div className="flex gap-1">
-            <div className="flex gap-1">
+          </Box>
+          <Box sx={{ display: "flex", gap: 8 }}>
+            <Box sx={{ display: "flex", gap: 8 }}>
               <TextField
+                disabled
                 type="number"
                 value={hour}
                 label="Hour"
@@ -308,6 +318,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
                 })}
               />
               <TextField
+                disabled
                 type="number"
                 value={minute}
                 label="Minute"
@@ -326,7 +337,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
                   },
                 })}
               />
-            </div>
+            </Box>
             <NumericFieldComp
               control={form.control}
               name="capacity"
@@ -341,7 +352,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
               onChangeOvr={() => setChanged(true)}
             />
             <input {...register("ruangan", { required: "Please input" })} hidden={true} />
-          </div>
+          </Box>
           <RadioComp
             name="category"
             label="Category"
@@ -357,7 +368,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
           </Button>
           {available && (
             <>
-              <p className="my-0">Room:</p>
+              <Typography>Rooms:</Typography>
               <Suspense fallback={<CardsBookSkeleton />}>
                 <CardRooms
                   selectedId={roomId}
@@ -417,7 +428,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
               )}
             </>
           )}
-        </div>
+        </Box>
       </form>
     </>
   );

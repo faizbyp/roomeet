@@ -1,9 +1,11 @@
-import { Badge, Button } from "@mui/material";
+import { Badge, Box, Button, Typography } from "@mui/material";
 import { UserIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import MiniBadge from "@/common/MiniBadge";
 import clsx from "clsx";
 import { CheckBadgeIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, createRef, useLayoutEffect } from "react";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import PlaceIcon from "@mui/icons-material/Place";
 import useSWR from "swr";
 import Slider from "react-slick";
 import { CardsBookSkeleton } from "@/common/skeletons/CardSkeleton";
@@ -37,10 +39,10 @@ interface CardProp {
 
 const settings = {
   speed: 500,
-  slidesToShow: 1,
+  slidesToShow: 2.1,
   slidesToScroll: 1,
   arrows: false,
-  variableWidth: true,
+  variableWidth: false,
   infinite: false,
 };
 
@@ -59,26 +61,42 @@ export const CardRoom = ({ roomInfo, selectedId, clickCard, error }: CardProp) =
         horizontal: "right",
       }}
       sx={{
+        width: "100%",
         "& .MuiBadge-badge": {
-          right: 30,
+          border: `4px solid #202020`,
+          right: 10,
+          top: 10,
           height: 40,
           width: 40,
         },
       }}
     >
       <Button
-        sx={{ alignItems: "start", justifyContent: "start", padding: 0 }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "start",
+          justifyContent: "start",
+          width: "100%",
+          p: 0,
+          ...(roomInfo.id === selectedId && {
+            borderWidth: "4px",
+            borderStyle: "solid",
+            borderColor: "primary.main",
+          }),
+          ...(error && {
+            borderWidth: "4px",
+            borderStyle: "solid",
+            borderColor: "error.main",
+          }),
+        }}
         onClick={() => onClickCard(roomInfo.id)}
-        className={clsx(
-          "h-52 mr-4 rounded-xl hover:bg-slate-300 focus:bg-slate-500 flex flex-col text-neutral-800 text-left",
-          roomInfo.id === selectedId ? "bg-slate-500" : "bg-slate-400",
-          error && "border-red-500 border-2 border-solid"
-        )}
+        variant="contained"
+        color="warning"
       >
         <Image
           src={roomInfo.image}
           alt="Image"
-          sizes="100vw"
           style={{
             width: "100%",
             height: "40%",
@@ -88,22 +106,35 @@ export const CardRoom = ({ roomInfo, selectedId, clickCard, error }: CardProp) =
           width={100}
           height={50}
         />
-        <div className="px-3 pb-3 pt-2">
-          <p className="text-lg my-0 font-semibold">{roomInfo.name}</p>
-          <div className="flex text-xs items-center gap-1">
-            <UserIcon className="h-5 w-5 " />
-            <p className="my-0">Capacity: {roomInfo.capacity}</p>
-          </div>
-          <div className="flex text-xs items-center gap-1 ">
-            <MapPinIcon className="h-5 w-5" />
-            <p className="my-0">Location: {roomInfo.location} </p>
-          </div>
-          <div className="flex flex-wrap gap-2 pt-2">
+        <Box sx={{ px: 16, py: 8, textAlign: "left" }}>
+          <Typography variant="h3" sx={{ fontWeight: "bold", mb: 2 }}>
+            {roomInfo.name}
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <PeopleAltIcon />
+            <Typography>{roomInfo.capacity} people</Typography>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <PlaceIcon />
+            <Typography>{roomInfo.location}</Typography>
+          </Box>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4, pt: 6 }}>
             {roomInfo.facility.map((item, idx) => (
-              <MiniBadge color="bg-neutral-800" text={item} key={idx + item} />
+              <Box
+                sx={{
+                  backgroundColor: "grey.900",
+                  color: "#fafafa",
+                  px: 6,
+                  py: 2,
+                  borderRadius: 1,
+                }}
+                key={idx + item}
+              >
+                {item}
+              </Box>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
       </Button>
     </Badge>
   );
@@ -132,7 +163,7 @@ export const CardRooms = ({
     .filter((item: RoomData) =>
       filterId ? filterId.some((fid: any) => fid.id_ruangan === item.id_ruangan) : true
     )
-    .slice(0, 2)
+    .slice(0, 3)
     .map((item: RoomData) => {
       return {
         id: item.id_ruangan,
@@ -149,14 +180,14 @@ export const CardRooms = ({
       {!isLoading && (
         <Slider {...settings}>
           {roomData?.map((item) => (
-            <div className="py-4 pt-6" key={item.id}>
+            <Box key={item.id} sx={{ pt: 18, pb: 32, pr: 16 }}>
               <CardRoom
                 roomInfo={item}
                 selectedId={selectedId}
                 clickCard={clickCard}
                 error={errorData}
               />
-            </div>
+            </Box>
           ))}
         </Slider>
       )}
