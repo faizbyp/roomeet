@@ -1,30 +1,16 @@
 "use client";
 
 import DatePickerComp from "@/common/DatePicker";
-import { Controller, useForm } from "react-hook-form";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
-  InputLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { useForm } from "react-hook-form";
+import { Box, Button, FormControlLabel, Radio, TextField, Typography } from "@mui/material";
 import TimePickerComp from "@/common/TimePicker";
-import { CardRoom, CardRooms } from "./CardRoom";
+import { CardRooms } from "./CardRoom";
 import { TextFieldComp } from "@/common/TextField";
-import { room } from "@/mock/room";
 import { useEffect, useState } from "react";
-import Slider from "react-slick";
 import { Suspense } from "react";
 import { CardsBookSkeleton } from "@/common/skeletons/CardSkeleton";
 import NumericFieldComp from "@/common/NumericField";
-import { addHours, format } from "date-fns";
+import { format } from "date-fns";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";

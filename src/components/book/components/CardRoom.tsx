@@ -1,9 +1,6 @@
 import { Badge, Box, Button, Typography } from "@mui/material";
-import { UserIcon, MapPinIcon } from "@heroicons/react/24/outline";
-import MiniBadge from "@/common/MiniBadge";
-import clsx from "clsx";
 import { CheckBadgeIcon } from "@heroicons/react/24/outline";
-import { useEffect, useRef, createRef, useLayoutEffect } from "react";
+import { createRef } from "react";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import PlaceIcon from "@mui/icons-material/Place";
 import useSWR from "swr";
@@ -47,7 +44,6 @@ const settings = {
 };
 
 export const CardRoom = ({ roomInfo, selectedId, clickCard, error }: CardProp) => {
-  const btnRef = createRef();
   function onClickCard(id: string) {
     clickCard(id);
   }
