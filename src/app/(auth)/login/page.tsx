@@ -56,11 +56,13 @@ export default function LoginPage() {
     setLoading(true);
     let sub = null;
     try {
-      if ("Notification" in window && SWReg && Notification.permission === "granted") {
-        sub = await SWReg?.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY),
-        });
+      if ("Notification" in window) {
+        if (SWReg && Notification?.permission === "granted") {
+          sub = await SWReg?.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY),
+          });
+        }
       }
       let payload: Payload = {
         username: values.username,
