@@ -142,7 +142,11 @@ const Home = () => {
                     "DD/MM/YYYY"
                   )}`}
                 </Typography>
-                <Button variant="contained" fullWidth>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  onClick={() => handleCheckIn(data?.user.id_user, ci.id_book)}
+                >
                   Check In
                 </Button>
               </Box>
@@ -168,7 +172,11 @@ const Home = () => {
                     "DD/MM/YYYY"
                   )}`}
                 </Typography>
-                <Button variant="contained" fullWidth>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  onClick={() => handleCheckOut(data?.user.id_user, co.id_book)}
+                >
                   Check Out
                 </Button>
               </Box>
