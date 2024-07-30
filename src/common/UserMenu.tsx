@@ -36,7 +36,9 @@ export default function UserMenu({ anchorEl, handleClose }: UserMenuProps) {
           <Typography>{session?.user?.name?.split(" ")[0]}</Typography>
         </Box>
       </MenuItem>
-      <MenuItem onClick={() => Notification.requestPermission()}>Notif Settings</MenuItem>
+      <MenuItem onClick={() => "Notification" in window && Notification.requestPermission()}>
+        Notif Settings
+      </MenuItem>
       <MenuItem onClick={handleLogout} sx={{ width: "10rem" }}>
         Logout
       </MenuItem>
