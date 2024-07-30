@@ -46,7 +46,7 @@ export default function LoginPage() {
 
   const loginUser = async (values: LoginInput) => {
     setLoading(true);
-    let sub;
+    let sub = null;
     try {
       if ("Notification" in window && SWReg && Notification.permission === "granted") {
         sub = await SWReg?.pushManager.subscribe({
