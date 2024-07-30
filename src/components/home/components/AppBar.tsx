@@ -1,27 +1,13 @@
-import {
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  MenuList,
-  Paper,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
-import { Bars3Icon, PlusIcon } from "@heroicons/react/24/outline";
-import { Button, Popover, Box, Avatar, IconButton } from "@mui/material";
-import ButtonCard from "@/common/ButtonCard";
+import { Typography, useMediaQuery } from "@mui/material";
+import { Popover, Box, Avatar, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import HomeIcon from "@mui/icons-material/Home";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
-import AddIcon from "@mui/icons-material/Add";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { BaseSyntheticEvent, useEffect, useState } from "react";
 import UserMenu from "@/common/UserMenu";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import NavMenu from "@/common/NavMenu";
 
 const AppBar = ({ admin }: any) => {
   const mobile = useMediaQuery("(max-width:480px)");
-  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [anchorMenu, setAnchorMenu] = useState<HTMLButtonElement | null>(null);
   const pathname = usePathname();
@@ -85,55 +71,7 @@ const AppBar = ({ admin }: any) => {
                   horizontal: "left",
                 }}
               >
-                <Paper>
-                  <MenuList>
-                    {admin ? (
-                      <MenuItem onClick={() => router.push("/admin")}>
-                        <ListItemIcon sx={{ fontSize: "1.5rem" }}>
-                          <HomeIcon color="primary" />
-                        </ListItemIcon>
-                        <ListItemText
-                          primaryTypographyProps={{ fontSize: "1.5rem", color: "primary.main" }}
-                        >
-                          Home
-                        </ListItemText>
-                      </MenuItem>
-                    ) : (
-                      <>
-                        <MenuItem divider onClick={() => router.push("/dashboard")}>
-                          <ListItemIcon sx={{ fontSize: "1.5rem" }}>
-                            <HomeIcon color="primary" />
-                          </ListItemIcon>
-                          <ListItemText
-                            primaryTypographyProps={{ fontSize: "1.5rem", color: "primary.main" }}
-                          >
-                            Home
-                          </ListItemText>
-                        </MenuItem>
-                        <MenuItem divider onClick={() => router.push("/dashboard/booklist")}>
-                          <ListItemIcon sx={{ fontSize: "1.5rem" }}>
-                            <BookmarkIcon color="primary" />
-                          </ListItemIcon>
-                          <ListItemText
-                            primaryTypographyProps={{ fontSize: "1.5rem", color: "primary.main" }}
-                          >
-                            List Book
-                          </ListItemText>
-                        </MenuItem>
-                        <MenuItem onClick={() => router.push("/dashboard/book")}>
-                          <ListItemIcon sx={{ fontSize: "1.5rem" }}>
-                            <AddIcon color="primary" />
-                          </ListItemIcon>
-                          <ListItemText
-                            primaryTypographyProps={{ fontSize: "1.5rem", color: "primary.main" }}
-                          >
-                            New Book
-                          </ListItemText>
-                        </MenuItem>
-                      </>
-                    )}
-                  </MenuList>
-                </Paper>
+                <NavMenu admin={admin} />
               </Popover>
             </>
           )}
