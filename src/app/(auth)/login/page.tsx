@@ -47,37 +47,41 @@ export default function LoginPage() {
   const loginUser = async (values: LoginInput) => {
     setLoading(true);
     let sub;
-    if ("Notification" in window && SWReg && Notification.permission === "granted") {
-      sub = await SWReg?.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY),
+    try {
+      if ("Notification" in window && SWReg && Notification.permission === "granted") {
+        sub = await SWReg?.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY),
+        });
+      }
+      console.log(sub);
+      const res = await signIn("credentials", {
+        username: values.username,
+        password: values.password,
+        subscription: sub && JSON.stringify({ sub }),
+        callbackUrl: "/",
+        redirect: false,
       });
-    }
-    console.log(sub);
-    const res = await signIn("credentials", {
-      username: values.username,
-      password: values.password,
-      subscription: sub && JSON.stringify({ sub }),
-      callbackUrl: "/",
-      redirect: false,
-    });
-    console.log("RESPON", res);
+      console.log("RESPON", res);
 
-    if (res?.status === 200) {
-      const session = await getSession();
+      if (res?.status === 200) {
+        const session = await getSession();
 
-      if (session?.user.role_id === process.env.NEXT_PUBLIC_USER_ID) {
-        router.replace("/dashboard");
+        if (session?.user.role_id === process.env.NEXT_PUBLIC_USER_ID) {
+          router.replace("/dashboard");
+        }
+        if (session?.user.role_id === process.env.NEXT_PUBLIC_ADMIN_ID) {
+          router.replace("/admin");
+        }
+      } else if (res?.status === 401) {
+        toast.error("❌ Credentials not match");
+        setLoading(false);
+      } else {
+        toast.error("❌ Failed to login");
+        setLoading(false);
       }
-      if (session?.user.role_id === process.env.NEXT_PUBLIC_ADMIN_ID) {
-        router.replace("/admin");
-      }
-    } else if (res?.status === 401) {
-      toast.error("❌ Credentials not match");
-      setLoading(false);
-    } else {
-      toast.error("❌ Failed to login");
-      setLoading(false);
+    } catch (error) {
+      console.error("login error", error);
     }
   };
 
