@@ -7,7 +7,7 @@ import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const axiosAuth = useAxiosAuth();
   const swrConfig = {
-    fetcher: (url: any) => axiosAuth.get(url).then((res) => res.data),
+    fetcher: (url: any) => axiosAuth?.get(url).then((res) => res.data),
   };
 
   return (

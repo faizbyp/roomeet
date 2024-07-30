@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { Link as MuiLink } from "@mui/material";
 import { useState } from "react";
-import { signIn, getSession } from "next-auth/react";
+import { signIn, getSession, SignInOptions } from "next-auth/react";
 import toast from "react-hot-toast";
 import { useSWReg } from "@/lib/provider/SWRegProvider";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,14 @@ import Link from "next/link";
 interface LoginInput {
   username: string;
   password: string;
+}
+
+interface Payload {
+  username: string;
+  password: string;
+  subscription?: any;
+  callbackUrl: string;
+  redirect: boolean;
 }
 
 const base64ToUint8Array = (base64: any) => {
@@ -54,14 +62,18 @@ export default function LoginPage() {
           applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY),
         });
       }
-      console.log(sub);
-      const res = await signIn("credentials", {
+      let payload: Payload = {
         username: values.username,
         password: values.password,
         subscription: sub && JSON.stringify({ sub }),
         callbackUrl: "/",
         redirect: false,
-      });
+      };
+      if (payload.subscription === null) {
+        delete payload.subscription;
+      }
+      console.log(sub);
+      const res = await signIn("credentials", payload as any);
       console.log("RESPON", res);
 
       if (res?.status === 200) {
