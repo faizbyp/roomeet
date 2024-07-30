@@ -71,10 +71,10 @@ const palette = {
   text: {
     primary: GREY[800],
     secondary: GREY[600],
-    disabled: GREY[500],
+    disabled: GREY[400],
   },
   background: {
-    paper: "white",
+    paper: "#fafafa",
     default: GREY[100],
     neutral: GREY[200],
     card: GREY[700],

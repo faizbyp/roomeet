@@ -16,13 +16,19 @@ import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import AddIcon from "@mui/icons-material/Add";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ButtonCard from "./ButtonCard";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const NavButton = ({ admin }: any) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    handleClose();
+  }, [pathname]);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -55,30 +61,46 @@ const NavButton = ({ admin }: any) => {
           <MenuList>
             {admin ? (
               <MenuItem onClick={() => router.push("/admin")}>
-                <ListItemIcon>
-                  <HomeIcon />
+                <ListItemIcon sx={{ fontSize: "1.5rem" }}>
+                  <HomeIcon color="primary" />
                 </ListItemIcon>
-                <ListItemText>Home</ListItemText>
+                <ListItemText
+                  primaryTypographyProps={{ fontSize: "1.5rem", color: "primary.main" }}
+                >
+                  Home
+                </ListItemText>
               </MenuItem>
             ) : (
               <>
-                <MenuItem onClick={() => router.push("/dashboard")}>
-                  <ListItemIcon>
-                    <HomeIcon />
+                <MenuItem divider onClick={() => router.push("/dashboard")}>
+                  <ListItemIcon sx={{ fontSize: "1.5rem" }}>
+                    <HomeIcon color="primary" />
                   </ListItemIcon>
-                  <ListItemText>Home</ListItemText>
+                  <ListItemText
+                    primaryTypographyProps={{ fontSize: "1.5rem", color: "primary.main" }}
+                  >
+                    Home
+                  </ListItemText>
                 </MenuItem>
-                <MenuItem onClick={() => router.push("/dashboard/booklist")}>
-                  <ListItemIcon>
-                    <BookmarkIcon />
+                <MenuItem divider onClick={() => router.push("/dashboard/booklist")}>
+                  <ListItemIcon sx={{ fontSize: "1.5rem" }}>
+                    <BookmarkIcon color="primary" />
                   </ListItemIcon>
-                  <ListItemText>List Book</ListItemText>
+                  <ListItemText
+                    primaryTypographyProps={{ fontSize: "1.5rem", color: "primary.main" }}
+                  >
+                    List Book
+                  </ListItemText>
                 </MenuItem>
                 <MenuItem onClick={() => router.push("/dashboard/book")}>
-                  <ListItemIcon>
-                    <AddIcon />
+                  <ListItemIcon sx={{ fontSize: "1.5rem" }}>
+                    <AddIcon color="primary" />
                   </ListItemIcon>
-                  <ListItemText>New Book</ListItemText>
+                  <ListItemText
+                    primaryTypographyProps={{ fontSize: "1.5rem", color: "primary.main" }}
+                  >
+                    New Book
+                  </ListItemText>
                 </MenuItem>
               </>
             )}

@@ -89,30 +89,46 @@ const AppBar = ({ admin }: any) => {
                   <MenuList>
                     {admin ? (
                       <MenuItem onClick={() => router.push("/admin")}>
-                        <ListItemIcon>
-                          <HomeIcon />
+                        <ListItemIcon sx={{ fontSize: "1.5rem" }}>
+                          <HomeIcon color="primary" />
                         </ListItemIcon>
-                        <ListItemText>Home</ListItemText>
+                        <ListItemText
+                          primaryTypographyProps={{ fontSize: "1.5rem", color: "primary.main" }}
+                        >
+                          Home
+                        </ListItemText>
                       </MenuItem>
                     ) : (
                       <>
-                        <MenuItem onClick={() => router.push("/dashboard")}>
-                          <ListItemIcon>
-                            <HomeIcon />
+                        <MenuItem divider onClick={() => router.push("/dashboard")}>
+                          <ListItemIcon sx={{ fontSize: "1.5rem" }}>
+                            <HomeIcon color="primary" />
                           </ListItemIcon>
-                          <ListItemText>Home</ListItemText>
+                          <ListItemText
+                            primaryTypographyProps={{ fontSize: "1.5rem", color: "primary.main" }}
+                          >
+                            Home
+                          </ListItemText>
                         </MenuItem>
-                        <MenuItem onClick={() => router.push("/dashboard/booklist")}>
-                          <ListItemIcon>
-                            <BookmarkIcon />
+                        <MenuItem divider onClick={() => router.push("/dashboard/booklist")}>
+                          <ListItemIcon sx={{ fontSize: "1.5rem" }}>
+                            <BookmarkIcon color="primary" />
                           </ListItemIcon>
-                          <ListItemText>List Book</ListItemText>
+                          <ListItemText
+                            primaryTypographyProps={{ fontSize: "1.5rem", color: "primary.main" }}
+                          >
+                            List Book
+                          </ListItemText>
                         </MenuItem>
                         <MenuItem onClick={() => router.push("/dashboard/book")}>
-                          <ListItemIcon>
-                            <AddIcon />
+                          <ListItemIcon sx={{ fontSize: "1.5rem" }}>
+                            <AddIcon color="primary" />
                           </ListItemIcon>
-                          <ListItemText>New Book</ListItemText>
+                          <ListItemText
+                            primaryTypographyProps={{ fontSize: "1.5rem", color: "primary.main" }}
+                          >
+                            New Book
+                          </ListItemText>
                         </MenuItem>
                       </>
                     )}
