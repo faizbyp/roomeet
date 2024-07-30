@@ -1,8 +1,6 @@
 "use client";
 
-import { IconButton } from "@mui/material";
-import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
-import clsx from "clsx";
+import { Box, Grid, IconButton, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import { CardsListBookSkeleton } from "@/common/skeletons/CardSkeleton";
@@ -11,6 +9,9 @@ import { axiosAuth } from "@/lib/axios";
 import axios, { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import ConfirmationDialog from "@/common/ConfirmationDialog";
+import EditIcon from "@mui/icons-material/Edit";
+import ClearIcon from "@mui/icons-material/Clear";
+import moment from "moment";
 
 interface CardListBookProp {
   agendaTitle: string;
@@ -70,76 +71,88 @@ export function CardListBook({
 
   return (
     <>
-      <div className="h-36 rounded-xl bg-neutral-500 px-4 py-4 mx-6 my-2 flex">
-        <div className="flex flex-col grow justify-center">
-          <div className="w-full grow flex items-center">
-            <p className="my-0 text-ellipsis">{agendaTitle}</p>
-          </div>
-          {/* <p>{approval}</p> */}
-          <div className="my-2">
-            <div className="text-xs">
-              <div className="flex">
-                <p className="my-0">
-                  {startTime} - {endTime}
-                </p>
-                <p className="my-0 mx-3">|</p>
-                <p className="my-0">{bookDate}</p>
-              </div>
-
-              <p className="my-0">{room}</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col justify-between">
-          {/* <div
-            className={clsx(
-              "px-3 py-1 mb-2 mt-2 rounded-full flex items-center",
-              status === "Oncoming" && "bg-green-600",
-              status === "Prospective" && "bg-yellow-600",
-              status === "Ongoing" && "bg-neutral-800",
-              status === "Inactive" && "bg-red-800"
-            )}
+      <Box sx={{ px: 24, py: 24, bgcolor: "background.card", mb: 16, borderRadius: 4 }}>
+        <Grid container>
+          <Grid item xs={8}>
+            <Typography variant="h3" sx={{ color: "primary.light" }}>
+              {agendaTitle}
+            </Typography>
+            <Typography variant="h4">{room}</Typography>
+            <Typography>{`${moment(bookDate).format("DD/MM/YYYY")}`}</Typography>
+            <Typography>{`${startTime} - ${endTime}`}</Typography>
+          </Grid>
+          <Grid
+            item
+            xs={4}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "end",
+              justifyContent: "space-between",
+            }}
           >
-            <p className="my-0 text-[10pt]">{status}</p>
-          </div> */}
-          <div
-            className={clsx(
-              "px-3 py-1 mb-2 mt-2 rounded-full flex items-center",
-              approval === "approved" && "bg-green-600",
-              approval === "pending" && "bg-yellow-600",
-              approval === "rejected" && "bg-red-800"
-            )}
-          >
-            <p className="my-0 text-[10pt]">{approval}</p>
-          </div>
-          <div className="flex gap-1 justify-center items-center grow">
-            <Link href={`/dashboard/book/${id_room}/${id_book}`}>
-              <IconButton className="btn-primary h-10 w-10">
-                <PencilSquareIcon />
-              </IconButton>
-            </Link>
-            <ConfirmationDialog
-              title="Submit Book"
-              desc="Are you sure you want to delete?"
-              action="Delete"
-              response={() => handleDelete(id_book)}
-              type="button"
-              color="error"
+            <Typography
+              align="center"
+              sx={[
+                {
+                  color: "black",
+                  borderRadius: 2,
+                  width: "100%",
+                },
+                approval === "pending" && {
+                  backgroundColor: "warning.main",
+                },
+                approval === "rejected" && {
+                  backgroundColor: "error.main",
+                },
+                approval === "approved" && {
+                  backgroundColor: "success.main",
+                },
+              ]}
             >
-              {(showDialog: any) => (
-                <IconButton className="btn-primary h-10 w-10" onClick={showDialog}>
-                  <XCircleIcon />
+              {approval}
+            </Typography>
+            <Box sx={{ display: "flex", gap: 8 }}>
+              <Link href={`/dashboard/book/${id_room}/${id_book}`}>
+                <IconButton
+                  sx={{
+                    bgcolor: "secondary.main",
+                    color: "#202020",
+                    "&:hover": {
+                      bgcolor: "secondary.light",
+                    },
+                  }}
+                >
+                  <EditIcon />
                 </IconButton>
-              )}
-            </ConfirmationDialog>
-            {/* {(status === "Prospective" || status === "Oncoming" || status === "Pending") && (
-              <>
-                
-              </>
-            )} */}
-          </div>
-        </div>
-      </div>
+              </Link>
+              <ConfirmationDialog
+                title="Submit Book"
+                desc="Are you sure you want to delete?"
+                action="Delete"
+                response={() => handleDelete(id_book)}
+                type="button"
+                color="error"
+              >
+                {(showDialog: any) => (
+                  <IconButton
+                    sx={{
+                      bgcolor: "error.main",
+                      color: "#fafafa",
+                      "&:hover": {
+                        bgcolor: "error.light",
+                      },
+                    }}
+                    onClick={showDialog}
+                  >
+                    <ClearIcon />
+                  </IconButton>
+                )}
+              </ConfirmationDialog>
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
     </>
   );
 }
@@ -178,11 +191,13 @@ export function CardsListBook({ date }: any) {
 
   return (
     <>
-      {!isLoading &&
-        agendasData &&
-        agendasData.map((item) => (
-          <CardListBook {...item} mutate={mutate} key={item.id_book + item.id_room} />
-        ))}
+      <Box sx={{ px: 24 }}>
+        {!isLoading &&
+          agendasData &&
+          agendasData.map((item) => (
+            <CardListBook {...item} mutate={mutate} key={item.id_book + item.id_room} />
+          ))}
+      </Box>
       {isLoading && !agendasData && <CardsListBookSkeleton />}
     </>
   );
