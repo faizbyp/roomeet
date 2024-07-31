@@ -99,7 +99,7 @@ const AdminPage = () => {
               <Paper
                 square={false}
                 key={book.id}
-                sx={{ color: "white", p: 24, backgroundColor: "#737373" }}
+                sx={{ color: "#fafafa", p: 24, backgroundColor: "background.card" }}
               >
                 <Box
                   sx={[
@@ -126,14 +126,16 @@ const AdminPage = () => {
                     <Typography>{book.id_ticket}</Typography>
                     <Typography variant="h3">{book.agenda}</Typography>
                     <Typography sx={{ mb: 16 }}>User: {book.username}</Typography>
-                    <Link href={`/admin/approval/${book.id_book}`}>
-                      <Button variant="contained">Details</Button>
-                    </Link>
                   </Grid>
                   <Grid item xs={6}>
                     <Typography>{book.id_ruangan}</Typography>
                     <Typography>{moment(book.book_date).format("YYYY-MM-DD")}</Typography>
                     <Typography>{`${book.time_start} - ${book.time_end}`}</Typography>
+                    <Box sx={{ textAlign: "right", mt: 16 }}>
+                      <Link href={`/admin/approval/${book.id_book}`}>
+                        <Button variant="contained">Details</Button>
+                      </Link>
+                    </Box>
                   </Grid>
                 </Grid>
               </Paper>
