@@ -110,13 +110,19 @@ export default function RegisterPage() {
       if (res?.status === 200) {
         toast.success("Account verified");
         router.replace("/login");
-      } else {
-        toast.error("❌ Failed to register");
-        setLoading(false);
       }
-    } catch (error) {
-      toast.error("Server Error");
-      console.log(error);
+      // else {
+      //   toast.error("❌ Failed to register");
+      //   setLoading(false);
+      // }
+      setLoading(false);
+    } catch (error: any) {
+      if (error?.response.data) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Server Error");
+        console.log(error);
+      }
       setLoading(false);
     }
   };
