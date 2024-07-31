@@ -24,6 +24,9 @@ interface DefaultVal {
   id_user: string;
   username: string;
   email: string;
+  id_ticket: string;
+  id_ruangan: string;
+  prtcpt_ctr: string;
 }
 
 export default function ApprovalAction({ id_book, props }: any) {
@@ -48,6 +51,9 @@ export default function ApprovalAction({ id_book, props }: any) {
       id_user: props.id_user,
       username: props.username,
       email: props.email,
+      id_ticket: props.id_ticket,
+      id_ruangan: props.id_ruangan,
+      prtcpt_ctr: props.prtcpt_ctr,
     } as DefaultVal,
   });
 
@@ -71,6 +77,9 @@ export default function ApprovalAction({ id_book, props }: any) {
       id_user: values.id_user,
       username: values.username,
       email: values.email,
+      id_ticket: values.id_ticket,
+      id_ruangan: values.id_ruangan,
+      prtcpt_ctr: values.prtcpt_ctr,
     };
     console.log(payload);
     try {
