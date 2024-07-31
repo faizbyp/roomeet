@@ -75,7 +75,7 @@ export default function ApprovalAction({ id_book, props }: any) {
     console.log(payload);
     try {
       const res = await axiosAuth.patch(`/book/approval/${id_book}`, { data: payload });
-      toast.success(`${id_book} ${values.approval}`);
+      toast.success(`${props.id_ticket} ${values.approval}`);
       router.replace("/admin");
       router.refresh();
     } catch (error) {

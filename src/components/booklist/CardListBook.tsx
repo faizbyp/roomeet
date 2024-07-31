@@ -21,6 +21,7 @@ interface CardListBookProp {
   bookDate: string;
   status: string;
   id_book: string;
+  id_ticket: string;
   id_room: string;
   approval: string;
   mutate: any;
@@ -28,6 +29,7 @@ interface CardListBookProp {
 
 interface AgendaDatas {
   id_book: string;
+  id_ticket: string;
   id_user: string;
   id_room: string;
   nama_ruangan: string;
@@ -48,6 +50,7 @@ export function CardListBook({
   status,
   room,
   id_book,
+  id_ticket,
   id_room,
   approval,
   mutate,
@@ -56,7 +59,7 @@ export function CardListBook({
     try {
       await axiosAuth.delete(`/book/${id_book}`);
       mutate();
-      toast.success(`Success canceling ${id_book}`);
+      toast.success(`Success canceling ${id_ticket}`);
     } catch (error) {
       const errors = error as AxiosError;
       if (axios.isAxiosError(error)) {
@@ -181,6 +184,7 @@ export function CardsListBook({ date }: any) {
         bookDate: item.book_date,
         status: item.status,
         id_book: item.id_book,
+        id_ticket: item.id_ticket,
         id_room: item.id_room,
         approval: item.approval,
       }))
