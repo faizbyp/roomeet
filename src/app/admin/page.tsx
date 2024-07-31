@@ -52,11 +52,7 @@ const AdminPage = () => {
     <>
       <Box
         sx={{
-          py: 16,
-          position: "fixed",
-          backgroundColor: "#202020",
-          width: "450px",
-          zIndex: "999",
+          py: 8,
         }}
       >
         <Typography variant="h1">Admin Page</Typography>
@@ -85,9 +81,16 @@ const AdminPage = () => {
         </Box>
       </Box>
 
-      <Box sx={{ height: "190px" }} />
-
-      <Box sx={{ display: "flex", gap: 8, flexDirection: "column", px: 16 }}>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 8,
+          flexDirection: "column",
+          px: 16,
+          maxHeight: "70vh",
+          overflow: "auto",
+        }}
+      >
         {isLoading ? (
           <p>Loading...</p>
         ) : (
