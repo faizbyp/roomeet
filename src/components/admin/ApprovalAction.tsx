@@ -92,7 +92,7 @@ export default function ApprovalAction({ id_book, props }: any) {
   };
 
   return (
-    <>
+    <Box sx={{ mt: 24, mb: 32 }}>
       <div>Action:</div>
       <form onSubmit={form.handleSubmit(submitApproval)}>
         <Controller
@@ -125,7 +125,13 @@ export default function ApprovalAction({ id_book, props }: any) {
         />
         {approve && (
           <Box sx={{ textAlign: "right" }}>
-            <Button type="submit" variant="contained" disabled={loading} sx={{ my: 8 }}>
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={loading}
+              sx={{ my: 8, mb: 32 }}
+              fullWidth
+            >
               Approve
             </Button>
           </Box>
@@ -144,7 +150,13 @@ export default function ApprovalAction({ id_book, props }: any) {
                 }}
               />
               <Box sx={{ textAlign: "right" }}>
-                <Button type="submit" variant="contained" disabled={loading} sx={{ mt: 8 }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  disabled={loading}
+                  sx={{ mt: 8, mb: 32 }}
+                  fullWidth
+                >
                   Reject
                 </Button>
               </Box>
@@ -152,6 +164,6 @@ export default function ApprovalAction({ id_book, props }: any) {
           </>
         )}
       </form>
-    </>
+    </Box>
   );
 }
