@@ -139,6 +139,11 @@ export default function LoginPage() {
         </Box>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <MuiLink href="/forgot-pass" component={Link}>
+          Forgot Password?
+        </MuiLink>
+      </Box>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
         <MuiLink href="/register" component={Link}>
           Create Account
         </MuiLink>
