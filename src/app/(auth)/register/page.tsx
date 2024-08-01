@@ -246,13 +246,9 @@ export default function RegisterPage() {
           </Box>
 
           <Box sx={{ display: "flex", justifyContent: "end" }}>
-            {loading ? (
-              <CircularProgress />
-            ) : (
-              <Button type="submit" variant="contained">
-                Verify
-              </Button>
-            )}
+            <Button type="submit" variant="contained" disabled={loading}>
+              {loading ? <CircularProgress /> : "Verify"}
+            </Button>
           </Box>
         </Box>
       )}
