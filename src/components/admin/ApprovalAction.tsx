@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 
 interface DefaultVal {
+  id_book: string;
   book_date: Date;
   time_start: Date;
   time_end: Date;
@@ -39,6 +40,7 @@ export default function ApprovalAction({ id_book, props }: any) {
   const [loading, setLoading] = useState(false);
   const form = useForm({
     defaultValues: {
+      id_book: id_book,
       book_date: props.book_date,
       time_start: props.time_start,
       time_end: props.time_end,
@@ -65,6 +67,7 @@ export default function ApprovalAction({ id_book, props }: any) {
     const timeEnd = new Date(`${format(bookDate, "yyyy-MM-dd")} ${values.time_end}`);
 
     const payload = {
+      id_book: id_book,
       book_date: format(bookDate, "Y-L-d"),
       time_start: format(timeStart as Date, "HH:mm"),
       time_end: format(timeEnd as Date, "HH:mm"),
