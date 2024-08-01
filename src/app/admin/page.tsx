@@ -5,10 +5,12 @@ import {
   Button,
   FormControl,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
   Paper,
   Select,
+  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -17,6 +19,8 @@ import moment from "moment";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
+import BackspaceIcon from "@mui/icons-material/Backspace";
+import PersonIcon from "@mui/icons-material/Person";
 import useSWR from "swr";
 
 const AdminPage = () => {
@@ -25,15 +29,9 @@ const AdminPage = () => {
   const [status, setStatus] = useState<any>("");
   const [dateVal, setDateVal] = useState<any>(null);
   const url = `/book?book_date=${date}&approval=${status}`;
-  const {
-    data: books,
-    error,
-    isLoading,
-    mutate,
-  } = useSWR(data && url, {
+  const { data: books } = useSWR(data && url, {
     fallback: { url: [] },
   });
-  console.log("REVALIDATE");
 
   const handleDate = (value: any) => {
     const d = moment(value).format("YYYY-MM-DD");
@@ -52,23 +50,30 @@ const AdminPage = () => {
     <>
       <Box
         sx={{
-          py: 8,
+          pb: 16,
         }}
       >
-        <Typography variant="h1">Admin Page</Typography>
-        <Box sx={{ display: "flex", gap: 8 }}>
-          <Stack direction="column">
-            <DatePicker value={dateVal} label="Search Date" onChange={handleDate} sx={{ mb: 16 }} />
-            <Button
-              size="small"
+        <Typography variant="h1" sx={{ color: "primary.light" }}>
+          Admin Page
+        </Typography>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <DatePicker
+              value={dateVal}
+              label="Search Date"
+              onChange={handleDate}
+              sx={{ flex: "1" }}
+            />
+            <IconButton
+              aria-label="clear"
               onClick={() => {
                 setDate("");
                 setDateVal(null);
               }}
             >
-              Reset Date
-            </Button>
-          </Stack>
+              <BackspaceIcon />
+            </IconButton>
+          </Box>
           <FormControl fullWidth>
             <InputLabel>Approval Status</InputLabel>
             <Select defaultValue="" value={status} label="Approval" onChange={handleStatus}>
@@ -84,63 +89,71 @@ const AdminPage = () => {
       <Box
         sx={{
           display: "flex",
-          gap: 8,
+          gap: 16,
           flexDirection: "column",
           px: 16,
           maxHeight: "70vh",
           overflow: "auto",
         }}
       >
-        {isLoading ? (
-          <p>Loading...</p>
+        {!books ? (
+          <Skeleton variant="rounded" width="100%" height={96} sx={{ bgcolor: "grey.700" }} />
         ) : (
-          <>
-            {books?.data.map((book: any) => (
-              <Paper
-                square={false}
-                key={book.id}
-                sx={{ color: "#fafafa", p: 24, backgroundColor: "background.card" }}
+          books?.data.map((book: any) => (
+            <Box key={book.id} sx={{ pb: 24, bgcolor: "background.card", borderRadius: 4 }}>
+              <Box
+                sx={[
+                  {
+                    color: "black",
+                    mb: 16,
+                    px: 12,
+                    py: 8,
+                    borderTopLeftRadius: 16,
+                    borderTopRightRadius: 16,
+                  },
+                  book.approval === "pending" && {
+                    backgroundColor: "warning.main",
+                  },
+                  book.approval === "rejected" && {
+                    backgroundColor: "error.main",
+                  },
+                  book.approval === "approved" && {
+                    backgroundColor: "success.main",
+                  },
+                ]}
               >
-                <Box
-                  sx={[
-                    {
-                      color: "black",
-                      mb: 16,
-                    },
-                    book.approval === "pending" && {
-                      backgroundColor: "warning.main",
-                    },
-                    book.approval === "rejected" && {
-                      backgroundColor: "error.main",
-                    },
-                    book.approval === "approved" && {
-                      backgroundColor: "success.main",
-                    },
-                  ]}
-                >
-                  <Typography>Status: {book.approval}</Typography>
-                  <Typography>{book.reject_note && `${book.reject_note}`}</Typography>
-                </Box>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <Typography>{book.id_ticket}</Typography>
-                    <Typography variant="h3">{book.agenda}</Typography>
-                    <Typography sx={{ mb: 16 }}>User: {book.username}</Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography>{book.id_ruangan}</Typography>
-                    <Typography>{moment(book.book_date).format("YYYY-MM-DD")}</Typography>
-                    <Typography>{`${book.time_start} - ${book.time_end}`}</Typography>
-                    <Box sx={{ textAlign: "right", mt: 16 }}>
-                      <Link href={`/admin/approval/${book.id_book}`}>
-                        <Button variant="contained">Details</Button>
-                      </Link>
-                    </Box>
-                  </Grid>
+                <Typography>Status: {book.approval}</Typography>
+              </Box>
+              <Grid container spacing={8} sx={{ px: 24 }}>
+                <Grid item xs={7}>
+                  <Typography>{book.id_ticket}</Typography>
+                  <Typography variant="h3" sx={{ color: "primary.light" }}>
+                    {book.agenda}
+                  </Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 8 }}>
+                    <PersonIcon />
+                    <Typography>{book.username}</Typography>
+                  </Box>
+                  <Typography sx={{ color: "error.light" }}>
+                    {book.reject_note && `${book.reject_note}`}
+                  </Typography>
                 </Grid>
-              </Paper>
-            ))}
-          </>
+                <Grid item xs={5} sx={{ textAlign: "right" }}>
+                  <Typography>{book.id_ruangan}</Typography>
+                  <Typography>{moment(book.book_date).format("DD-MM-YYYY")}</Typography>
+                  <Typography>{`${book.time_start.slice(0, 5)} - ${book.time_end.slice(
+                    0,
+                    5
+                  )}`}</Typography>
+                  <Box sx={{ textAlign: "right", mt: 24 }}>
+                    <Link href={`/admin/approval/${book.id_book}`}>
+                      <Button variant="contained">Details</Button>
+                    </Link>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          ))
         )}
       </Box>
     </>

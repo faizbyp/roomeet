@@ -53,7 +53,7 @@ const Approval = ({ params }: { params: { id_book: string } }) => {
             fullWidth
             label="Booking Date"
             variant="filled"
-            value={moment(book.book_date).format("dddd, MM/DD/YYYY")}
+            value={moment(book.book_date).format("dddd, DD/MM/YYYY")}
             disabled
           />
           <p>Time</p>

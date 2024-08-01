@@ -2,7 +2,7 @@
 
 import NavButton from "./NavButton";
 import AppBar from "@/components/home/components/AppBar";
-import { useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 
 interface WrapperChild {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ const Wrapper = ({ children }: WrapperChild) => {
   return (
     <>
       <AppBar admin />
-      <div className="pt-10 px-4">{children}</div>
+      <Box sx={{ mt: 16, px: 24 }}>{children}</Box>
       {mobile && <NavButton admin />}
     </>
   );
