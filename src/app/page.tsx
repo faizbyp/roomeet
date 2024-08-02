@@ -14,6 +14,9 @@ export default function HomePage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "space-around",
+          background:
+            "linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url(/img/buildings.jpg)",
+          backgroundSize: "cover",
         }}
       >
         {/* <Image

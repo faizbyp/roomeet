@@ -107,6 +107,9 @@ export default function LoginPage() {
         gap: 32,
         justifyContent: "center",
         minHeight: "100svh",
+        background: "linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url(/img/buildings.jpg)",
+        backgroundSize: "cover",
+        px: 16,
       }}
     >
       <Box>
