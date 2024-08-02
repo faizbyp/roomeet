@@ -69,6 +69,26 @@ export default function BookFormSingle({ editData }: { editData: any }) {
   const [changed, setChanged] = useState(true);
 
   useEffect(() => {
+    const checkPenalty = async () => {
+      try {
+        const res = await axiosAuth.patch("/user/penalty", {
+          id_user: data?.user.id_user,
+        });
+        if (res.data.changed) {
+          toast.success(res.data.message);
+        }
+      } catch (error: any) {
+        if (error?.response && data?.user.id_user) {
+          console.error(error);
+          toast.error(error?.response.data.message);
+        } else {
+          console.error(error);
+        }
+      }
+    };
+
+    checkPenalty();
+
     if (isEdit) {
       form.reset({
         dateBook: moment(editData.book_date).toDate(),
@@ -101,8 +121,8 @@ export default function BookFormSingle({ editData }: { editData: any }) {
       setHour(tempHour);
       setMinute(tempMinute);
     }
-    console.log(form.getValues());
-  }, [editData, form, isEdit]);
+    // console.log(form.getValues());
+  }, [editData, form, isEdit, axiosAuth, data?.user.id_user]);
 
   console.log("edit data", editData);
   console.log("formatted edit", form.getValues());
