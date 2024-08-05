@@ -21,7 +21,7 @@ const NavMenu = ({ admin }: any) => {
                 Home
               </ListItemText>
             </MenuItem>
-            <MenuItem onClick={() => router.push("/dashboard/room")}>
+            <MenuItem onClick={() => router.push("/admin/room")}>
               <ListItemIcon sx={{ fontSize: "1.5rem" }}>
                 <MeetingRoomIcon color="primary" />
               </ListItemIcon>
