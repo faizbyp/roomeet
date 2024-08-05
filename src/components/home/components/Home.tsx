@@ -102,7 +102,7 @@ const Home = () => {
             {data?.user.name}
           </Box>
         </Typography>
-        {counter !== 0 && (
+        {counter && counter !== 0 && (
           <Tooltip title="When you missed checking out 3 times, you will get penalty and be banned from creating booking  for 3 days.">
             {penalty ? (
               <Alert severity="error">{penalty}</Alert>

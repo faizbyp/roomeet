@@ -1,6 +1,6 @@
 {
-  "name": "RooMeet",
-  "short_name": "RooMeet",
+  "name": "Roomeet",
+  "short_name": "Roomeet",
   "icons": [
     {
       "src": "192x192.png",
@@ -19,9 +19,9 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#FFFFFF",
-  "background_color": "#FFFFFF",
-  "start_url": "/",
+  "theme_color": "#009788",
+  "background_color": "#202020",
+  "start_url": "/dashboard",
   "display": "standalone",
   "orientation": "portrait"
 }
