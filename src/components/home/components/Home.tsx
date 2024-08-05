@@ -1,61 +1,20 @@
 "use client";
 
 import DigitalClock from "./DigitalClock";
-import {
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-  Paper,
-  Button,
-  Typography,
-  Grid,
-  Box,
-  Skeleton,
-} from "@mui/material";
+import { Button, Typography, Grid, Box, Skeleton, Alert, Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
-import { CardRooms } from "./HomeCardRoom";
-import { CardsSkeleton } from "@/common/skeletons/CardSkeleton";
 import { useSession } from "next-auth/react";
-import { Suspense } from "react";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
-import { axiosAuth } from "@/lib/axios";
 import toast from "react-hot-toast";
 import useSWR from "swr";
 import moment from "moment";
 import ConfirmationDialog from "@/common/ConfirmationDialog";
 
-const settings = {
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  arrows: false,
-  variableWidth: true,
-};
-
-const hoursOpt = [
-  { key: "1", value: 1 },
-  { key: "2", value: 2 },
-  { key: "3", value: 3 },
-];
-
-interface RoomsData {
-  id: string;
-  id_ruangan: string;
-  kapasitas: number;
-  lokasi: string;
-  nama: string;
-}
-
-interface RoomInfo {
-  id: string;
-  name: string;
-  capacity: number;
-  location: string;
-  image: string;
-}
-
 const Home = () => {
   const { data } = useSession();
+  const axiosAuth = useAxiosAuth();
+  const [counter, setCounter] = useState<number>();
+  const [penalty, setPenalty] = useState();
 
   useEffect(() => {
     if ("Notification" in window) {
@@ -63,7 +22,25 @@ const Home = () => {
         Notification.requestPermission();
       }
     }
-  }, [data?.user.id_user]);
+
+    const checkPenalty = async () => {
+      try {
+        const res = await axiosAuth.patch("/user/penalty", {
+          id_user: data?.user.id_user,
+        });
+        setCounter(res.data.counter);
+      } catch (error: any) {
+        if (error?.response && data?.user.id_user) {
+          console.error(error);
+          setCounter(error?.response.data.counter);
+          setPenalty(error?.response.data.message);
+        } else {
+          console.error(error);
+        }
+      }
+    };
+    checkPenalty();
+  }, [data?.user.id_user, axiosAuth]);
 
   const ciUrl = `/book/checkin/${data?.user.id_user}`;
   const coUrl = `/book/checkout/${data?.user.id_user}`;
@@ -125,6 +102,15 @@ const Home = () => {
             {data?.user.name}
           </Box>
         </Typography>
+        {counter !== 0 && (
+          <Tooltip title="When you missed checking out 3 times, you will get penalty and be banned from creating booking  for 3 days.">
+            {penalty ? (
+              <Alert severity="error">{penalty}</Alert>
+            ) : (
+              <Alert severity="warning">{`You have missed checking out ${counter}/3 times`}</Alert>
+            )}
+          </Tooltip>
+        )}
       </Box>
       <DigitalClock />
 

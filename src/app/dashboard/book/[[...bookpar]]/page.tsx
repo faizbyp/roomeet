@@ -6,9 +6,11 @@ const BookPage = async ({ params }: { params: { bookpar: string[] } }) => {
   let editData = undefined;
 
   try {
-    const get = await axiosAuth.get(`/book/${params.bookpar[1]}`);
-    editData = get.data;
-    console.log("editData", get.data);
+    if (params) {
+      const get = await axiosAuth.get(`/book/${params.bookpar[1]}`);
+      editData = get.data;
+      console.log("editData", get.data);
+    }
   } catch (error) {
     console.error(error);
   }

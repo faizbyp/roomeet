@@ -2,7 +2,7 @@
 
 import DatePickerComp from "@/common/DatePicker";
 import { useForm } from "react-hook-form";
-import { Box, Button, FormControlLabel, Radio, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, FormControlLabel, Radio, TextField, Typography } from "@mui/material";
 import TimePickerComp from "@/common/TimePicker";
 import { CardRooms } from "./CardRoom";
 import { TextFieldComp } from "@/common/TextField";
@@ -67,6 +67,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(!!editData);
   const [changed, setChanged] = useState(true);
+  const [penalty, setPenalty] = useState();
 
   useEffect(() => {
     const checkPenalty = async () => {
@@ -80,13 +81,12 @@ export default function BookFormSingle({ editData }: { editData: any }) {
       } catch (error: any) {
         if (error?.response && data?.user.id_user) {
           console.error(error);
-          toast.error(error?.response.data.message);
+          setPenalty(error?.response.data.message);
         } else {
           console.error(error);
         }
       }
     };
-
     checkPenalty();
 
     if (isEdit) {
@@ -103,13 +103,6 @@ export default function BookFormSingle({ editData }: { editData: any }) {
 
       setStartTime(form.getValues("startTime"));
       setEndTime(form.getValues("endTime"));
-
-      // const tempHour =
-      //   moment(form.getValues("endTime")).hour() - moment(form.getValues("startTime")).hour();
-      // const tempMinute =
-      //   (moment(form.getValues("endTime")).minute() -
-      //     moment(form.getValues("startTime")).minute()) %
-      //   60;
 
       const tempHour = moment(form.getValues("endTime")).diff(
         moment(form.getValues("startTime")),
@@ -229,6 +222,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
 
   return (
     <>
+      {penalty && <Alert severity="error">{penalty}</Alert>}
       <form>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 8, p: 24 }}>
           <DatePickerComp

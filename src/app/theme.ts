@@ -5,6 +5,8 @@ import { alpha } from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
 
+const mode: "light" | "dark" = "dark";
+
 // SETUP COLORS
 const GREY = {
   0: "#cfcfcf",
@@ -59,6 +61,7 @@ const ERROR = {
 };
 
 const palette = {
+  mode: mode,
   common: { black: "#000", white: "#fff", green: "#4ef542", red: "#f2573f" },
   primary: PRIMARY,
   secondary: SECONDARY,
