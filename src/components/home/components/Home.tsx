@@ -58,10 +58,6 @@ const Home = () => {
     fallback: { coUrl: [] },
   });
 
-  // console.log("DATA SWR", checkin);
-  // console.log(ciError);
-  // console.log(ciLoading);
-
   const handleCheckIn = async (id_user: any, id_book: any) => {
     try {
       const res = await axiosAuth.patch("/book/checkin", {
@@ -102,7 +98,7 @@ const Home = () => {
             {data?.user.name}
           </Box>
         </Typography>
-        {counter && counter !== 0 && (
+        {counter && counter !== 0 ? (
           <Tooltip title="When you missed checking out 3 times, you will get penalty and be banned from creating booking  for 3 days.">
             {penalty ? (
               <Alert severity="error">{penalty}</Alert>
@@ -110,7 +106,7 @@ const Home = () => {
               <Alert severity="warning">{`You have missed checking out ${counter}/3 times`}</Alert>
             )}
           </Tooltip>
-        )}
+        ) : null}
       </Box>
       <DigitalClock />
 
