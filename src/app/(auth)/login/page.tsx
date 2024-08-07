@@ -2,7 +2,7 @@
 import { PasswordWithEyes } from "@/common/PasswordWithEyes";
 import { TextFieldComp } from "@/common/TextField";
 import { useForm } from "react-hook-form";
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Container, Typography } from "@mui/material";
 import { Link as MuiLink } from "@mui/material";
 import { useState } from "react";
 import { signIn, getSession, SignInOptions } from "next-auth/react";
@@ -100,18 +100,7 @@ export default function LoginPage() {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 32,
-        justifyContent: "center",
-        minHeight: "100svh",
-        background: "linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url(/img/buildings.jpg)",
-        backgroundSize: "cover",
-        px: 16,
-      }}
-    >
+    <>
       <Box>
         <Typography variant="h1" sx={{ color: "primary.light" }}>
           ROOMEET
@@ -151,6 +140,6 @@ export default function LoginPage() {
           Create Account
         </MuiLink>
       </Box>
-    </Box>
+    </>
   );
 }

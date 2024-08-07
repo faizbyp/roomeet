@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import MainLayout from "./main-layout";
 import Wrapper from "@/common/Wrapper";
+import { Container } from "@mui/material";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,5 +14,11 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <MainLayout>{children}</MainLayout>;
+  return (
+    <MainLayout>
+      <Container component="main" maxWidth="lg" sx={{ color: "#fafafa" }}>
+        {children}
+      </Container>
+    </MainLayout>
+  );
 }
