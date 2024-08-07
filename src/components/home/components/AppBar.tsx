@@ -1,4 +1,4 @@
-import { Typography, useMediaQuery } from "@mui/material";
+import { Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Popover, Box, Avatar, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { BaseSyntheticEvent, useEffect, useState } from "react";
@@ -7,7 +7,8 @@ import { usePathname } from "next/navigation";
 import NavMenu from "@/common/NavMenu";
 
 const AppBar = ({ admin }: any) => {
-  const mobile = useMediaQuery("(max-width:480px)");
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [anchorMenu, setAnchorMenu] = useState<HTMLButtonElement | null>(null);
   const pathname = usePathname();
@@ -38,7 +39,7 @@ const AppBar = ({ admin }: any) => {
     <Box sx={{ width: "100%", zIndex: "50" }}>
       <Box
         sx={{
-          height: "3rem",
+          height: "2.5rem",
           bgcolor: "#fafafa",
           borderBottomLeftRadius: 16,
           borderBottomRightRadius: 16,

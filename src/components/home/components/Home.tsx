@@ -90,7 +90,7 @@ const Home = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", px: 24 }}>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Box sx={{ my: 16 }}>
         <Typography variant="h1" sx={{ color: "primary.main" }}>
           Welcome!{" "}
@@ -116,41 +116,43 @@ const Home = () => {
         </Typography>
         {checkin ? (
           checkin?.data.length !== 0 ? (
-            // Loading finished and data exist
-            checkin?.data.map((ci: any) => (
-              <>
-                <Box
-                  sx={{
-                    px: 24,
-                    py: 16,
-                    backgroundColor: "background.card",
-                    mt: 16,
-                    borderRadius: 4,
-                  }}
-                >
-                  <Typography variant="h2">{ci.agenda}</Typography>
-                  <Typography variant="h3">{ci.id_ruangan}</Typography>
-                  <Typography variant="h3" sx={{ fontWeight: "regular" }}>
-                    {`${ci.time_start} - ${ci.time_end} | ${moment(ci.book_date).format(
-                      "DD/MM/YYYY"
-                    )}`}
-                  </Typography>
-                  <ConfirmationDialog
-                    title="Confirm Check In"
-                    desc="Are you sure you want to check in?"
-                    action="Check In"
-                    response={() => handleCheckIn(data?.user.id_user, ci.id_book)}
-                    type="button"
+            <Grid container spacing={16}>
+              {/* Loading finished and data exist */}
+              {checkin?.data.map((ci: any) => (
+                <Grid item xs={12} sm={6} key={ci.id_book}>
+                  <Box
+                    sx={{
+                      px: 24,
+                      py: 16,
+                      backgroundColor: "background.card",
+                      mt: 16,
+                      borderRadius: 4,
+                    }}
                   >
-                    {(showDialog: any) => (
-                      <Button variant="contained" fullWidth onClick={showDialog}>
-                        Check In
-                      </Button>
-                    )}
-                  </ConfirmationDialog>
-                </Box>
-              </>
-            ))
+                    <Typography variant="h2">{ci.agenda}</Typography>
+                    <Typography variant="h3">{ci.id_ruangan}</Typography>
+                    <Typography variant="h3" sx={{ fontWeight: "regular" }}>
+                      {`${ci.time_start} - ${ci.time_end} | ${moment(ci.book_date).format(
+                        "DD/MM/YYYY"
+                      )}`}
+                    </Typography>
+                    <ConfirmationDialog
+                      title="Confirm Check In"
+                      desc="Are you sure you want to check in?"
+                      action="Check In"
+                      response={() => handleCheckIn(data?.user.id_user, ci.id_book)}
+                      type="button"
+                    >
+                      {(showDialog: any) => (
+                        <Button variant="contained" fullWidth onClick={showDialog}>
+                          Check In
+                        </Button>
+                      )}
+                    </ConfirmationDialog>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
           ) : (
             // Loading finished and data dont exist
             <Typography sx={{ color: "grey.500" }}>No upcoming meeting</Typography>
@@ -167,40 +169,42 @@ const Home = () => {
         </Typography>
         {checkout ? (
           checkout?.data.length !== 0 ? (
-            checkout?.data.map((co: any) => (
-              <>
-                <Box
-                  sx={{
-                    px: 24,
-                    py: 16,
-                    backgroundColor: "background.card",
-                    mt: 16,
-                    borderRadius: 4,
-                  }}
-                >
-                  <Typography variant="h2">{co.agenda}</Typography>
-                  <Typography variant="h3">{co.id_ruangan}</Typography>
-                  <Typography variant="h3" sx={{ fontWeight: "regular" }}>
-                    {`${co.time_start} - ${co.time_end} | ${moment(co.book_date).format(
-                      "DD/MM/YYYY"
-                    )}`}
-                  </Typography>
-                  <ConfirmationDialog
-                    title="Confirm Check Out"
-                    desc="Are you sure you want to check out?"
-                    action="Check Out"
-                    response={() => handleCheckOut(data?.user.id_user, co.id_book)}
-                    type="button"
+            <Grid container spacing={16}>
+              {checkout?.data.map((co: any) => (
+                <Grid item xs={12} sm={6} key={co.id_book}>
+                  <Box
+                    sx={{
+                      px: 24,
+                      py: 16,
+                      backgroundColor: "background.card",
+                      mt: 16,
+                      borderRadius: 4,
+                    }}
                   >
-                    {(showDialog: any) => (
-                      <Button variant="contained" fullWidth onClick={showDialog}>
-                        Check Out
-                      </Button>
-                    )}
-                  </ConfirmationDialog>
-                </Box>
-              </>
-            ))
+                    <Typography variant="h2">{co.agenda}</Typography>
+                    <Typography variant="h3">{co.id_ruangan}</Typography>
+                    <Typography variant="h3" sx={{ fontWeight: "regular" }}>
+                      {`${co.time_start} - ${co.time_end} | ${moment(co.book_date).format(
+                        "DD/MM/YYYY"
+                      )}`}
+                    </Typography>
+                    <ConfirmationDialog
+                      title="Confirm Check Out"
+                      desc="Are you sure you want to check out?"
+                      action="Check Out"
+                      response={() => handleCheckOut(data?.user.id_user, co.id_book)}
+                      type="button"
+                    >
+                      {(showDialog: any) => (
+                        <Button variant="contained" fullWidth onClick={showDialog}>
+                          Check Out
+                        </Button>
+                      )}
+                    </ConfirmationDialog>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
           ) : (
             <Typography sx={{ color: "grey.500" }}>Please check in first</Typography>
           )
@@ -216,50 +220,59 @@ const Home = () => {
         </Typography>
         {books ? (
           books?.data.length !== 0 ? (
-            books?.data.map((book: any) => (
-              <Box
-                sx={{ px: 24, py: 16, backgroundColor: "background.card", mb: 16, borderRadius: 4 }}
-                key={book.id_book}
-              >
-                <Grid container>
-                  <Grid item xs={8}>
-                    <Typography variant="h2">{book.agenda}</Typography>
-                    <Typography variant="h3">{book.id_room}</Typography>
-                    <Typography variant="h4" sx={{ fontWeight: "regular" }}>
-                      {`${book.time_start} - ${book.time_end} | ${moment(book.book_date).format(
-                        "DD/MM/YYYY"
-                      )}`}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Typography
-                      align="center"
-                      sx={[
-                        {
-                          color: "black",
-                          borderRadius: 2,
-                        },
-                        book.approval === "pending" && {
-                          backgroundColor: "warning.main",
-                        },
-                        book.approval === "rejected" && {
-                          backgroundColor: "error.main",
-                        },
-                        book.approval === "approved" && {
-                          backgroundColor: "success.main",
-                        },
-                        book.approval === "canceled" && {
-                          backgroundColor: "black",
-                          color: "#fafafa",
-                        },
-                      ]}
-                    >
-                      {book.approval}
-                    </Typography>
-                  </Grid>
+            <Grid container spacing={16}>
+              {books?.data.map((book: any) => (
+                <Grid item xs={12} sm={6} key={book.id_book}>
+                  <Box
+                    sx={{
+                      px: 24,
+                      py: 16,
+                      backgroundColor: "background.card",
+                      mb: 16,
+                      borderRadius: 4,
+                    }}
+                  >
+                    <Grid container>
+                      <Grid item xs={8}>
+                        <Typography variant="h2">{book.agenda}</Typography>
+                        <Typography variant="h3">{book.id_room}</Typography>
+                        <Typography variant="h4" sx={{ fontWeight: "regular" }}>
+                          {`${book.time_start} - ${book.time_end} | ${moment(book.book_date).format(
+                            "DD/MM/YYYY"
+                          )}`}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography
+                          align="center"
+                          sx={[
+                            {
+                              color: "black",
+                              borderRadius: 2,
+                            },
+                            book.approval === "pending" && {
+                              backgroundColor: "warning.main",
+                            },
+                            book.approval === "rejected" && {
+                              backgroundColor: "error.main",
+                            },
+                            book.approval === "approved" && {
+                              backgroundColor: "success.main",
+                            },
+                            book.approval === "canceled" && {
+                              backgroundColor: "black",
+                              color: "#fafafa",
+                            },
+                          ]}
+                        >
+                          {book.approval}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Box>
                 </Grid>
-              </Box>
-            ))
+              ))}
+            </Grid>
           ) : (
             <Typography sx={{ color: "grey.500" }}>No meeting</Typography>
           )
