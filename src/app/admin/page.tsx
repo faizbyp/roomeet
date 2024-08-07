@@ -81,6 +81,7 @@ const AdminPage = () => {
               <MenuItem value="pending">Pending</MenuItem>
               <MenuItem value="approved">Approved</MenuItem>
               <MenuItem value="rejected">Rejected</MenuItem>
+              <MenuItem value="canceled">Canceled</MenuItem>
             </Select>
           </FormControl>
         </Box>
