@@ -73,8 +73,8 @@ export function CardListBook({
   };
 
   return (
-    <>
-      <Box sx={{ px: 24, py: 24, bgcolor: "background.card", mb: 16, borderRadius: 4 }}>
+    <Grid item xs={12} sm={6}>
+      <Box sx={{ px: 24, py: 24, bgcolor: "background.card", borderRadius: 4 }}>
         <Grid container>
           <Grid item xs={8}>
             <Typography variant="h3" sx={{ color: "primary.light" }}>
@@ -160,7 +160,7 @@ export function CardListBook({
           </Grid>
         </Grid>
       </Box>
-    </>
+    </Grid>
   );
 }
 
@@ -198,15 +198,15 @@ export function CardsListBook({ date }: any) {
   console.log("TANGGAL", date);
 
   return (
-    <>
-      <Box sx={{ px: 24 }}>
+    <Box sx={{ px: 16 }}>
+      <Grid container spacing={16}>
         {!isLoading &&
           agendasData &&
           agendasData.map((item) => (
             <CardListBook {...item} mutate={mutate} key={item.id_book + item.id_room} />
           ))}
-      </Box>
+      </Grid>
       {isLoading && !agendasData && <CardsListBookSkeleton />}
-    </>
+    </Box>
   );
 }
