@@ -111,6 +111,10 @@ export function CardListBook({
                 approval === "approved" && {
                   backgroundColor: "success.main",
                 },
+                approval === "canceled" && {
+                  backgroundColor: "black",
+                  color: "#fafafa",
+                },
               ]}
             >
               {approval}

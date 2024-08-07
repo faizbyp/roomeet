@@ -252,6 +252,10 @@ const Home = () => {
                         book.approval === "approved" && {
                           backgroundColor: "success.main",
                         },
+                        book.approval === "canceled" && {
+                          backgroundColor: "black",
+                          color: "#fafafa",
+                        },
                       ]}
                     >
                       {book.approval}

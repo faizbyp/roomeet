@@ -120,6 +120,10 @@ const AdminPage = () => {
                   book.approval === "approved" && {
                     backgroundColor: "success.main",
                   },
+                  book.approval === "canceled" && {
+                    backgroundColor: "black",
+                    color: "#fafafa",
+                  },
                 ]}
               >
                 <Typography>Status: {book.approval}</Typography>

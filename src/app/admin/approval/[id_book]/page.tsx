@@ -47,6 +47,9 @@ const Approval = ({ params }: { params: { id_book: string } }) => {
               book.approval === "approved" && {
                 color: "success.main",
               },
+              book.approval === "canceled" && {
+                color: "grey.500",
+              },
             ]}
           >{`Approval - ${book.approval}`}</Typography>
           <Typography>{book.id_ticket}</Typography>
@@ -78,9 +81,9 @@ const Approval = ({ params }: { params: { id_book: string } }) => {
               <Typography>{book.reject_note}</Typography>
             </Box>
           )}
-          {book.approval === "approved" || book.approval === "rejected" ? null : (
+          {book.approval === "pending" ? (
             <ApprovalAction id_book={params.id_book} props={book} />
-          )}
+          ) : null}
         </>
       ) : (
         <Skeleton variant="rounded" width="100%" height={96} sx={{ bgcolor: "grey.700" }} />
