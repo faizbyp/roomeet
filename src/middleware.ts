@@ -9,7 +9,8 @@ export default withAuth(
 
     if (
       req.nextUrl.pathname.startsWith("/dashboard") &&
-      req.nextauth.token?.role_id !== process.env.NEXT_PUBLIC_USER_ID
+      req.nextauth.token?.role_id !== process.env.NEXT_PUBLIC_USER_ID &&
+      req.nextauth.token?.role_id !== process.env.NEXT_PUBLIC_ADMIN_ID
     ) {
       console.log("Unauthorized");
       return NextResponse.rewrite(new URL("/login", req.url));
