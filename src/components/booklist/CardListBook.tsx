@@ -42,7 +42,7 @@ interface AgendaDatas {
   status: string;
 }
 
-export function CardListBook({
+function CardListBook({
   agendaTitle,
   startTime,
   endTime,
