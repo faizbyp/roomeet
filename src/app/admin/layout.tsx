@@ -3,6 +3,7 @@
 import WrapperAdmin from "@/common/WrapperAdmin";
 import { SWRConfig } from "swr";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
+import { Container } from "@mui/material";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const axiosAuth = useAxiosAuth();
@@ -12,7 +13,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <SWRConfig value={swrConfig}>
-      <WrapperAdmin>{children}</WrapperAdmin>
+      <Container component="section" maxWidth="lg">
+        <WrapperAdmin>{children}</WrapperAdmin>
+      </Container>
     </SWRConfig>
   );
 }
