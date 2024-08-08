@@ -82,6 +82,7 @@ const AdminPage = () => {
               <MenuItem value="approved">Approved</MenuItem>
               <MenuItem value="rejected">Rejected</MenuItem>
               <MenuItem value="canceled">Canceled</MenuItem>
+              <MenuItem value="finished">Finished</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -123,6 +124,10 @@ const AdminPage = () => {
                   },
                   book.approval === "canceled" && {
                     backgroundColor: "black",
+                    color: "#fafafa",
+                  },
+                  book.approval === "finished" && {
+                    backgroundColor: "grey.500",
                     color: "#fafafa",
                   },
                 ]}

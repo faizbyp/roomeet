@@ -44,7 +44,7 @@ const Home = () => {
 
   const ciUrl = `/book/checkin/${data?.user.id_user}`;
   const coUrl = `/book/checkout/${data?.user.id_user}`;
-  const bookUrl = `/book/show?id_user=${data?.user.id_user}&limit=2`;
+  const bookUrl = `/book/show?id_user=${data?.user.id_user}&active=T&limit=2`;
 
   const { data: checkin, mutate: ciMutate } = useSWR(data && ciUrl, {
     fallback: { ciUrl: [] },

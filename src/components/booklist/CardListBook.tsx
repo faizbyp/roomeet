@@ -25,6 +25,7 @@ interface CardListBookProp {
   id_room: string;
   approval: string;
   mutate: any;
+  is_active: string;
 }
 
 interface AgendaDatas {
@@ -47,7 +48,7 @@ function CardListBook({
   startTime,
   endTime,
   bookDate,
-  status,
+  is_active,
   room,
   id_book,
   id_ticket,
@@ -115,48 +116,54 @@ function CardListBook({
                   backgroundColor: "black",
                   color: "#fafafa",
                 },
+                approval === "finished" && {
+                  backgroundColor: "grey.500",
+                  color: "#fafafa",
+                },
               ]}
             >
               {approval}
             </Typography>
-            <Box sx={{ display: "flex", gap: 8 }}>
-              <Link href={`/dashboard/book/${id_room}/${id_book}`}>
-                <IconButton
-                  sx={{
-                    bgcolor: "secondary.main",
-                    color: "#202020",
-                    "&:hover": {
-                      bgcolor: "secondary.light",
-                    },
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
-              </Link>
-              <ConfirmationDialog
-                title="Submit Book"
-                desc="Are you sure you want to delete?"
-                action="Delete"
-                response={() => handleDelete(id_book)}
-                type="button"
-                color="error"
-              >
-                {(showDialog: any) => (
+            {(approval === "pending" || approval === "approved") && is_active === "T" && (
+              <Box sx={{ display: "flex", gap: 8 }}>
+                <Link href={`/dashboard/book/${id_room}/${id_book}`}>
                   <IconButton
                     sx={{
-                      bgcolor: "error.main",
-                      color: "#fafafa",
+                      bgcolor: "secondary.main",
+                      color: "#202020",
                       "&:hover": {
-                        bgcolor: "error.light",
+                        bgcolor: "secondary.light",
                       },
                     }}
-                    onClick={showDialog}
                   >
-                    <ClearIcon />
+                    <EditIcon />
                   </IconButton>
-                )}
-              </ConfirmationDialog>
-            </Box>
+                </Link>
+                <ConfirmationDialog
+                  title="Submit Book"
+                  desc="Are you sure you want to delete?"
+                  action="Delete"
+                  response={() => handleDelete(id_book)}
+                  type="button"
+                  color="error"
+                >
+                  {(showDialog: any) => (
+                    <IconButton
+                      sx={{
+                        bgcolor: "error.main",
+                        color: "#fafafa",
+                        "&:hover": {
+                          bgcolor: "error.light",
+                        },
+                      }}
+                      onClick={showDialog}
+                    >
+                      <ClearIcon />
+                    </IconButton>
+                  )}
+                </ConfirmationDialog>
+              </Box>
+            )}
           </Grid>
         </Grid>
       </Box>
@@ -164,9 +171,9 @@ function CardListBook({
   );
 }
 
-export function CardsListBook({ date }: any) {
+export function CardsListBook({ date, status }: any) {
   const { data } = useSession();
-  const url = `/book/show?id_user=${data?.user?.id_user}&book_date=${date}`;
+  const url = `/book/show?id_user=${data?.user?.id_user}&book_date=${date}&status=${status}`;
   const {
     data: agendas,
     error,
@@ -191,6 +198,7 @@ export function CardsListBook({ date }: any) {
         id_ticket: item.id_ticket,
         id_room: item.id_room,
         approval: item.approval,
+        is_active: item.is_active,
       }))
     : [];
   console.log(agendas);
