@@ -101,69 +101,73 @@ const AdminPage = () => {
         {!books ? (
           <Skeleton variant="rounded" width="100%" height={96} sx={{ bgcolor: "grey.700" }} />
         ) : (
-          books?.data.map((book: any) => (
-            <Box key={book.id} sx={{ pb: 24, bgcolor: "background.card", borderRadius: 4 }}>
-              <Box
-                sx={[
-                  {
-                    color: "black",
-                    mb: 16,
-                    px: 12,
-                    py: 8,
-                    borderTopLeftRadius: 16,
-                    borderTopRightRadius: 16,
-                  },
-                  book.approval === "pending" && {
-                    backgroundColor: "warning.main",
-                  },
-                  book.approval === "rejected" && {
-                    backgroundColor: "error.main",
-                  },
-                  book.approval === "approved" && {
-                    backgroundColor: "success.main",
-                  },
-                  book.approval === "canceled" && {
-                    backgroundColor: "black",
-                    color: "#fafafa",
-                  },
-                  book.approval === "finished" && {
-                    backgroundColor: "grey.500",
-                    color: "#fafafa",
-                  },
-                ]}
-              >
-                <Typography>Status: {book.approval}</Typography>
-              </Box>
-              <Grid container spacing={8} sx={{ px: 24 }}>
-                <Grid item xs={7}>
-                  <Typography>{book.id_ticket}</Typography>
-                  <Typography variant="h3" sx={{ color: "primary.light" }}>
-                    {book.agenda}
-                  </Typography>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 8 }}>
-                    <PersonIcon />
-                    <Typography>{book.username}</Typography>
+          <Grid container spacing={16}>
+            {books?.data.map((book: any) => (
+              <Grid item xs={12} md={6} key={book.id}>
+                <Box sx={{ pb: 24, bgcolor: "background.card", borderRadius: 4 }}>
+                  <Box
+                    sx={[
+                      {
+                        color: "black",
+                        mb: 16,
+                        px: 12,
+                        py: 8,
+                        borderTopLeftRadius: 16,
+                        borderTopRightRadius: 16,
+                      },
+                      book.approval === "pending" && {
+                        backgroundColor: "warning.main",
+                      },
+                      book.approval === "rejected" && {
+                        backgroundColor: "error.main",
+                      },
+                      book.approval === "approved" && {
+                        backgroundColor: "success.main",
+                      },
+                      book.approval === "canceled" && {
+                        backgroundColor: "black",
+                        color: "#fafafa",
+                      },
+                      book.approval === "finished" && {
+                        backgroundColor: "grey.500",
+                        color: "#fafafa",
+                      },
+                    ]}
+                  >
+                    <Typography>Status: {book.approval}</Typography>
                   </Box>
-                  <Typography sx={{ color: "error.light" }}>
-                    {book.reject_note && `${book.reject_note}`}
-                  </Typography>
-                </Grid>
-                <Grid item xs={5} sx={{ textAlign: "right" }}>
-                  <Typography>{book.id_ruangan}</Typography>
-                  <Typography>{moment(book.book_date).format("DD-MM-YYYY")}</Typography>
-                  <Typography>{`${book.time_start.slice(0, 5)} - ${book.time_end.slice(
-                    0,
-                    5
-                  )}`}</Typography>
-                  <Box sx={{ textAlign: "right", mt: 24 }}>
-                    <Link href={`/admin/approval/${book.id_book}`}>
-                      <Button variant="contained">Details</Button>
-                    </Link>
-                  </Box>
-                </Grid>
+                  <Grid container spacing={8} sx={{ px: 24 }}>
+                    <Grid item xs={7}>
+                      <Typography>{book.id_ticket}</Typography>
+                      <Typography variant="h3" sx={{ color: "primary.light" }}>
+                        {book.agenda}
+                      </Typography>
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 8 }}>
+                        <PersonIcon />
+                        <Typography>{book.username}</Typography>
+                      </Box>
+                      <Typography sx={{ color: "error.light" }}>
+                        {book.reject_note && `${book.reject_note}`}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={5} sx={{ textAlign: "right" }}>
+                      <Typography>{book.id_ruangan}</Typography>
+                      <Typography>{moment(book.book_date).format("DD-MM-YYYY")}</Typography>
+                      <Typography>{`${book.time_start.slice(0, 5)} - ${book.time_end.slice(
+                        0,
+                        5
+                      )}`}</Typography>
+                      <Box sx={{ textAlign: "right", mt: 24 }}>
+                        <Link href={`/admin/approval/${book.id_book}`}>
+                          <Button variant="contained">Details</Button>
+                        </Link>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Box>
               </Grid>
-            </Box>
-          ))
+            ))}
+          </Grid>
         )}
       </Box>
     </>
