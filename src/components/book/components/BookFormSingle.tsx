@@ -2,7 +2,16 @@
 
 import DatePickerComp from "@/common/DatePicker";
 import { useForm } from "react-hook-form";
-import { Alert, Box, Button, FormControlLabel, Radio, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  FormControlLabel,
+  Grid,
+  Radio,
+  TextField,
+  Typography,
+} from "@mui/material";
 import TimePickerComp from "@/common/TimePicker";
 import { CardRooms } from "./CardRoom";
 import { TextFieldComp } from "@/common/TextField";
@@ -222,213 +231,230 @@ export default function BookFormSingle({ editData }: { editData: any }) {
 
   return (
     <>
-      {penalty && <Alert severity="error">{penalty}</Alert>}
+      <Typography variant="h1" sx={{ color: "primary.light" }}>
+        Add New Book
+      </Typography>
       <form>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 8, p: 24 }}>
-          <DatePickerComp
-            name="dateBook"
-            label="Booking Date"
-            control={form.control}
-            rules={{
-              required: "Field required",
-              validate: {
-                minDate: (value: any) =>
-                  new Date(value).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) ||
-                  "Booking date can't be in the past",
-                max30Days: (value: any) => {
-                  const diffDays = moment(value).diff(moment(), "days");
-                  if (diffDays > 30) {
-                    return "Date must be within 30 days from today";
-                  }
-                },
-              },
-            }}
-            onChange={(value: any) => {
-              setChanged(true);
-              form.setValue("dateBook", value);
-            }}
-          />
-          <Box sx={{ display: "flex", gap: 8 }}>
-            <TimePickerComp
-              name="startTime"
-              label="Start Time"
-              control={form.control}
-              rules={{
-                required: "Field required",
-                validate: {
-                  minDate: (value: any) => {
-                    if (
-                      form.getValues("dateBook").setHours(0, 0, 0, 0) ===
-                      new Date().setHours(0, 0, 0, 0)
-                    ) {
-                      return (
-                        new Date(value).getHours() >= new Date().getHours() ||
-                        "Start time can't be in the past"
-                      );
-                    }
-                  },
-                },
-              }}
-              onChangeOvr={(value) => {
-                const tempStartTime = value;
-                const tempHour = moment(endTime).diff(moment(value), "hours");
-                const tempMinute = moment(endTime).diff(moment(value), "minutes") % 60;
-
-                setStartTime(tempStartTime);
-                setHour(tempHour);
-                setMinute(tempMinute);
-                setChanged(true);
-              }}
-            />
-            <TimePickerComp
-              name="endTime"
-              label="End Time"
-              control={form.control}
-              rules={{
-                required: "Field required",
-              }}
-              onChangeOvr={(value) => {
-                const tempEndTime = value;
-                const tempHour = moment(value).diff(moment(startTime), "hours");
-                const tempMinute = moment(value).diff(moment(startTime), "minutes") % 60;
-
-                setEndTime(tempEndTime);
-                setHour(tempHour);
-                setMinute(tempMinute);
-                setChanged(true);
-              }}
-            />
-            <input {...register("ruangan")} hidden={true} />
-          </Box>
-          <Box sx={{ display: "flex", gap: 8 }}>
-            <Box sx={{ display: "flex", gap: 8 }}>
-              <TextField
-                disabled
-                type="number"
-                value={hour}
-                label="Hour"
-                variant="outlined"
-                error={!!formState.errors.hour}
-                helperText={formState.errors.hour ? formState.errors.hour.message : ""}
-                {...register("hour", {
-                  min: {
-                    value: 0,
-                    message: "Duration error",
-                  },
-                })}
-              />
-              <TextField
-                disabled
-                type="number"
-                value={minute}
-                label="Minute"
-                variant="outlined"
-                error={!!formState.errors.minute}
-                helperText={formState.errors.minute ? formState.errors.minute.message : ""}
-                {...register("minute", {
+        <Grid container spacing={16}>
+          <Grid item xs={12} md={6}>
+            {penalty && <Alert severity="error">{penalty}</Alert>}
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 8, py: 24 }}>
+              <DatePickerComp
+                name="dateBook"
+                label="Booking Date"
+                control={form.control}
+                rules={{
+                  required: "Field required",
                   validate: {
-                    minimum: (value: any) => {
-                      if (form.getValues("hour") === 0) {
-                        return value > 0 || "Duration error";
-                      } else {
-                        return value >= 0 || "Duration error";
+                    minDate: (value: any) =>
+                      new Date(value).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) ||
+                      "Booking date can't be in the past",
+                    max30Days: (value: any) => {
+                      const diffDays = moment(value).diff(moment(), "days");
+                      if (diffDays > 30) {
+                        return "Date must be within 30 days from today";
                       }
                     },
                   },
-                })}
-              />
-            </Box>
-            <NumericFieldComp
-              control={form.control}
-              name="capacity"
-              label="Capacity"
-              type="number"
-              min={0}
-              max={100}
-              rules={{
-                required: "Insert capacity",
-                min: { value: 1, message: "Minimum value 1" },
-              }}
-              onChangeOvr={() => setChanged(true)}
-            />
-            <input {...register("ruangan", { required: "Please input" })} hidden={true} />
-          </Box>
-          <RadioComp
-            name="category"
-            label="Category"
-            rules={{ required: "Select category" }}
-            control={form.control}
-            onChangeOvr={() => setChanged(true)}
-          >
-            <FormControlLabel value="INT" control={<Radio />} label="Internal" />
-            <FormControlLabel value="EXT" control={<Radio />} label="External" />
-          </RadioComp>
-          <Button variant="outlined" onClick={() => checkAvail(form.getValues())}>
-            Check Available Room
-          </Button>
-          {available && (
-            <>
-              <Typography>Rooms:</Typography>
-              <Suspense fallback={<CardsBookSkeleton />}>
-                <CardRooms
-                  selectedId={roomId}
-                  clickCard={selectRoom}
-                  errorData={!!formState.errors?.ruangan}
-                  filterId={rooms}
-                />
-              </Suspense>
-              <TextFieldComp
-                control={form.control}
-                name="agenda"
-                label="Agenda"
-                rules={{
-                  required: "Field required",
-                  maxLength: {
-                    value: 50,
-                    message: "Please input less than 50 character",
-                  },
+                }}
+                onChange={(value: any) => {
+                  setChanged(true);
+                  form.setValue("dateBook", value);
                 }}
               />
-              <TextFieldComp
-                multiline={true}
-                rows={5}
-                control={form.control}
-                name="remark"
-                label="Remark"
-              />
-              {loading ? (
-                <Button type="submit" variant="contained" disabled>
-                  Loading...
-                </Button>
-              ) : (
-                <>
-                  <ConfirmationDialog
-                    title="Submit Book"
-                    desc="Are you sure you want to submit?"
-                    action="Submit"
-                    response={handleSubmit(onSubmit)}
-                    type="submit"
-                  >
-                    {(showDialog: any) => (
-                      <Button
-                        onClick={async () => {
-                          const valid = await form.trigger();
-                          if (valid) {
-                            showDialog();
+              <Box sx={{ display: "flex", gap: 8 }}>
+                <TimePickerComp
+                  name="startTime"
+                  label="Start Time"
+                  control={form.control}
+                  rules={{
+                    required: "Field required",
+                    validate: {
+                      minDate: (value: any) => {
+                        if (
+                          form.getValues("dateBook").setHours(0, 0, 0, 0) ===
+                          new Date().setHours(0, 0, 0, 0)
+                        ) {
+                          return (
+                            new Date(value).getHours() >= new Date().getHours() ||
+                            "Start time can't be in the past"
+                          );
+                        }
+                      },
+                    },
+                  }}
+                  onChangeOvr={(value) => {
+                    const tempStartTime = value;
+                    const tempHour = moment(endTime).diff(moment(value), "hours");
+                    const tempMinute = moment(endTime).diff(moment(value), "minutes") % 60;
+
+                    setStartTime(tempStartTime);
+                    setHour(tempHour);
+                    setMinute(tempMinute);
+                    setChanged(true);
+                  }}
+                />
+                <TimePickerComp
+                  name="endTime"
+                  label="End Time"
+                  control={form.control}
+                  rules={{
+                    required: "Field required",
+                  }}
+                  onChangeOvr={(value) => {
+                    const tempEndTime = value;
+                    const tempHour = moment(value).diff(moment(startTime), "hours");
+                    const tempMinute = moment(value).diff(moment(startTime), "minutes") % 60;
+
+                    setEndTime(tempEndTime);
+                    setHour(tempHour);
+                    setMinute(tempMinute);
+                    setChanged(true);
+                  }}
+                />
+                <input {...register("ruangan")} hidden={true} />
+              </Box>
+              <Box sx={{ display: "flex", gap: 8 }}>
+                <Box sx={{ display: "flex", gap: 8 }}>
+                  <TextField
+                    disabled
+                    type="number"
+                    value={hour}
+                    label="Hour"
+                    variant="outlined"
+                    error={!!formState.errors.hour}
+                    helperText={formState.errors.hour ? formState.errors.hour.message : ""}
+                    {...register("hour", {
+                      min: {
+                        value: 0,
+                        message: "Duration error",
+                      },
+                    })}
+                  />
+                  <TextField
+                    disabled
+                    type="number"
+                    value={minute}
+                    label="Minute"
+                    variant="outlined"
+                    error={!!formState.errors.minute}
+                    helperText={formState.errors.minute ? formState.errors.minute.message : ""}
+                    {...register("minute", {
+                      validate: {
+                        minimum: (value: any) => {
+                          if (form.getValues("hour") === 0) {
+                            return value > 0 || "Duration error";
+                          } else {
+                            return value >= 0 || "Duration error";
                           }
-                        }}
-                        variant="contained"
-                        disabled={changed}
-                      >
-                        {changed ? "Please check room" : "Submit"}
-                      </Button>
-                    )}
-                  </ConfirmationDialog>
-                </>
-              )}
-            </>
-          )}
-        </Box>
+                        },
+                      },
+                    })}
+                  />
+                </Box>
+                <NumericFieldComp
+                  control={form.control}
+                  name="capacity"
+                  label="Capacity"
+                  type="number"
+                  min={0}
+                  max={100}
+                  rules={{
+                    required: "Insert capacity",
+                    min: { value: 1, message: "Minimum value 1" },
+                  }}
+                  onChangeOvr={() => setChanged(true)}
+                />
+                <input {...register("ruangan", { required: "Please input" })} hidden={true} />
+              </Box>
+              <RadioComp
+                name="category"
+                label="Category"
+                rules={{ required: "Select category" }}
+                control={form.control}
+                onChangeOvr={() => setChanged(true)}
+              >
+                <FormControlLabel value="INT" control={<Radio />} label="Internal" />
+                <FormControlLabel value="EXT" control={<Radio />} label="External" />
+              </RadioComp>
+              <Button
+                variant="outlined"
+                onClick={() => checkAvail(form.getValues())}
+                disabled={!!penalty}
+              >
+                Check Available Room
+              </Button>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            {available ? (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 8, py: 24 }}>
+                <Typography>Rooms:</Typography>
+                <Suspense fallback={<CardsBookSkeleton />}>
+                  <CardRooms
+                    selectedId={roomId}
+                    clickCard={selectRoom}
+                    errorData={!!formState.errors?.ruangan}
+                    filterId={rooms}
+                  />
+                </Suspense>
+                <TextFieldComp
+                  control={form.control}
+                  name="agenda"
+                  label="Agenda"
+                  rules={{
+                    required: "Field required",
+                    maxLength: {
+                      value: 50,
+                      message: "Please input less than 50 character",
+                    },
+                  }}
+                />
+                <TextFieldComp
+                  multiline={true}
+                  rows={5}
+                  control={form.control}
+                  name="remark"
+                  label="Remark"
+                />
+                {loading ? (
+                  <Button type="submit" variant="contained" disabled>
+                    Loading...
+                  </Button>
+                ) : (
+                  <>
+                    <ConfirmationDialog
+                      title="Submit Book"
+                      desc="Are you sure you want to submit?"
+                      action="Submit"
+                      response={handleSubmit(onSubmit)}
+                      type="submit"
+                    >
+                      {(showDialog: any) => (
+                        <Button
+                          onClick={async () => {
+                            const valid = await form.trigger();
+                            if (valid) {
+                              showDialog();
+                            }
+                          }}
+                          variant="contained"
+                          disabled={changed}
+                        >
+                          {changed ? "Please check room" : "Submit"}
+                        </Button>
+                      )}
+                    </ConfirmationDialog>
+                  </>
+                )}
+              </Box>
+            ) : (
+              <Typography sx={{ py: 24, color: "grey.500", textAlign: "center" }}>
+                Please check available room first
+              </Typography>
+            )}
+          </Grid>
+        </Grid>
       </form>
     </>
   );

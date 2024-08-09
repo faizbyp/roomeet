@@ -2,19 +2,22 @@
 
 import NavButton from "./NavButton";
 import AppBar from "@/components/home/components/AppBar";
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, Container, useMediaQuery, useTheme } from "@mui/material";
 
 interface WrapperChild {
   children: React.ReactNode;
 }
 
 const Wrapper = ({ children }: WrapperChild) => {
-  const mobile = useMediaQuery("(max-width:480px)");
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
       <AppBar />
-      <Box sx={{ mt: 8 }}>{children}</Box>
+      <Container maxWidth="md" sx={{ my: 8, px: 16 }}>
+        {children}
+      </Container>
       {mobile && <NavButton />}
     </>
   );

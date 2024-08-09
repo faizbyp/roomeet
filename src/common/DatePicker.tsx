@@ -27,6 +27,7 @@ export default function DatePickerComp({ name, label, control, rules, onChange }
             textField: { error: !!error, helperText: error?.message },
           }}
           disablePast
+          format="dd/MM/yyyy"
         />
       )}
     ></Controller>

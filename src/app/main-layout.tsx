@@ -12,28 +12,18 @@ import { Toaster } from "react-hot-toast";
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <html>
-      <body style={{ backgroundColor: "#202020", color: "#fafafa" }}>
+      <body>
         <AuthProvider>
           <SWRegProvider>
             <StyledEngineProvider injectFirst>
               <ThemeProvider theme={theme}>
                 <CssBaseline />
-                <Box
-                  sx={{
-                    maxWidth: "480px",
-                    mx: "auto",
-                    px: 8,
-                    minHeight: "100svh",
-                    position: "relative",
-                  }}
-                >
-                  <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <Toaster />
-                      {children}
-                    </LocalizationProvider>
-                  </AppRouterCacheProvider>
-                </Box>
+                <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <Toaster />
+                    {children}
+                  </LocalizationProvider>
+                </AppRouterCacheProvider>
               </ThemeProvider>
             </StyledEngineProvider>
           </SWRegProvider>

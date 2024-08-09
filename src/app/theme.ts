@@ -78,8 +78,8 @@ const palette = {
   },
   background: {
     paper: "#fafafa",
-    default: GREY[100],
-    neutral: GREY[200],
+    default: GREY[900],
+    neutral: GREY[800],
     card: GREY[700],
   },
   action: {

@@ -50,6 +50,9 @@ const Approval = ({ params }: { params: { id_book: string } }) => {
               book.approval === "canceled" && {
                 color: "grey.500",
               },
+              book.approval === "finished" && {
+                color: "grey.500",
+              },
             ]}
           >{`Approval - ${book.approval}`}</Typography>
           <Typography>{book.id_ticket}</Typography>

@@ -128,19 +128,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 32,
-        justifyContent: "center",
-        minHeight: "100svh",
-        py: 16,
-        background: "linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url(/img/buildings.jpg)",
-        backgroundSize: "cover",
-        px: 16,
-      }}
-    >
+    <>
       <Box>
         <Typography variant="h1" sx={{ color: "primary.light" }}>
           ROOMEET
@@ -255,6 +243,6 @@ export default function RegisterPage() {
           </Box>
         </Box>
       )}
-    </Box>
+    </>
   );
 }

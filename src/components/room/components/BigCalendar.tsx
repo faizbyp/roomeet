@@ -4,6 +4,7 @@ import id from "date-fns/locale/id";
 import { useCallback, useMemo, useState } from "react";
 import ToolbarCust from "./ToolbarRBCCust";
 import eventMock from "../../../mock/events";
+import { Box } from "@mui/material";
 
 const locales = {
   id: id,
@@ -42,7 +43,7 @@ export default function BigCalendar({ events }: { events?: any }) {
   const onView = useCallback((newView: any) => setView(newView), [setView]);
 
   return (
-    <div className="my-4">
+    <Box sx={{ my: 24 }}>
       <Calendar
         startAccessor="start"
         endAccessor="end"
@@ -58,6 +59,6 @@ export default function BigCalendar({ events }: { events?: any }) {
         formats={format}
         events={events}
       />
-    </div>
+    </Box>
   );
 }

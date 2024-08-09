@@ -1,16 +1,31 @@
 import CardEvent from "@/common/CardEvent";
 import TitleRoom from "./TitleRoom";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import BigCalendar from "./BigCalendar";
 import { axiosAuth } from "@/lib/axios";
 import useSWR from "swr";
+import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 
 const Room = () => {
   const [room, setRoom] = useState("");
   const [events, setEvents] = useState();
+  const [rooms, setRooms] = useState<any>();
+  const axiosAuth = useAxiosAuth();
 
-  const url = `/book?room=${room}`;
+  let url = "";
+  if (room) {
+    url = `/book?room=${room}`;
+  }
+
   const {
     data: books,
     error,
@@ -20,6 +35,12 @@ const Room = () => {
   });
 
   useEffect(() => {
+    const getRooms = async () => {
+      const get = await axiosAuth.get("/room");
+      setRooms(get.data);
+    };
+    getRooms();
+
     if (books) {
       setEvents(
         books.data.map((item: any) => {
@@ -38,7 +59,7 @@ const Room = () => {
         })
       );
     }
-  }, [books]);
+  }, [books, axiosAuth]);
 
   const handleRoom = (e: any) => {
     const r = e.target.value;
@@ -48,28 +69,39 @@ const Room = () => {
 
   return (
     <>
-      <div className="px-4 mt-4">
-        <div className="flex justify-end">
-          {/* <TitleRoom name={"ROOM 12"} /> */}
+      <Box sx={{ display: "flex", justifyContent: "end", mt: 24 }}>
+        {rooms ? (
           <FormControl fullWidth>
-            <InputLabel>Room</InputLabel>
+            <InputLabel>Select Room</InputLabel>
             <Select defaultValue="" value={room} label="Approval" onChange={handleRoom}>
-              <MenuItem value="">---</MenuItem>
-              <MenuItem value="ROOM001">ROOM001</MenuItem>
-              <MenuItem value="ROOM002">ROOM002</MenuItem>
-              <MenuItem value="ROOM003">ROOM003</MenuItem>
-              <MenuItem value="ROOM004">ROOM004</MenuItem>
-              <MenuItem value="ROOM005">ROOM005</MenuItem>
+              {rooms.map((room: any) => (
+                <MenuItem key={room.id} value={room.id_ruangan}>
+                  {room.nama}
+                </MenuItem>
+              ))}
+              {/* <MenuItem value="ROOM001">ROOM001</MenuItem>
+            <MenuItem value="ROOM002">ROOM002</MenuItem>
+            <MenuItem value="ROOM003">ROOM003</MenuItem>
+            <MenuItem value="ROOM004">ROOM004</MenuItem>
+            <MenuItem value="ROOM005">ROOM005</MenuItem> */}
             </Select>
           </FormControl>
-        </div>
-        {isLoading && events ? <p>Loading...</p> : <BigCalendar events={events} />}
-        {error && <p>Error fetching data</p>}
-        {/* <CalendarEvent /> */}
-        <CardEvent />
-        <CardEvent />
-        <p className="text-center text-neutral-100 pt-2">View More</p>
-      </div>
+        ) : (
+          <Skeleton variant="rounded" width="100%" height={64} sx={{ bgcolor: "grey.700" }} />
+        )}
+      </Box>
+      {isLoading && events ? (
+        <Skeleton
+          variant="rounded"
+          width="100%"
+          height={128}
+          sx={{ bgcolor: "grey.700", mt: 48 }}
+        />
+      ) : (
+        <BigCalendar events={events} />
+      )}
+      {error && <Typography align="center">Error fetching data</Typography>}
+      {/* <CardEvent /> */}
     </>
   );
 };

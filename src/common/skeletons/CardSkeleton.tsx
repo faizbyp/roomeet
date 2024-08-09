@@ -12,7 +12,7 @@ export function CardBookSkeleton() {
   );
 }
 
-function CardListBookSkeleton() {
+export function CardListBookSkeleton() {
   return (
     <div className="h-36 rounded-xl bg-neutral-500 px-4 py-4 mx-6 my-2 flex animate-pulse">
       <div className="w-full">

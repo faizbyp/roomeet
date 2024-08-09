@@ -3,6 +3,7 @@
 import Wrapper from "@/common/Wrapper";
 import { SWRConfig } from "swr";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
+import { Container } from "@mui/material";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const axiosAuth = useAxiosAuth();
@@ -12,7 +13,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <SWRConfig value={swrConfig}>
-      <Wrapper>{children}</Wrapper>
+      <Container component="section" maxWidth="lg">
+        <Wrapper>{children}</Wrapper>
+      </Container>
     </SWRConfig>
   );
 }
