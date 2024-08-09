@@ -48,7 +48,7 @@ const Room = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "end", mt: 4 }}>
+      <Box sx={{ display: "flex", justifyContent: "end", mt: 24 }}>
         <FormControl fullWidth>
           <InputLabel>Room</InputLabel>
           <Select defaultValue="ROOM001" value={room} label="Approval" onChange={handleRoom}>
