@@ -13,6 +13,7 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 
 const nextConfig = {
   swcMinify: true,
+  output: "standalone",
   images: {
     remotePatterns: [
       {
