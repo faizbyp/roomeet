@@ -25,6 +25,7 @@ const handler = NextAuth({
         } catch (error: any) {
           if (isAxiosError(error)) {
             console.error(error.response?.data.message as any);
+            console.error(error.response);
             throw new Error(
               JSON.stringify({
                 message: error.response?.data.message as any,
