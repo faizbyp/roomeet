@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 const handler = NextAuth({
   providers: [
@@ -12,20 +12,32 @@ const handler = NextAuth({
         subscription: { type: "object" },
       },
       async authorize(credentials, req) {
-        const auth = await axios.post(`${process.env.APPURL}/user/login`, {
-          username: credentials?.username,
-          password: credentials?.password,
-          subscription: credentials?.subscription,
-        });
-        if (auth.status === 200) {
+        try {
+          const auth = await axios.post(`${process.env.APPURL}/user/login`, {
+            username: credentials?.username,
+            password: credentials?.password,
+            subscription: credentials?.subscription,
+          });
           const user = auth.data.data;
           console.log("USER", user);
 
           return user;
-        } else {
-          return {
-            error: "Error",
-          };
+        } catch (error: any) {
+          if (isAxiosError(error)) {
+            console.error(error.response?.data.message as any);
+            throw new Error(
+              JSON.stringify({
+                message: error.response?.data.message as any,
+              })
+            );
+          } else {
+            console.error(error);
+            throw new Error(
+              JSON.stringify({
+                message: error.message as any,
+              })
+            );
+          }
         }
       },
     }),

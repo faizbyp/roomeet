@@ -88,7 +88,11 @@ export default function LoginPage() {
           router.replace("/admin");
         }
       } else if (res?.status === 401) {
-        toast.error("❌ Credentials not match");
+        if (res.error) {
+          toast.error(JSON.parse(res.error).message);
+        } else {
+          toast.error("Error");
+        }
         setLoading(false);
       } else {
         toast.error("❌ Failed to login");
