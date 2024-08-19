@@ -194,9 +194,10 @@ const Home = () => {
                       action="Check Out"
                       response={() => handleCheckOut(data?.user.id_user, co.id_book)}
                       type="button"
+                      color="error"
                     >
                       {(showDialog: any) => (
-                        <Button variant="contained" fullWidth onClick={showDialog}>
+                        <Button color="error" variant="contained" fullWidth onClick={showDialog}>
                           Check Out
                         </Button>
                       )}
