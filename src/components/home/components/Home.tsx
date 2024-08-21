@@ -1,7 +1,16 @@
 "use client";
 
 import DigitalClock from "./DigitalClock";
-import { Button, Typography, Grid, Box, Skeleton, Alert, Tooltip } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Grid,
+  Box,
+  Skeleton,
+  Alert,
+  Tooltip,
+  Link as MuiLink,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
@@ -9,6 +18,7 @@ import toast from "react-hot-toast";
 import useSWR from "swr";
 import moment from "moment";
 import ConfirmationDialog from "@/common/ConfirmationDialog";
+import Link from "next/link";
 
 const Home = () => {
   const { data } = useSession();
@@ -98,6 +108,11 @@ const Home = () => {
             {data?.user.name}
           </Box>
         </Typography>
+        {data?.user.role_id === process.env.NEXT_PUBLIC_ADMIN_ID && (
+          <Link href="/admin">
+            <Button variant="outlined">To Admin</Button>
+          </Link>
+        )}
         {counter && counter !== 0 ? (
           <Tooltip title="When you missed checking out 3 times, you will get penalty and be banned from creating booking  for 3 days.">
             {penalty ? (

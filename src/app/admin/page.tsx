@@ -53,9 +53,14 @@ const AdminPage = () => {
           pb: 16,
         }}
       >
-        <Typography variant="h1" sx={{ color: "primary.light" }}>
-          Admin Page
-        </Typography>
+        <Box sx={{ display: "flex", gap: 16, my: 16 }}>
+          <Typography variant="h1" sx={{ color: "primary.light" }}>
+            Admin Page
+          </Typography>
+          <Link href="/dashboard">
+            <Button variant="outlined">Dashboard</Button>
+          </Link>
+        </Box>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 8 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 8 }}>
             <DatePicker
