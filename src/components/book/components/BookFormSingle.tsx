@@ -232,7 +232,7 @@ export default function BookFormSingle({ editData }: { editData: any }) {
   return (
     <>
       <Typography variant="h1" sx={{ color: "primary.light" }}>
-        Add New Book
+        {isEdit ? "Edit Book" : "Add New Book"}
       </Typography>
       <form>
         <Grid container spacing={16}>
