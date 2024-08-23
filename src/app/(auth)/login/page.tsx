@@ -79,13 +79,22 @@ export default function LoginPage() {
       console.log("RESPON", res);
 
       if (res?.status === 200) {
-        const session = await getSession();
+        let session = await getSession();
+        while (!session) {
+          session = await getSession();
+        }
 
         if (session?.user.role_id === process.env.NEXT_PUBLIC_USER_ID) {
+          console.log("redirect");
           router.replace("/dashboard");
-        }
-        if (session?.user.role_id === process.env.NEXT_PUBLIC_ADMIN_ID) {
+        } else if (session?.user.role_id === process.env.NEXT_PUBLIC_ADMIN_ID) {
+          console.log("redirect");
           router.replace("/admin");
+        } else {
+          console.log("session role id", session?.user.role_id);
+          console.log("env user role id", process.env.NEXT_PUBLIC_USER_ID);
+          setLoading(false);
+          toast("Please try again");
         }
       } else if (res?.status === 401) {
         if (res.error) {
