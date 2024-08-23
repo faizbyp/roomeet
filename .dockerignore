@@ -6,4 +6,5 @@ README.md
 .next
 !.next/static
 !.next/standalone
+.next/standalone/.env.production
 .git
