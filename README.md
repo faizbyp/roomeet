@@ -24,6 +24,12 @@ npm run build
 docker buildx build --platform linux/arm64 -t faizbyp/roomeet:x.x.x -f Dockerfile.arm --load .
 ```
 
-4. Push the image to Docker Hub.
+4. Test Locally
 
-5. Ask the infra team to update the deployment image based on the updated tag on Docker Hub.
+```bash
+docker run -p 3000:3000 --env-file .env.production faizbyp/roomeet:x.x.x
+```
+
+5. Push the image to Docker Hub.
+
+6. Ask the infra team to update the deployment image based on the updated tag on Docker Hub.
