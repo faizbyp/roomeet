@@ -79,20 +79,20 @@ export default function LoginPage() {
       console.log("RESPON", res);
 
       if (res?.status === 200) {
-        let session = await getSession();
-        while (!session) {
-          session = await getSession();
-        }
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        const session = await getSession();
+        console.log("SESSION", session);
+        console.log("userouter", router);
 
         if (session?.user.role_id === process.env.NEXT_PUBLIC_USER_ID) {
           console.log("redirect");
-          router.replace("/dashboard");
+          window.history.replaceState(null, "", "/dashboard");
+          console.log("after redirect");
         } else if (session?.user.role_id === process.env.NEXT_PUBLIC_ADMIN_ID) {
           console.log("redirect");
-          router.replace("/admin");
+          window.history.replaceState(null, "", "/admin");
+          console.log("after redirect");
         } else {
-          console.log("session role id", session?.user.role_id);
-          console.log("env user role id", process.env.NEXT_PUBLIC_USER_ID);
           setLoading(false);
           toast("Please try again");
         }
