@@ -2,13 +2,12 @@
 import { PasswordWithEyes } from "@/common/PasswordWithEyes";
 import { TextFieldComp } from "@/common/TextField";
 import { useForm } from "react-hook-form";
-import { Box, Button, CircularProgress, Container, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { Link as MuiLink } from "@mui/material";
 import { useState } from "react";
-import { signIn, getSession, SignInOptions } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { useSWReg } from "@/lib/provider/SWRegProvider";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 interface LoginInput {
@@ -40,7 +39,6 @@ const base64ToUint8Array = (base64: any) => {
 };
 
 export default function LoginPage() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const SW = useSWReg();
@@ -81,17 +79,11 @@ export default function LoginPage() {
       if (res?.status === 200) {
         await new Promise((resolve) => setTimeout(resolve, 500));
         const session = await getSession();
-        console.log("SESSION", session);
-        console.log("userouter", router);
 
         if (session?.user.role_id === process.env.NEXT_PUBLIC_USER_ID) {
-          console.log("redirect");
-          window.history.replaceState(null, "", "/dashboard");
-          console.log("after redirect");
+          location.replace("/dashboard");
         } else if (session?.user.role_id === process.env.NEXT_PUBLIC_ADMIN_ID) {
-          console.log("redirect");
-          window.history.replaceState(null, "", "/admin");
-          console.log("after redirect");
+          location.replace("/admin");
         } else {
           setLoading(false);
           toast("Please try again");
