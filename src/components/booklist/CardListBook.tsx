@@ -12,6 +12,8 @@ import ConfirmationDialog from "@/common/ConfirmationDialog";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import moment from "moment";
+import { useEffect, useState } from "react";
+import { set } from "date-fns";
 
 interface CardListBookProp {
   agendaTitle: string;
@@ -56,6 +58,19 @@ function CardListBook({
   approval,
   mutate,
 }: CardListBookProp) {
+  const [actions, setActions] = useState(false);
+
+  useEffect(() => {
+    const time = moment(`${bookDate} ${startTime}`, "YYYY-MM-DD HH:mm");
+
+    const checkTime = () => {
+      const now = moment();
+      setActions(now.isBefore(time));
+    };
+
+    checkTime();
+  }, [bookDate, startTime]);
+
   const handleDelete = async (id_book: string) => {
     try {
       await axiosAuth.delete(`/book/${id_book}`);
@@ -124,46 +139,48 @@ function CardListBook({
             >
               {approval}
             </Typography>
-            {(approval === "pending" || approval === "approved") && is_active === "T" && (
-              <Box sx={{ display: "flex", gap: 8 }}>
-                <Link href={`/dashboard/book/${id_room}/${id_book}`}>
-                  <IconButton
-                    sx={{
-                      bgcolor: "secondary.main",
-                      color: "#202020",
-                      "&:hover": {
-                        bgcolor: "secondary.light",
-                      },
-                    }}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                </Link>
-                <ConfirmationDialog
-                  title="Submit Book"
-                  desc="Are you sure you want to delete?"
-                  action="Delete"
-                  response={() => handleDelete(id_book)}
-                  type="button"
-                  color="error"
-                >
-                  {(showDialog: any) => (
+            {(approval === "pending" || approval === "approved") &&
+              is_active === "T" &&
+              actions && (
+                <Box sx={{ display: "flex", gap: 8 }}>
+                  <Link href={`/dashboard/book/${id_room}/${id_book}`}>
                     <IconButton
                       sx={{
-                        bgcolor: "error.main",
-                        color: "#fafafa",
+                        bgcolor: "secondary.main",
+                        color: "#202020",
                         "&:hover": {
-                          bgcolor: "error.light",
+                          bgcolor: "secondary.light",
                         },
                       }}
-                      onClick={showDialog}
                     >
-                      <ClearIcon />
+                      <EditIcon />
                     </IconButton>
-                  )}
-                </ConfirmationDialog>
-              </Box>
-            )}
+                  </Link>
+                  <ConfirmationDialog
+                    title="Submit Book"
+                    desc="Are you sure you want to delete?"
+                    action="Delete"
+                    response={() => handleDelete(id_book)}
+                    type="button"
+                    color="error"
+                  >
+                    {(showDialog: any) => (
+                      <IconButton
+                        sx={{
+                          bgcolor: "error.main",
+                          color: "#fafafa",
+                          "&:hover": {
+                            bgcolor: "error.light",
+                          },
+                        }}
+                        onClick={showDialog}
+                      >
+                        <ClearIcon />
+                      </IconButton>
+                    )}
+                  </ConfirmationDialog>
+                </Box>
+              )}
           </Grid>
         </Grid>
       </Box>
