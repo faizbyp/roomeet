@@ -1,19 +1,19 @@
-import CardEvent from "@/common/CardEvent";
-import TitleRoom from "./TitleRoom";
 import {
   Box,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
   Skeleton,
   Typography,
 } from "@mui/material";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import BigCalendar from "./BigCalendar";
-import { axiosAuth } from "@/lib/axios";
 import useSWR from "swr";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
+import useFetch from "@/lib/hooks/useFetch";
+import Image from "next/image";
 
 const Room = () => {
   const [room, setRoom] = useState("");
@@ -33,6 +33,8 @@ const Room = () => {
   } = useSWR(url, {
     fallback: { url: [] },
   });
+
+  const { data: roomDetails, loading } = useFetch<any>(room ? `/room/fas?id_room=${room}` : "");
 
   useEffect(() => {
     const getRooms = async () => {
@@ -79,26 +81,75 @@ const Room = () => {
                   {room.nama}
                 </MenuItem>
               ))}
-              {/* <MenuItem value="ROOM001">ROOM001</MenuItem>
-            <MenuItem value="ROOM002">ROOM002</MenuItem>
-            <MenuItem value="ROOM003">ROOM003</MenuItem>
-            <MenuItem value="ROOM004">ROOM004</MenuItem>
-            <MenuItem value="ROOM005">ROOM005</MenuItem> */}
             </Select>
           </FormControl>
         ) : (
           <Skeleton variant="rounded" width="100%" height={64} sx={{ bgcolor: "grey.700" }} />
         )}
       </Box>
-      {isLoading && events ? (
+      {isLoading && loading && events ? (
         <Skeleton
           variant="rounded"
           width="100%"
           height={128}
           sx={{ bgcolor: "grey.700", mt: 48 }}
         />
+      ) : room && roomDetails ? (
+        <>
+          <Grid container spacing={16} sx={{ mt: 16 }}>
+            <Grid item xs={12} md={8}>
+              <Image
+                src={roomDetails.data[0].image}
+                alt="Room Image"
+                style={{
+                  width: "100%",
+                  height: "250px",
+                  objectFit: "cover",
+                  borderRadius: "0.75rem",
+                }}
+                width={1000}
+                height={800}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Typography variant="h1" sx={{ color: "primary.main" }}>
+                {roomDetails.data[0].nama}
+              </Typography>
+              <Typography>For {roomDetails.data[0].remark}</Typography>
+              <Box sx={{ display: "flex", gap: 32 }}>
+                <Box>
+                  <Typography>Location:</Typography>
+                  <Typography>Capacity:</Typography>
+                </Box>
+                <Box>
+                  <Typography>{roomDetails.data[0].lokasi}</Typography>
+                  <Typography>{roomDetails.data[0].kapasitas} participants</Typography>
+                </Box>
+              </Box>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 8, mt: 16 }}>
+                {roomDetails.data[0].fasilitas.map((item: string, idx: string) => (
+                  <Box
+                    sx={{
+                      backgroundColor: "primary.main",
+                      color: "#fafafa",
+                      px: 10,
+                      py: 4,
+                      borderRadius: 2,
+                    }}
+                    key={idx + item}
+                  >
+                    {item}
+                  </Box>
+                ))}
+              </Box>
+            </Grid>
+          </Grid>
+          <BigCalendar events={events} />
+        </>
       ) : (
-        <BigCalendar events={events} />
+        <Typography align="center" sx={{ my: 36, color: "grey.500" }}>
+          Please select room
+        </Typography>
       )}
       {error && <Typography align="center">Error fetching data</Typography>}
       {/* <CardEvent /> */}
