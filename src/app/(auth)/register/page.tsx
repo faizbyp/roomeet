@@ -140,11 +140,11 @@ export default function RegisterPage() {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 message: "invalid email address",
               },
-              // validate: {
-              //   domain: (value: any) =>
-              //     email?.data.some((em: any) => em.domain === value.split("@")[1]) ||
-              //     "Domain not allowed",
-              // },
+              validate: {
+                domain: (value: any) =>
+                  email?.data.some((em: any) => em.domain === value.split("@")[1]) ||
+                  "Domain not allowed",
+              },
             }}
           />
         </Box>
