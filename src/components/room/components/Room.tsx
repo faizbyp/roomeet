@@ -23,7 +23,7 @@ const Room = () => {
 
   let url = "";
   if (room) {
-    url = `/book?room=${room}`;
+    url = `/book?room=${room}&approval=approved_finished`;
   }
 
   const {
