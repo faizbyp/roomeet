@@ -23,7 +23,7 @@ const Room = () => {
 
   let url = "";
   if (room) {
-    url = `/book?room=${room}&approval=approved_finished`;
+    url = `/book?room=${room}&approval=calendar`;
   }
 
   const {
@@ -53,7 +53,7 @@ const Room = () => {
           const date = new Date(item.book_date);
 
           return {
-            title: item.agenda,
+            title: `${item.agenda} (${item.approval.toUpperCase()})`,
             start: new Date(date.setHours(startHour, startMinute)),
             end: new Date(date.setHours(endHour, endMinute)),
             allDay: false,
