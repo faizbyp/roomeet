@@ -153,7 +153,10 @@ export default function RegisterPage() {
             control={control}
             label="Username"
             name="username"
-            rules={{ required: "Field required" }}
+            rules={{
+              required: "Field required",
+              validate: (value: any) => !/\s/.test(value) || "Username cannot contain white spaces",
+            }}
           />
         </Box>
         <Box sx={{ mb: 12 }}>
