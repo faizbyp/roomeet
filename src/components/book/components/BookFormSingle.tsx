@@ -406,8 +406,8 @@ export default function BookFormSingle({ editData }: { editData: any }) {
                   rules={{
                     required: "Field required",
                     maxLength: {
-                      value: 50,
-                      message: "Please input less than 50 character",
+                      value: 26,
+                      message: "Maximum character is 26",
                     },
                   }}
                 />
